@@ -13,7 +13,7 @@ fi
 cd $(get-lctt-path)
 source_path=$(get-lctt-path)/sources/tech
 source_file=${source_path}/${date}\ ${title}.md
-html2text --protect-links --mark-code --decode-errors=ignore "$url" > "${source_file}"
+html2text --protect-links --decode-errors=ignore "$url" > "${source_file}"
 
 echo "
 --------------------------------------------------------------------------------

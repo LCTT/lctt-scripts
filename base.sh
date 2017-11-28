@@ -1,4 +1,9 @@
 #!/bin/echo Warinng: this library should be sourced!
+function get-cfg-option ()
+{
+    option="$@"
+    egrep "^${option}=" lctt.cfg |cut -d "=" -f 2-
+}
 function reset-lctt-path()
 {
     if [[ $# -eq 0 ]];then
@@ -14,7 +19,10 @@ function reset-lctt-path()
 function get-lctt-path()
 {
     if [[ -z ${LCTT} ]];then
-        reset-lctt-path
+        LCTT=$(get-cfg-option ProjectRoot)
+        if [[ -z "${LCTT}" || ! -d "${LCTT}"  ]]; then
+            reset-lctt-path
+        fi
     fi
     echo ${LCTT}
 }
@@ -50,4 +58,13 @@ function continue-p()
           exit 1
           ;;
   esac
+}
+
+function get-github-user()
+{
+    local user=$(get-cfg-option GithubUser)
+    if [[ -z ${user} ]];then
+        user=$(git config --list |grep "user.name="|awk -F "=" '{print $2}')
+    fi
+    echo ${user}
 }

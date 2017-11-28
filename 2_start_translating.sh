@@ -10,7 +10,7 @@ fi
 
 cd $(dirname "${file}")
 filename=$(basename "${file}")
-git_user=$(git config --list |grep "user.name="|awk -F "=" '{print $2}')
+git_user=$(get-github-user)
 new_branch=$(echo "translating-${filename}"|sed 's/ /_/g')
 git branch "${new_branch}"
 git checkout "${new_branch}"

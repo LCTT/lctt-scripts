@@ -5,17 +5,13 @@ declare -a files
 
 if [[ $# -eq 0 ]];then
     i=0
-    find $(get-lctt-path)/sources -name "2*.md" |while read file;do
+    while read file;do
         if ! file-translating-p "${file}";then
            printf "%3d. %s\n" $i "${file}"
            files[$i]="${file}"
            i=$((i+1))
         fi
-        echo 1. count = ${#files[@]}
-        echo 1. file = ${files[1]}
-    done
-    echo 2. file = ${files[1]}
-    echo 2. count = ${#files[@]}
+    done< <(find $(get-lctt-path)/sources -name "2*.md")
     read -p "input the article number you want to translate: " num
     file="${files[$num]}"
 else

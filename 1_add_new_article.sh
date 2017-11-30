@@ -1,20 +1,20 @@
 #!/bin/bash
 set -e
 source base.sh
-read -p "please input the Title:" title
-read -p "please input the URL:" url
-read -p "please input the date(YYYYMMDD):" date
+read -r -p "please input the Title:" title
+read -r -p "please input the URL:" url
+read -r -p "please input the date(YYYYMMDD):" date
 
 echo "search simliar articles..."
 if search-similar-articles "$title";then
     continue-p "found similar articles"
 fi
 
-cd $(get-lctt-path)
+cd "$(get-lctt-path)"
 source_path=$(get-lctt-path)/sources/tech
 source_file=${source_path}/${date}\ ${title}.md
 html2text --protect-links --decode-errors=ignore "$url" > "${source_file}" || \
-    pandoc -t markdown "$url" |egrep -v "^:::" > "${source_file}" 
+    pandoc -t markdown "$url" |grep -E -v "^:::" > "${source_file}" 
 
 echo "
 --------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ via: ${url}
 " >> "${source_file}"
 
 new_branch=$(echo "add-${title}"|sed 's/ /_/g')
-echo $new_branch
+echo "${new_branch}"
 git branch "${new_branch}"
 git checkout "${new_branch}"
 git add "${source_file}"

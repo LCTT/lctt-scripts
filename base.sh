@@ -84,3 +84,9 @@ function get-editor()
     fi
     echo ${editor}
 }
+
+function git-branch-exist-p()
+{
+    local branch="$*"
+    git branch -a |grep -E "${branch}" >/dev/null
+}

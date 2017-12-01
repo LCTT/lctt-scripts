@@ -66,3 +66,21 @@ function get-github-user()
     fi
     echo ${user}
 }
+
+function get-browser()
+{
+    local browser=$(get-cfg-option Browser)
+    if [[ -z ${browser} ]];then
+        browser="firefox"
+    fi
+    echo ${browser}
+}
+
+function get-editor()
+{
+    local editor=$(get-cfg-option Editor)
+    if [[ -z ${editor} ]];then
+        editor="vi"
+    fi
+    echo ${editor}
+}

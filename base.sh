@@ -6,26 +6,23 @@ function get-cfg-option ()
 }
 function reset-lctt-path()
 {
-    if [[ $# -eq 0 ]];then
-        root=$HOME
-    else
-        root=$1
+    export LCTT=$(get-cfg-option ProjectRoot)
+
+    if [[ -z "${LCTT}" || ! -d "${LCTT}"  ]]; then
+        LCTT=$(find $HOME -iname TranslateProject 2>/dev/null |\
+                   awk -F "TranslateProject"IGNORECASE=1 '{print $1}')
     fi
 
-    export LCTT=$(find $root -iname TranslateProject 2>/dev/null |\
-                      awk -F "TranslateProject"IGNORECASE=1 '{print $1}')
 }
 
 function get-lctt-path()
 {
     if [[ -z ${LCTT} ]];then
-        LCTT=$(get-cfg-option ProjectRoot)
-        if [[ -z "${LCTT}" || ! -d "${LCTT}"  ]]; then
-            reset-lctt-path
-        fi
+        reset-lctt-path
     fi
     echo ${LCTT}
 }
+
 
 function file-translating-p ()
 {

@@ -5,26 +5,25 @@ declare -a files
 
 if [[ $# -eq 0 ]];then
     i=0
-    while read file;do
+    while read -r file;do
         if ! file-translating-p "${file}";then
            printf "%3d. %s\n" $i "${file}"
            files[$i]="${file}"
            i=$((i+1))
         fi
-    done< <(find $(get-lctt-path)/sources -name "2*.md")
-    read -p "input the article number you want to translate: " num
+    done< <(find "$(get-lctt-path)"/sources -name "2*.md")
+    read -r -p "input the article number you want to translate: " num
     file="${files[$num]}"
 else
-    file="$@"
+    file="$*"
 fi
-echo ${file}
-exit
-if file-translating-p ${file};then
+
+if file-translating-p "${file}";then
     echo "${file} is under translating!" >&2
     exit 1
 fi
 
-cd $(dirname "${file}")
+cd "$(dirname "${file}")"
 filename=$(basename "${file}")
 git_user=$(get-github-user)
 new_branch=$(echo "translating-${filename}"|sed 's/ /_/g')

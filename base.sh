@@ -1,8 +1,9 @@
 #!/bin/echo Warinng: this library should be sourced!
+CFG_PATH=$(pwd)
 function get-cfg-option ()
 {
     option="$@"
-    egrep "^${option}=" lctt.cfg |cut -d "=" -f 2-
+    egrep "^${option}=" ${CFG_PATH}/lctt.cfg |cut -d "=" -f 2-
 }
 function reset-lctt-path()
 {

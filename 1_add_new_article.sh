@@ -3,8 +3,8 @@ set -e
 source base.sh
 read -r -p "please input the Title:" title
 read -r -p "please input the URL:" url
-baseurl=$(echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#')
 read -r -p "please input the date(YYYYMMDD):" date
+baseurl=$(echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#')
 
 echo "search simliar articles..."
 if search-similar-articles "$title";then
@@ -12,25 +12,15 @@ if search-similar-articles "$title";then
 fi
 
 cd "$(get-lctt-path)"
-source_path=$(get-lctt-path)/sources/tech
-source_file=${source_path}/${date}\ ${title}.md
-html2text --protect-links --decode-errors=ignore "$url" > "${source_file}" || \
-    pandoc -t markdown "$url" |grep -E -v "^:::" > "${source_file}" 
+source_path="$(get-lctt-path)/sources/tech"
+source_file="${source_path}/${date} ${title}.md"
 
-echo "
---------------------------------------------------------------------------------
+$(get-browser) "${url}" "http://lctt.ixiqin.com"
+$(get-editor) "${source_file}"
 
-via: ${url}
-
-作者：[ ][a]
-译者：[译者ID](https://github.com/译者ID)
-校对：[校对者ID](https://github.com/校对者ID)
-
-本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
-
-
-[a][${baseurl}]
-" >> "${source_file}"
+read -p "保存好原稿了吗？按回车键继续" continue
+sed -i "/-------------------------------/,$ s#via: 网址#via: ${url}#" "${source_file}"
+sed -i "/-------------------------------/,$ s#\[a\]:#[a]:${baseurl}#" "${source_file}"
 
 new_branch=$(echo "add-${title}"|sed 's/ /_/g')
 echo "${new_branch}"

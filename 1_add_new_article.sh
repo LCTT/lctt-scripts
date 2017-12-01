@@ -1,10 +1,16 @@
 #!/bin/bash
 set -e
 source base.sh
-read -r -p "please input the Title:" title
+
 read -r -p "please input the URL:" url
+baseurl=$(get-domain-from-url "${url}")
+if url-blocked-p "${baseurl}";then
+    warn "${baseurl} is blocked!"
+    exit 1
+fi
+
+read -r -p "please input the Title:" title
 read -r -p "please input the date(YYYYMMDD):" date
-baseurl=$(echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#')
 
 echo "search simliar articles..."
 if search-similar-articles "$title";then

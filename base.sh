@@ -90,3 +90,22 @@ function git-branch-exist-p()
     local branch="$*"
     git branch -a |grep -E "${branch}" >/dev/null
 }
+
+function get-domain-from-url ()
+{
+    url="$*"
+    echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#'
+}
+
+function url-blocked-p()
+{
+    url="$*"
+    local blocked_domain=$(get-cfg-option BlockedDomains)
+    local domain=$(get-domain-from-url "$url")
+    echo "$blocked_domain" |grep "$domain" >/dev/null
+}
+
+function warn ()
+{
+    echo "$*" >&2
+}

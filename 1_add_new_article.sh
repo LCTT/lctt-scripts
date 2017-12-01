@@ -3,6 +3,7 @@ set -e
 source base.sh
 read -r -p "please input the Title:" title
 read -r -p "please input the URL:" url
+baseurl=$(echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#')
 read -r -p "please input the date(YYYYMMDD):" date
 
 echo "search simliar articles..."
@@ -26,6 +27,9 @@ via: ${url}
 校对：[校对者ID](https://github.com/校对者ID)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
+
+
+[a][${baseurl}]
 " >> "${source_file}"
 
 new_branch=$(echo "add-${title}"|sed 's/ /_/g')

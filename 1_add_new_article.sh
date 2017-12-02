@@ -25,8 +25,8 @@ $(get-browser) "${url}" "http://lctt.ixiqin.com"
 $(get-editor) "${source_file}"
 
 read -p "保存好原稿了吗？按回车键继续" continue
-sed -i "/-------------------------------/,$ s#via: 网址#via: ${url}#" "${source_file}"
-sed -i "/-------------------------------/,$ s#\[a\]:#[a]:${baseurl}#" "${source_file}"
+sed -i "/-------------------------------/,$ s^via: 网址^via: ${url}^" "${source_file}"
+sed -i "/-------------------------------/,$ s^\[a\]:$^[a]:${baseurl}^" "${source_file}"
 
 new_branch=$(echo "add-${title}"|sed 's/[[:space:][:punct:]]/_/g')
 echo "${new_branch}"

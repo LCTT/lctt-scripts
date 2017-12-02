@@ -30,7 +30,7 @@ sed -i "/-------------------------------/,$ s#\[a\]:#[a]:${baseurl}#" "${source_
 
 new_branch=$(echo "add-${title}"|sed 's/ /_/g')
 echo "${new_branch}"
-git branch "${new_branch}"
+git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${source_file}"
 git commit -m "选题: ${title}"

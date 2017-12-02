@@ -27,7 +27,7 @@ cd "$(dirname "${file}")"
 filename=$(basename "${file}")
 git_user=$(get-github-user)
 new_branch=$(echo "translating-${filename}"|sed 's/ /_/g')
-git branch "${new_branch}"
+git branch "${new_branch}" master
 git checkout "${new_branch}"
 sed -i "1i translating by ${git_user}" "${filename}"
 git add "${filename}"

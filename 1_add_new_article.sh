@@ -18,7 +18,6 @@ if search-similar-articles "$title";then
 fi
 
 cd "$(get-lctt-path)"
-git checkout master             # 只在master基础上添加分支，因此先切回master分支
 source_path="$(get-lctt-path)/sources/tech"
 source_file="${source_path}/${date} ${title}.md"
 
@@ -29,7 +28,7 @@ read -p "保存好原稿了吗？按回车键继续" continue
 sed -i "/-------------------------------/,$ s#via: 网址#via: ${url}#" "${source_file}"
 sed -i "/-------------------------------/,$ s#\[a\]:#[a]:${baseurl}#" "${source_file}"
 
-new_branch=$(echo "add-${title}"|sed 's/ /_/g')
+new_branch=$(echo "add-${title}"|sed 's/[[:space:][:punct:]]/_/g')
 echo "${new_branch}"
 git branch "${new_branch}" master
 git checkout "${new_branch}"

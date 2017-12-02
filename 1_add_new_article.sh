@@ -18,7 +18,7 @@ if search-similar-articles "$title";then
 fi
 
 cd "$(get-lctt-path)"
-git checkout master
+git checkout master             # 只在master基础上添加分支，因此先切回master分支
 source_path="$(get-lctt-path)/sources/tech"
 source_file="${source_path}/${date} ${title}.md"
 

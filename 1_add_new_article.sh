@@ -18,6 +18,7 @@ if search-similar-articles "$title";then
 fi
 
 cd "$(get-lctt-path)"
+git checkout master
 source_path="$(get-lctt-path)/sources/tech"
 source_file="${source_path}/${date} ${title}.md"
 

@@ -93,13 +93,13 @@ function git-branch-exist-p()
 
 function get-domain-from-url ()
 {
-    url="$*"
+    local url="$*"
     echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#'
 }
 
 function url-blocked-p()
 {
-    url="$*"
+    local url="$*"
     local blocked_domain=$(get-cfg-option BlockedDomains)
     local domain=$(get-domain-from-url "$url")
     echo "$blocked_domain" |grep "$domain" >/dev/null

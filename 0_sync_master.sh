@@ -8,4 +8,4 @@ if ! git-branch-exist-p "LCTT";then
 fi
 
 git fetch LCTT
-git pull LCTT master
+git pull LCTT master:master

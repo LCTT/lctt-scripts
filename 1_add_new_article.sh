@@ -51,7 +51,8 @@ sed -i "/-------------------------------/,$ s^via: 网址^via: ${url}^" "${sourc
 sed -i "/-------------------------------/,$ s^\[a\]:$^[a]:${baseurl}^" "${source_file}"
 
 # 新建branch 并推送新文章
-new_branch="add-$(title-to-branch "${title}")"
+filename=$(basename "${source_file}")
+new_branch="add-$(title-to-branch "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${source_file}"

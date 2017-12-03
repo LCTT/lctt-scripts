@@ -1,5 +1,5 @@
 #!/bin/echo Warinng: this library should be sourced!
-CFG_PATH=$(pwd)
+CFG_PATH=$(cd $(dirname "${BASH_SOURCE[0]}")&&pwd)
 function get-cfg-option ()
 {
     option="$@"
@@ -102,10 +102,23 @@ function url-blocked-p()
     local url="$*"
     local blocked_domain=$(get-cfg-option BlockedDomains)
     local domain=$(get-domain-from-url "$url")
-    echo "$blocked_domain" |grep "$domain" >/dev/null
+    # echo "$blocked_domain" |grep "$domain" >/dev/null
+    [[ "${blocked_domain}" == *"${domain}"* ]] # 可以用 == 来匹配
 }
 
 function warn ()
 {
     echo "$*" >&2
+}
+
+function title-to-branch ()
+{
+    local title="$*"
+    echo "${title}"|base64
+}
+
+function branch-to-title ()
+{
+    local code="$*"
+    echo "${code}"|base64 -d
 }

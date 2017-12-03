@@ -122,3 +122,8 @@ function branch-to-title ()
     local code="$*"
     echo "${code}"|base64 -d
 }
+
+function git-get-current-branch ()
+{
+    git branch |grep "*" |cut -d " " -f2
+}

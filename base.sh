@@ -114,7 +114,7 @@ function warn ()
 function title-to-branch ()
 {
     local title="$*"
-    echo "${title}"|base64
+    echo "${title}"|base64 -w 0
 }
 
 function branch-to-title ()

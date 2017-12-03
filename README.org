@@ -1,0 +1,18 @@
+#+TITLE: README
+#+AUTHOR: lujun9972
+#+TAGS: lctt-scripts
+#+DATE: [2017-12-03 日 13:44]
+#+LANGUAGE:  zh-CN
+#+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
+
+为了方便选题和翻译LCTT项目中的文章，所写的一些脚本，主要功能包括：
+
++ 0_sync_master.sh :: 同步最新版本到本地master分支
++ 1_add_new_article.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
++ 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支
++ 3_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
++ 4_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master
++ reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
+
+关于配置：
+你可以在lctt.cfg

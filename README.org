@@ -15,4 +15,10 @@
 + reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
 
 关于配置：
-你可以在lctt.cfg
+你可以在lctt.cfg中配置:
+
++ ProjectRoot :: 项目根目录路径,如果没有配置则脚本从$HOME目录中搜索名为 =TranslateProject= 的目录
++ GithubUser :: 您的Github用户名，默认为你本机git上配置的user名称
++ Browser :: 您惯用的浏览器,默认为firefox
++ Editor :: 您惯用的编辑器，默认为vi
++ BlockedDomains :: 屏蔽的网站域名，表示这些网站的文章不能被翻译。不推荐修改

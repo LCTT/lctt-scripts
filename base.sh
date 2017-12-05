@@ -127,3 +127,21 @@ function git-get-current-branch ()
 {
     git branch |grep "*" |cut -d " " -f2
 }
+
+# 根据时间以及文章title转换成标准的文件名
+function date-title-to-filename()
+{
+    local date="$1"
+    shift
+    title="$*"                                     # title可能包含空格
+    echo "${date} ${title}.md" |sed 's/[:~!$^]//g' # 去掉特殊字符
+}
+
+# 为文件加上翻译中的标记
+function mark-file-as-tranlating()
+{
+    local filename="$*"
+    local git_user=$(get-github-user)
+    sed -i "1i translating by ${git_user}" "${filename}"
+    sed -i "/-------------------------------/,$ s/译者ID/${git_user}/g" "${source_file}"
+}

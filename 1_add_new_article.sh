@@ -3,7 +3,7 @@ set -e
 source base.sh
 
 # 获取参数
-while getopts :u:t:d: OPT; do
+while getopts :u:t:d:T OPT; do
     case $OPT in
         u|+u)
             url="$OPTARG"
@@ -14,8 +14,11 @@ while getopts :u:t:d: OPT; do
         d|+d)
             date="$OPTARG"
             ;;
+        T|+T)
+            tranlate_flag="yes"
+            ;;
         *)
-            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date} "
+            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date] [+-T]}"
             exit 2
     esac
 done
@@ -41,7 +44,8 @@ fi
 # 生成新文章
 cd "$(get-lctt-path)"
 source_path="$(get-lctt-path)/sources/tech"
-source_file="${source_path}/${date} ${title}.md"
+filename=$(date-title-to-filename "${date}" "${title}")
+source_file="${source_path}"/"${filename}"
 
 $(get-browser) "${url}" "http://lctt.ixiqin.com"
 $(get-editor) "${source_file}"
@@ -49,6 +53,10 @@ $(get-editor) "${source_file}"
 read -p "保存好原稿了吗？按回车键继续" continue
 sed -i "/-------------------------------/,$ s^via: 网址^via: ${url}^" "${source_file}"
 sed -i "/-------------------------------/,$ s^\[a\]:$^[a]:${baseurl}^" "${source_file}"
+
+if [[ -n ${tranlate_flag} ]];then
+    mark-file-as-tranlating "${source_file}"
+fi
 
 # 新建branch 并推送新文章
 filename=$(basename "${source_file}")

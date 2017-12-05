@@ -27,11 +27,11 @@ fi
 
 cd "$(dirname "${file}")"
 filename=$(basename "${file}")
-git_user=$(get-github-user)
 new_branch="translate-$(title-to-branch "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
-sed -i "1i translating by ${git_user}" "${filename}"
+mark-file-as-tranlating  "${filename}"
 git add "${filename}"
+git_user=$(get-github-user)
 git commit -m "translating by ${git_user}"
 git push -u origin "${new_branch}"

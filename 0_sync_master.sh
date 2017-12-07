@@ -9,3 +9,4 @@ fi
 
 git fetch LCTT
 git pull LCTT master:master
+git push origin master:master

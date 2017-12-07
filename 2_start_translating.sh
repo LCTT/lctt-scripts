@@ -19,19 +19,16 @@ else
     file="$*"
 fi
 
-# 删除检查，允许强制翻译
-# 检查指定文件是否可以翻译
-# if file-translating-p "${file}";then
-#     warn "${file} is under translating!"
-#     exit 1
-# fi
 
 cd "$(dirname "${file}")"
 filename=$(basename "${file}")
 new_branch="translate-$(title-to-branch "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
-mark-file-as-tranlating  "${filename}"
+# 如果没有翻译，则加上翻译标志
+if ! file-translating-p "${file}";then
+    mark-file-as-tranlating  "${filename}"
+fi
 git add "${filename}"
 git_user=$(get-github-user)
 git commit -m "translating by ${git_user}"

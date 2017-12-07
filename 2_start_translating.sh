@@ -19,11 +19,12 @@ else
     file="$*"
 fi
 
+# 删除检查，允许强制翻译
 # 检查指定文件是否可以翻译
-if file-translating-p "${file}";then
-    warn "${file} is under translating!"
-    exit 1
-fi
+# if file-translating-p "${file}";then
+#     warn "${file} is under translating!"
+#     exit 1
+# fi
 
 cd "$(dirname "${file}")"
 filename=$(basename "${file}")

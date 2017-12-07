@@ -143,5 +143,5 @@ function mark-file-as-tranlating()
     local filename="$*"
     local git_user=$(get-github-user)
     sed -i "1i translating by ${git_user}" "${filename}"
-    sed -i "/-------------------------------/,$ s/译者ID/${git_user}/g" "${source_file}"
+    sed -i "/-------------------------------/,$ s/译者ID/${git_user}/g" "${filename}"
 }

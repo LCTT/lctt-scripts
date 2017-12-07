@@ -16,8 +16,8 @@ OPTIND=1
 cd $(get-lctt-path)
 git add .
 git commit -m "update at $(date)"
-git push
 current_branch=$(git-get-current-branch)
+git push -u origin "${current_branch}"
 git checkout master
 if [[ -n "${delete_branch}" ]];then
     git branch -d "${current_branch}"

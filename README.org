@@ -9,9 +9,9 @@
 
 + 0_sync_master.sh :: 同步最新版本到本地master分支
 + 1_add_new_article.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
-+ 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
-+ 3_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
-+ 4_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。
++ 1_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
++ 2_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
++ 3_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。
 + reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
 
 关于配置：

@@ -26,7 +26,7 @@ new_branch="translate-$(title-to-branch "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 # 如果没有翻译，则加上翻译标志
-if ! file-translating-p "${file}";then
+if ! file-translating-p "${filename}";then
     mark-file-as-tranlating  "${filename}"
 fi
 git add "${filename}"

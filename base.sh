@@ -128,13 +128,23 @@ function git-get-current-branch ()
     git branch |grep "*" |cut -d " " -f2
 }
 
+# 根据当前branch得到当前编辑的文件路径
+function git-current-branch-to-file-path()
+{
+    local branch=$(git-get-current-branch)
+    local code=$(echo "$branch" |cut -d "-" -f2)
+    local filename=$(branch-to-title "${code}")
+    local filepath=$(find "$(get-lctt-path)" -name "${filename}")
+    echo "${filepath}"
+}
+
 # 根据时间以及文章title转换成标准的文件名
 function date-title-to-filename()
 {
     local date="$1"
     shift
     title="$*"                                     # title可能包含空格
-    echo "${date} ${title}.md" |sed 's/[:~!$^]//g' # 去掉特殊字符
+    echo "${date} ${title}.md" |sed 's/[\/?:~!$^]/-/g' # 特殊字符换成-号
 }
 
 # 为文件加上翻译中的标记

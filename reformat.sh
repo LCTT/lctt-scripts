@@ -1,5 +1,13 @@
 #!/bin/bash
 # 使用全角中文
+source base.sh
+if [[ $# -eq 0 ]];then
+    cd "$(get-lctt-path)"
+    filepath=$(git-current-branch-to-file-path)
+else
+    filepath="$*"
+fi
+
 sed -i '1,/----------------------------------------------------------------/ {
 s/,/，/g;                       # 任何,都被替换
 s/?/？/g;                       # 任何?都被替换
@@ -17,4 +25,4 @@ s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:digit:]]\)/\
 # 全角标点与其他字符之间不加空格
 s/[[:blank:]]*\(，\|？\|！\|。\)/\1/;
 s/\(，\|？\|！\|。\)[[:blank:]]*/\1/
-}' "$*"
+}' "${filepath}"

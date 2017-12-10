@@ -34,12 +34,8 @@ fi
 
 # [[ -z "${title}" ]] && read -r -p "please input the Title:" title
 [[ -z "${date}" ]] && read -r -p "please input the date(YYYYMMDD):" date
-
-# 生成新文章
 cd "$(get-lctt-path)"
-source_path="$(get-lctt-path)/sources/tech"
-filename=$(date-title-to-filename "${date}" "${title}")
-source_file="${source_path}"/"${filename}"
+
 token='kKczNLzhY6jM60hv03IFjew9TQ7WH245CACYaBiY'
 response=$(curl -H "x-api-key: ${token}" "https://mercury.postlight.com/parser?url=${url}")
 title=$(echo ${response} |jq .title)
@@ -51,6 +47,11 @@ echo "search simliar articles..."
 if search-similar-articles "$title";then
     continue-p "found similar articles"
 fi
+
+# 生成新文章
+source_path="$(get-lctt-path)/sources/tech"
+filename=$(date-title-to-filename "${date}" "${title}")
+source_file="${source_path}"/"${filename}"
 
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"

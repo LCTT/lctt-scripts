@@ -32,15 +32,28 @@ if url-blocked-p "${baseurl}";then
     exit 1
 fi
 
-# [[ -z "${title}" ]] && read -r -p "please input the Title:" title
-[[ -z "${date}" ]] && read -r -p "please input the date(YYYYMMDD):" date
 cd "$(get-lctt-path)"
 
-token='kKczNLzhY6jM60hv03IFjew9TQ7WH245CACYaBiY'
+token=$(get-cfg-option Token)
 response=$(curl -H "x-api-key: ${token}" "https://mercury.postlight.com/parser?url=${url}")
-title=$(echo ${response} |jq .title)
-author=$(echo ${response} |jq .author)
-date_published=$(echo ${response} |jq .date_published)
+if [[ -z "${title}" ]];then
+    title=$(echo ${response} |jq -r .title)
+fi
+
+if [[ -z "${date}" ]];then
+    date=$(echo ${response} |jq -r .date_published)
+    if [[ "${date}" == "null" ]];then
+        date=$(date +"%Y%m%d")
+    else
+        date=$(echo ${date}|cut -d "T" -f1)
+    fi
+fi
+
+author=$(echo ${response} |jq -r .author)
+echo author= "$author",title= "${title}",date_published= "${date_published}"
+# echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
+# echo ${response}|jq -r .content|html2text --reference-links --mark-code
+# exit
 
 # 搜索类似的文章
 echo "search simliar articles..."
@@ -53,10 +66,11 @@ source_path="$(get-lctt-path)/sources/tech"
 filename=$(date-title-to-filename "${date}" "${title}")
 source_file="${source_path}"/"${filename}"
 
-echo "${title}" > "${source_file}"
+echo "${title}" > "${source_file}" # 去掉title两边的双引号
 echo "======" >> "${source_file}"
-echo ${response}|jq .content|html2text --reference-links --mark-code >>  "${source_file}"
-sed -i 's/^\[\/\?code\][[:space:]]*$/```/' "${source_file}"
+echo ${response}|jq -r .content|html2text --reference-links --mark-code \
+    |sed '/^\[code\][[:space:]]*$/ {N;s/.*/```/}' \
+    |sed '/^[[:space:]]*$/ {N;s/^[[:space:]]*\n\[\/code\][[:space:]]*$/```/}' >>  "${source_file}"
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"
 echo "
 --------------------------------------------------------------------------------

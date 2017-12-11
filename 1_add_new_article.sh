@@ -68,9 +68,7 @@ source_file="${source_path}"/"${filename}"
 
 echo "${title}" > "${source_file}" # 去掉title两边的双引号
 echo "======" >> "${source_file}"
-echo ${response}|jq -r .content|html2text --reference-links --mark-code \
-    |sed '/^\[code\][[:space:]]*$/ {N;s/.*/```/}' \
-    |sed '/^[[:space:]]*$/ {N;s/^[[:space:]]*\n\[\/code\][[:space:]]*$/```/}' >>  "${source_file}"
+echo ${response}|jq -r .content|html2text --no-wrap-links --reference-links --mark-code |sed 's/^\[\/\?code\][[:space:]]*$/```/'>>  "${source_file}"
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"
 echo "
 --------------------------------------------------------------------------------

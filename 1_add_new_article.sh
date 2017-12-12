@@ -32,10 +32,8 @@ if url-blocked-p "${baseurl}";then
     exit 1
 fi
 
-cd "$(get-lctt-path)"
 
-token=$(get-cfg-option Token)
-response=$(curl -H "x-api-key: ${token}" "https://mercury.postlight.com/parser?url=${url}")
+response=$(source picker/env/bin/activate;python parse_url_by_newspaper.py "${url}")
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
 fi
@@ -56,6 +54,7 @@ echo author= "$author",title= "${title}",date_published= "${date_published}"
 # exit
 
 # 搜索类似的文章
+cd "$(get-lctt-path)"
 echo "search simliar articles..."
 if search-similar-articles "$title";then
     continue-p "found similar articles"
@@ -66,7 +65,7 @@ source_path="$(get-lctt-path)/sources/tech"
 filename=$(date-title-to-filename "${date}" "${title}")
 source_file="${source_path}"/"${filename}"
 
-echo "${title}" > "${source_file}" # 去掉title两边的双引号
+echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
 echo ${response}|jq -r .content|html2text --no-wrap-links --reference-links --mark-code |sed 's/^\[\/\?code\][[:space:]]*$/```/'>>  "${source_file}"
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"

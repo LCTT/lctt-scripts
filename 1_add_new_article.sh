@@ -76,20 +76,26 @@ s/$//;                          # 去掉
 s/^\[\/\?code\][[:space:]]*$/```/ # 将[code]...[/code]替换成```...```
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"
-echo "
---------------------------------------------------------------------------------
 
-via: ${url}
-
-作者：[$author][a]
-译者：[译者ID](https://github.com/译者ID)
-校对：[校对者ID](https://github.com/校对者ID)
-
-本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
-
-[a]:${baseurl}
-
-">>"${source_file}"
+comment="--------------------------------------------------------------------------------\\
+\\
+via: ${url}\\
+\\
+作者：[$author][a]\\
+译者：[译者ID](https://github.com/译者ID)\\
+校对：[校对者ID](https://github.com/校对者ID)\\
+\\
+本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
+\\
+[a]:${baseurl}"
+# 找出reference links的起始位置
+reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |cut -d ":" -f1)
+# 格式化reference links部分
+sed -i "${reference_links_beginning_line},$ {
+/^[[:blank:]]*$/ d;
+s/^   \(\[[[:digit:]]*\]\): /\1/
+}" "${source_file}"
+sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
 
 if [[ -n ${tranlate_flag} ]];then
     mark-file-as-tranlating "${source_file}"

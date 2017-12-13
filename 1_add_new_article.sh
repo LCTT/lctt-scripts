@@ -32,8 +32,12 @@ if url-blocked-p "${baseurl}";then
     exit 1
 fi
 
+python_env=$(get-cfg-option PythonEnv)
+if [[ -d "${python_env}" ]];then
+    source "${python_env}/bin/activate"
+fi
 
-response=$(source picker/env/bin/activate;python parse_url_by_newspaper.py "${url}")
+response=$(python parse_url_by_newspaper.py "${url}")
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
 fi
@@ -48,7 +52,7 @@ if [[ -z "${date}" ]];then
 fi
 
 author=$(echo ${response} |jq -r .author)
-echo author= "$author",title= "${title}",date_published= "${date_published}"
+echo author= "$author",title= "${title}",date_published= "${date}"
 # echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
 # echo ${response}|jq -r .content|html2text --reference-links --mark-code
 # exit
@@ -67,7 +71,10 @@ source_file="${source_path}"/"${filename}"
 
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
-echo ${response}|jq -r .content|html2text --no-wrap-links --reference-links --mark-code |sed 's/^\[\/\?code\][[:space:]]*$/```/'>>  "${source_file}"
+echo ${response}|jq -r .content|html2text --no-wrap-links --reference-links --mark-code |sed '{
+s/$//;                          # 去掉
+s/^\[\/\?code\][[:space:]]*$/```/ # 将[code]...[/code]替换成```...```
+}' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"
 echo "
 --------------------------------------------------------------------------------

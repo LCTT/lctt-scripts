@@ -69,6 +69,13 @@ source_path="$(get-lctt-path)/sources/tech"
 filename=$(date-title-to-filename "${date}" "${title}")
 source_file="${source_path}"/"${filename}"
 
+# 使用trap删掉临时文件
+function cleanup_temp {
+    [ -e "${source_file}" ] && rm --force "${source_file}"
+    exit 0
+}
+trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
+
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
 echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '/^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //' |sed '{

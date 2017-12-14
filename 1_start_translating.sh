@@ -22,7 +22,8 @@ fi
 
 cd "$(dirname "${file}")"
 filename=$(basename "${file}")
-new_branch="translate-$(title-to-branch "${filename}")"
+# new_branch="translate-$(title-to-branch "${filename}")"
+new_branch="$(filename-to-branch translate "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 # 如果没有翻译，则加上翻译标志

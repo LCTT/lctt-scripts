@@ -60,7 +60,8 @@ fi
 
 # 新建branch 并推送新文章
 filename=$(basename "${source_file}")
-new_branch="add-$(title-to-branch "${filename}")"
+# new_branch="add-$(title-to-branch "${filename}")"
+new_branch="$(filename-to-branch add "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${source_file}"

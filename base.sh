@@ -111,31 +111,53 @@ function warn ()
     echo "$*" >&2
 }
 
-function title-to-branch ()
-{
-    local title="$*"
-    echo "${title}"|base64 -w 0
-}
-
-function branch-to-title ()
-{
-    local code="$*"
-    echo "${code}"|base64 -d
-}
-
 function git-get-current-branch ()
 {
     git branch |grep "*" |cut -d " " -f2
 }
 
-# 根据当前branch得到当前编辑的文件路径
+function filename-to-branch ()
+{
+    local operation=$1
+    shift
+    local title="$*"
+    local code=$(echo "${title}"|base64 -w 0)
+    echo "${operation}-${code}"
+}
+
+# 解析branch中包含的操作类型 add/translate
+function git-branch-to-operation()
+{
+    local branch="$*"
+    local operation=$(echo "${branch}"|cut -d "-" -f1)
+    echo "${operation}"
+}
+
+# 解析branch中包含的文件名信息
+function git-branch-to-filename()
+{
+    local branch="$*"
+    local code=$(echo "${branch}" |cut -d "-" -f2)
+    echo "${code}"|base64 -d
+}
+
+# 返回branch参数中正在编辑文件的 *绝对路径*
+function git-branch-to-file-path()
+{
+    local branch="$*"
+    local filename=$(git-branch-to-filename "${branch}")
+    find "$(get-lctt-path)" -name "${filename}"
+}
+
+# 根据当前branch得到当前编辑的文件 *绝对路径*
 function git-current-branch-to-file-path()
 {
+    # 在子shell中操作，不要修改原work directory
+    (
+    cd "$(get-lctt-path)"
     local branch=$(git-get-current-branch)
-    local code=$(echo "$branch" |cut -d "-" -f2)
-    local filename=$(branch-to-title "${code}")
-    local filepath=$(find "$(get-lctt-path)" -name "${filename}")
-    echo "${filepath}"
+    git-branch-to-file-path "${branch}"
+    )
 }
 
 # 根据时间以及文章title转换成标准的文件名

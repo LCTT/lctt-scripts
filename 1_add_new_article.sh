@@ -71,7 +71,7 @@ source_file="${source_path}"/"${filename}"
 
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
-echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '/^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //' |sed '{
 s/$//;                          # 去掉
 s/^\[\/\?code\][[:space:]]*$/```/ # 将[code]...[/code]替换成```...```
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
@@ -90,6 +90,10 @@ via: ${url}\\
 [a]:${baseurl}"
 # 找出reference links的起始位置
 reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |tail -n 1 |cut -d ":" -f1)
+if [[ -z ${reference_links_beginning_line} ]];then
+    reference_links_beginning_line='$'
+fi
+
 # 格式化reference links部分
 sed -i "${reference_links_beginning_line},$ {
 /^[[:blank:]]*$/ d;

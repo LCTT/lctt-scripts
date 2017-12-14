@@ -7,7 +7,7 @@ sources_dir="$(get-lctt-path)"/sources
 if [[ $# -eq 0 ]];then
     i=0
     while read -r file;do
-        if ! file-translating-p "${file}";then
+        if ! file-translating-p "${file}" || file-translating-by-me-p "${file}";then
            printf "%3d. %s\n" $i "${file}"
            files[$i]="${file}"
            i=$((i+1))

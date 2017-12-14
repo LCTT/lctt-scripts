@@ -27,8 +27,14 @@ function get-lctt-path()
 
 function file-translating-p ()
 {
-    local file="$@"
+    local file="$*"
     head "$file" |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
+}
+
+function file-translating-by-me-p()
+{
+    local file="$*"
+    head "$file" |grep -E -i "translat|fanyi|翻译" |grep $(get-github-user) >/dev/null 2>&1
 }
 
 function search-similar-articles ()

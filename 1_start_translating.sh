@@ -12,7 +12,7 @@ if [[ $# -eq 0 ]];then
            files[$i]="${file}"
            i=$((i+1))
         fi
-    done< <(find "${sources_dir}" -name "2*.md")
+    done< <(find "${sources_dir}" -name "2*.md"|sort)
     read -r -p "input the article number you want to translate: " num
     file="${source_dir}"/"${files[$num]}" # 使用绝对路径，否则后面无法cd进入文件所在目录
 else

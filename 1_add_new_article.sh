@@ -97,7 +97,7 @@ fi
 # 格式化reference links部分
 sed -i "${reference_links_beginning_line},$ {
 /^[[:blank:]]*$/ d;
-s/^   \(\[[[:digit:]]*\]\): /\1 /
+s/^   \(\[[[:digit:]]*\]\): /\1:/
 }" "${source_file}"
 sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
 

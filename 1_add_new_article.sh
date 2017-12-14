@@ -45,7 +45,8 @@ fi
 if [[ -z "${date}" ]];then
     date=$(echo ${response} |jq -r .date_published)
     if [[ "${date}" == "null" ]];then
-        date=$(date +"%Y%m%d")
+        read -r -p "please input the DATE(today defaultly):" date
+        [[ -z "${date}" ]] && date=$(date +"%Y%m%d")
     else
         date=$(echo ${date}|cut -d "T" -f1)
     fi

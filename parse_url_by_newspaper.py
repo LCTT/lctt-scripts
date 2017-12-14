@@ -11,9 +11,8 @@ article.parse()
 authors = ';'.join(article.authors)
 title = article.title
 date = article.publish_date
-if not date:
-    date = datetime.datetime.now()
-date = date.strftime('%Y%m%d')
+if date:
+    date = date.strftime('%Y%m%d')
 
 html_content = article.article_html
 content = article.text

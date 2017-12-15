@@ -9,12 +9,12 @@ else
 fi
 
 sed -i '1,/----------------------------------------------------------------/ {
-# 中英文之间加上空格
-s/\([[:upper:][:lower:]]\)\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)/\1 \2/g;
-s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:upper:][:lower:]]\)/\1 \2/g;
-# 中文和数字之间加上空格
-s/\([[:digit:]]\)\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)/\1 \2/g;
-s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:digit:]]\)/\1 \2/g;
+# 中英文之间加上空格,英文可能被符号扩起来了
+s/\([[:upper:][:lower:]][[:punct:]]*\)\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)/\1 \2/g;
+s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:punct:]]*[[:upper:][:lower:]]\)/\1 \2/g;
+# 中文和数字之间加上空格,数字也可能被符号扩起来了
+s/\([[:digit:]][[:punct:]]*\)\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)/\1 \2/g;
+s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:punct:]]*[[:digit:]]\)/\1 \2/g;
 s/,/，/g;                       # 任何,都被替换
 s/?/？/g;                       # 任何?都被替换
 s/!$/！/g;                      # !在尾部则可被替换

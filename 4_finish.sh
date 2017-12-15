@@ -1,9 +1,13 @@
 #!/bin/bash
 source base.sh
-while getopts :d OPT; do
+commit_message="update at $(date)"
+while getopts :dm: OPT; do
     case $OPT in
         d|+d)
             delete_branch=1
+            ;;
+        m|+m)
+            commit_message="$OPTARG"
             ;;
         *)
             echo "usage: ${0##*/} [+-d}"
@@ -27,7 +31,7 @@ if [[ "${operation}" == "translate" ]];then
 fi
 
 git add .
-git commit -m "update at $(date)"
+git commit -m "${commit_message}"
 git push -u origin "${current_branch}"
 git checkout master
 if [[ -n "${delete_branch}" ]];then

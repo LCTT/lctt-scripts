@@ -79,8 +79,10 @@ trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
 
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
-echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '/^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //' |sed '{
+echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
+s/[[:space:]]*$//;                # 去掉每行最后的空格
+/^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
 s/^\[\/\?code\][[:space:]]*$/```/ # 将[code]...[/code]替换成```...```
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 # $(get-browser) "${url}" "http://lctt.ixiqin.com"

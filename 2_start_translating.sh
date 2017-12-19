@@ -7,10 +7,14 @@ sources_dir="$(get-lctt-path)"/sources
 if [[ $# -eq 0 ]];then
     i=0
     while read -r file;do
-        if ! file-translating-p "${file}" || file-translating-by-me-p "${file}";then
-           printf "%3d. %s\n" $i "${file}"
+        if ! file-translating-p "${file}" ;then
+           printf " %3d. %s\n" $i "${file}"
            files[$i]="${file}"
            i=$((i+1))
+        elif file-translating-by-me-p "${file}";then
+            printf "*%3d. %s\n" $i "${file}"
+            files[$i]="${file}"
+            i=$((i+1))
         fi
     done< <(find "${sources_dir}" -name "2*.md"|sort)
     read -r -p "input the article number you want to translate: " num

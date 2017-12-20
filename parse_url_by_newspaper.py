@@ -4,7 +4,7 @@ import json
 from newspaper import Article
 url = sys.argv[1]
 
-article = Article(url, keep_article_html=True)
+article = Article(url, keep_article_html=True, memoize_articles=False, follow_meta_refresh=True, request_timeout=15, fetch_images=False)
 article.download()
 article.parse()
 

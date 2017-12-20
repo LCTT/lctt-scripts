@@ -1,6 +1,5 @@
 #!/bin/bash
 source base.sh
-commit_message="update at $(date)"
 while getopts :dm: OPT; do
     case $OPT in
         d|+d)
@@ -28,6 +27,10 @@ if [[ "${operation}" == "translate" ]];then
         echo git mv "${sources_file_path}" "${translated_file_path}"
         git mv "${sources_file_path}" "${translated_file_path}"
     fi
+fi
+
+if [[ -z "${commit_message}" ]];then
+    commit_message="${operation} '${filename}' done at $(date)"
 fi
 
 git add .

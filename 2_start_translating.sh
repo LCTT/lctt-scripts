@@ -38,3 +38,6 @@ git add "${filename}"
 git_user=$(get-github-user)
 git commit -m "translating by ${git_user}"
 git push -u origin "${new_branch}"
+
+# 打开要翻译的文章
+$(get-editor) "${file}"

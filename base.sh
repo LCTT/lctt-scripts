@@ -171,7 +171,7 @@ function date-title-to-filename()
 {
     local date="$1"
     shift
-    title=$(echo "$*" |sed 's/[\/?:~!$^]/-/g'|sed 's/-*$//') # 特殊字符换成-号,最后的-去掉
+    title=$(echo "$*" |sed 's/[^0-9a-zA-Z.,()[]‘_ -]/-/g'|sed 's/-*$//') # 特殊字符换成-号,最后的-去掉
     echo "${date} ${title}.md"
 }
 

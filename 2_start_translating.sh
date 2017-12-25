@@ -33,11 +33,11 @@ git checkout "${new_branch}"
 # 如果没有翻译，则加上翻译标志
 if ! file-translating-p "${filename}";then
     mark-file-as-tranlating  "${filename}"
+    git add "${filename}"
+    git_user=$(get-github-user)
+    git commit -m "translating by ${git_user}"
+    git push -u origin "${new_branch}"
 fi
-git add "${filename}"
-git_user=$(get-github-user)
-git commit -m "translating by ${git_user}"
-git push -u origin "${new_branch}"
 
 # 打开要翻译的文章
 $(get-editor) "${file}"

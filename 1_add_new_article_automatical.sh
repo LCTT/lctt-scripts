@@ -53,7 +53,9 @@ if [[ -z "${date}" ]];then
 fi
 
 author=$(echo ${response} |jq -r .author)
-echo author= "$author",title= "${title}",date_published= "${date}"
+echo author= "$author"
+echo title= "${title}"
+echo date_published= "${date}"
 # echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
 # echo ${response}|jq -r .content|html2text --reference-links --mark-code
 # exit

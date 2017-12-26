@@ -25,18 +25,22 @@ fi
 
 operation=$(git-branch-to-operation "${current_branch}")
 filename=$(git-branch-to-filename "${current_branch}")
-reformat_flag=$(get-cfg-option AutoReformat)
-sources_file_path=$(find ./ -name "${filename}") # 搜索出相对路径
 
-if [[ -n "${reformat_flag}" && "${reformat_flag}" != "0" ]];then
-    echo "reformat the ${sources_file_path}"
-    $CFG_PATH/reformat.sh "${sources_file_path}"
-fi
+if [[ "${operation}" == "translate" ]];then
+    # 使用reformat.sh格式化
+    reformat_flag=$(get-cfg-option AutoReformat)
+    if [[ -n "${reformat_flag}" && "${reformat_flag}" != "0" ]];then
+        echo "reformat the ${filename}"
+        (cd $CFG_PATH;./reformat.sh)
+    fi
 
-if [[ "${operation}" == "translate" && "${sources_file_path}" =~ ^\./sources/.+$ ]];then
-    translated_file_path="$(echo "${sources_file_path}"|sed 's/sources/translated/')"
-    echo git mv "${sources_file_path}" "${translated_file_path}"
-    git mv "${sources_file_path}" "${translated_file_path}"
+    # 将文件从sources移动到translated目录
+    sources_file_path=$(find ./ -name "${filename}") # 搜索出相对路径
+    if [[ "${sources_file_path}" =~ ^\./sources/.+$ ]];then
+        translated_file_path="$(echo "${sources_file_path}"|sed 's/sources/translated/')"
+        echo git mv "${sources_file_path}" "${translated_file_path}"
+        git mv "${sources_file_path}" "${translated_file_path}"
+    fi
 fi
 
 if [[ -z "${commit_message}" ]];then

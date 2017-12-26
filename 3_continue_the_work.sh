@@ -15,7 +15,8 @@ if [[ "$current_branch" == "master" ]];then
     done < <(git branch |grep -v 'master')
     echo "YOU ARE UNDER BRANCH MASTER"
     read -r -p "Which branch do you want to checkout(input the id): " num
-    git checkout "${branches[$i]}"
+    echo git checkout "${branches[$i]}"
+    git checkout "${branches[$num]}"
 fi
 
 filepath=$(git-current-branch-to-file-path)

@@ -18,19 +18,29 @@ OPTIND=1
 
 cd $(get-lctt-path)
 current_branch=$(git-get-current-branch)
+if [[ "${current_branch}" == "master" ]];then
+    warn "Project is under the master branch! Exiting"
+    exit 1
+fi
+
 operation=$(git-branch-to-operation "${current_branch}")
-if [[ "${operation}" == "translate" ]];then
-    filename=$(git-branch-to-filename "${current_branch}")
-    sources_file_path=$(find ./ -name "${filename}") # 搜索出相对路径
-    if [[ "${sources_file_path}" =~ ^\./sources/.+$ ]];then
-        translated_file_path="$(echo "${sources_file_path}"|sed 's/sources/translated/')"
-        echo git mv "${sources_file_path}" "${translated_file_path}"
-        git mv "${sources_file_path}" "${translated_file_path}"
-    fi
+filename=$(git-branch-to-filename "${current_branch}")
+reformat_flag=$(get-cfg-option AutoReformat)
+sources_file_path=$(find ./ -name "${filename}") # 搜索出相对路径
+
+if [[ -n "${reformat_flag}" && "${reformat_flag}" != "0" ]];then
+    echo "reformat the ${sources_file_path}"
+    $CFG_PATH/reformat.sh "${sources_file_path}"
+fi
+
+if [[ "${operation}" == "translate" && "${sources_file_path}" =~ ^\./sources/.+$ ]];then
+    translated_file_path="$(echo "${sources_file_path}"|sed 's/sources/translated/')"
+    echo git mv "${sources_file_path}" "${translated_file_path}"
+    git mv "${sources_file_path}" "${translated_file_path}"
 fi
 
 if [[ -z "${commit_message}" ]];then
-    commit_message="${operation} '${filename}' done at $(date)"
+    commit_message="${operation} done at $(date)"
 fi
 
 git add .

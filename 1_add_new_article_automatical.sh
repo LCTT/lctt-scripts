@@ -103,7 +103,7 @@ via: ${url}\\
 # 找出reference links的起始位置
 reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |tail -n 1 |cut -d ":" -f1)
 if [[ -z ${reference_links_beginning_line} ]];then
-    sed -i "$a ${comment}"
+    sed -i '$a '"${comment}" "${source_file}"
 else
     # 格式化reference links部分
     sed -i "${reference_links_beginning_line},$ {

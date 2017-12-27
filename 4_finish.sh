@@ -44,7 +44,7 @@ if [[ "${operation}" == "translate" ]];then
 fi
 
 if [[ -z "${commit_message}" ]];then
-    commit_message="${operation} done at $(date)"
+    commit_message="${operation} done: ${filename}"
 fi
 
 git add .

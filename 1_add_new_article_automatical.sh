@@ -32,12 +32,18 @@ if url-blocked-p "${baseurl}";then
     exit 1
 fi
 
+# 搜索类似的文章
+echo "search simliar articles..."
+if search-similar-articles "${url}";then
+    continue-p "found similar articles"
+fi
+
 python_env=$(get-cfg-option PythonEnv)
 if [[ -d "${python_env}" ]];then
     source "${python_env}/bin/activate"
 fi
-
 response=$(python parse_url_by_newspaper.py "${url}")
+
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
 fi
@@ -60,13 +66,7 @@ echo date_published= "${date}"
 # echo ${response}|jq -r .content|html2text --reference-links --mark-code
 # exit
 
-# 搜索类似的文章
 cd "$(get-lctt-path)"
-echo "search simliar articles..."
-if search-similar-articles "$title";then
-    continue-p "found similar articles"
-fi
-
 # 生成新文章
 source_path="$(get-lctt-path)/sources/tech"
 filename=$(date-title-to-filename "${date}" "${title}")

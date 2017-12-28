@@ -32,14 +32,14 @@ if url-blocked-p "${baseurl}";then
     exit 1
 fi
 
-[[ -z "${title}" ]] && read -r -p "please input the Title:" title
-[[ -z "${date}" ]] && read -r -p "please input the date(YYYYMMDD):" date
-
 # 搜索类似的文章
 echo "search simliar articles..."
-if search-similar-articles "$title";then
+if search-similar-articles "${url}";then
     continue-p "found similar articles"
 fi
+
+[[ -z "${title}" ]] && read -r -p "please input the Title:" title
+[[ -z "${date}" ]] && read -r -p "please input the date(YYYYMMDD):" date
 
 # 生成新文章
 cd "$(get-lctt-path)"

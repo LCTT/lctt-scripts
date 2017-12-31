@@ -19,7 +19,7 @@
 
 + 3_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
      
-+ 3_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。
++ 4_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。
 
 + reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
 

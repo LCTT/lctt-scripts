@@ -164,7 +164,7 @@
 
 其中以 =*= 开头的文章，表示已经被你申请翻译的文章。
 
-若你早就想要要翻译那篇文章了，则也可以将文章路径作为参数传递给 =2_start_translating.sh=,脚本就不会再列出待翻译的列表了.
+若你早就知道想要翻译那篇文章，则也可以将文章路径作为参数传递给 =2_start_translating.sh=,脚本就不会再列出待翻译的列表了.
 #+BEGIN_EXAMPLE
   [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh ../TranslateProject/sources/tech/20171228\ How\ to\ exclude\ file\ when\ using\ scp\ command\ recursively.md 
   切换到分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg=='

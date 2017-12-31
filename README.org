@@ -66,7 +66,7 @@
         pip install newspaper3k
       #+END_SRC
 
-   d. 配置 =lctt.cfg=，下面是我的配置
+   d. 配置 =lctt.cfg=,下面是我的配置
       #+BEGIN_SRC conf
         ProjectRoot=/home/lujun9972/github/TranslateProject
         GithubUser=lujun9972
@@ -212,7 +212,7 @@
 #+END_SRC
 
 * 已知BUG与注意要点
-目前已经某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
+目前已知某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
 
 另外，使用程序来猜测网页中的信息难免会有猜测不出来或者猜测错误的情况，根据经验，在选题过程中，请留意以下方面的内容：
 

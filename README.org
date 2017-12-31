@@ -5,20 +5,204 @@
 #+LANGUAGE:  zh-CN
 #+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
 
+* 功能描述
+
 为了方便选题和翻译LCTT项目中的文章，所写的一些脚本，主要功能包括：
 
 + 0_sync_master.sh :: 同步最新版本到本地master分支
-+ 1_add_new_article.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
-+ 1_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
-+ 2_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
+
++ 1_add_new_article_manual.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
+
++ 1_add_new_article_automatical.sh  :: 接口跟 =1_add_new_article_manual.sh= 类似但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text的支持
+
++ 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
+
++ 3_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
+     
 + 3_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。
+
 + reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
 
-关于配置：
+* 配置说明：
 你可以在lctt.cfg中配置:
 
-+ ProjectRoot :: 项目根目录路径,如果没有配置则脚本从$HOME目录中搜索名为 =TranslateProject= 的目录
++ ProjectRoot :: 项目根目录路径(绝对路径),如果没有配置则脚本从$HOME目录中搜索名为 =TranslateProject= 的目录
+
 + GithubUser :: 您的Github用户名，默认为你本机git上配置的user名称
+
 + Browser :: 您惯用的浏览器,默认为firefox
+
 + Editor :: 您惯用的编辑器，默认为vi
+
 + BlockedDomains :: 屏蔽的网站域名，表示这些网站的文章不能被翻译。不推荐修改
+
++ Token :: 暂时无用，请忽略
+
++ PythonEnv :: 使用 ~1_add_new_article_manual.sh~ 时需要用到Python的 =Newspaper= 库来对页面进行分析，这个参数指定了安装有 =Newspaper= 库的python环境的路径
+
++ AutoReformat :: 完成翻译后，是否使用 ~reformat.sh~ 进行格式化，0表示否，1表示是
+                  
+* 使用说明
+
+** 前置条件
+
+若想使用 =1_add_new_article_automatical.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好Python3运行环境，jq，html2text等软件,以archlinux为例:
+
+1. 准备Python3环境
+
+   a. 进入 =脚本目录= 
+      #+BEGIN_SRC shell
+        cd lctt-script
+      #+END_SRC
+
+   b. 生成新的python虚拟运行环境
+      #+BEGIN_SRC shell
+        python -m venv env
+      #+END_SRC
+
+   c. 进入该虚拟运行环境，并安装newspaper
+      #+BEGIN_SRC shell
+        source env/bin/activate
+        pip install newspaper3k
+      #+END_SRC
+
+   d. 配置 =lctt.cfg=，下面是我的配置
+      #+BEGIN_SRC conf
+        ProjectRoot=/home/lujun9972/github/TranslateProject
+        GithubUser=lujun9972
+        Browser=firefox
+        Editor=emacsclient -c
+        BlockedDomains=https://www.tecmint.com|
+        Token=
+        PythonEnv=env
+        AutoReformat=1
+      #+END_SRC
+      
+      
+   需要注意的是, archlinux中的python默认就是Python3,若你是其他版本的linux可能要做一些修改。
+
+   另外newspaper的详细安装步骤和使用说明，可以参见 [[https://github.com/codelucas/newspaper][它的Github主页]]
+
+** 新增一篇文章（选题）
+
+目前有两个脚本来辅助进行选题, =1_add_new_article_manual.sh= 和 =1_add_new_article_automatical.sh=.
+
+两者的不同点在于:
+
+=1_add_new_article_manual.sh= 需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT官方选题工具]] 中生成MD内容
+
+=1_add_new_article_automatical.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成MD内容
+
+一般来说，使用 =1_add_new_article_automatical.sh= 要方便很多。
+
+两个脚本都会根据标题自动生成选题文件，并用配置好的编辑器打开选题文件供你进行修改，修改完成后按下回车,脚本会用这个新的选题文件帮你新生成一个分支，并提交到你的远程仓库中。
+
+#+BEGIN_SRC shell
+  [lujun9972@F31 lctt-scripts]$ ./1_add_new_article_automatical.sh -u https://www.linux.com/learn/intro-to-linux/2017/12/set-ubuntu-derivatives-back-default-resetter
+  search simliar articles...
+  author= 
+  title= Set Ubuntu Derivatives Back to Default with Resetter
+  date_published= 20171229
+  Waiting for Emacs...
+  保存好原稿了吗？按回车键继续
+  切换到分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo='
+  [add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo= d1de7db3d] 选题: Set Ubuntu Derivatives Back to Default with Resetter
+   1 file changed, 181 insertions(+)
+   create mode 100644 sources/tech/20171229 Set Ubuntu Derivatives Back to Default with Resetter.md
+  对象计数中: 5, 完成.
+  Delta compression using up to 2 threads.
+  压缩对象中: 100% (5/5), 完成.
+  写入对象中: 100% (5/5), 3.81 KiB | 974.00 KiB/s, 完成.
+  Total 5 (delta 2), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+  To github.com:lujun9972/TranslateProject.git
+   ,* [new branch]          add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo= -> add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=
+  分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=' 设置为跟踪来自 'origin' 的远程分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo='。
+#+END_SRC
+
+** 申请翻译
+使用 =2_start_translating.sh= 脚本申请翻译。 直接执行该脚本会列出所有没有被申请翻译的文件并编上号，若有想要翻译的文章，输入的编号再按回车就行了。 脚本会自动帮你加上申请翻译的标记，生成新branch并帮你提交到远程仓库
+
+#+BEGIN_EXAMPLE
+  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh 
+  ,*  0. /home/lujun9972/github/TranslateProject/sources/tech/20160625 Trying out LXD containers on our Ubuntu.md
+     1. /home/lujun9972/github/TranslateProject/sources/tech/20160627 9 Best Free Video Editing Software for Linux In 2017.md
+     2. /home/lujun9972/github/TranslateProject/sources/tech/20160922 Annoying Experiences Every Linux Gamer Never Wanted.md
+     3. /home/lujun9972/github/TranslateProject/sources/tech/20170123 New Years resolution Donate to 1 free software project every month.md
+     4. /home/lujun9972/github/TranslateProject/sources/tech/20170213 Getting Started with Taskwarrior.md
+     5. /home/lujun9972/github/TranslateProject/sources/tech/20170310 9 Lightweight Linux Applications to Speed Up Your System.md
+     6. /home/lujun9972/github/TranslateProject/sources/tech/20170512 Which Official Ubuntu Flavor Is Best for You.md
+  ,*  7. /home/lujun9972/github/TranslateProject/sources/tech/20170804 Add speech to your Fedora system.md
+     8. /home/lujun9972/github/TranslateProject/sources/tech/20170923 Improve Your Mental Mettle with These Open Source Puzzle Games.md
+     9. /home/lujun9972/github/TranslateProject/sources/tech/20171020 Four Hidden Costs and Risks of Sudo Can Lead to Cybersecurity Risks and Compliance Problems on Unix and Linux Servers.md
+    10. /home/lujun9972/github/TranslateProject/sources/tech/20171030 Complete Guide for Using AsciiDoc in Linux.md
+    11. /home/lujun9972/github/TranslateProject/sources/tech/20171103 3 ways robotics affects the CIO role.md
+    12. /home/lujun9972/github/TranslateProject/sources/tech/20171107 How to Monetize an Open Source Project.md
+    13. /home/lujun9972/github/TranslateProject/sources/tech/20171107 How To Protect Server Against Brute Force Attacks With Fail2ban On Linux.md
+    14. /home/lujun9972/github/TranslateProject/sources/tech/20171108 How To Setup Japanese Language Environment In Arch Linux.md
+    15. /home/lujun9972/github/TranslateProject/sources/tech/20171108 How to Use GNOME Shell Extensions [Complete Guide].md
+    16. /home/lujun9972/github/TranslateProject/sources/tech/20171109 How to record statistics about a Linux machine-s uptime.md
+    17. /home/lujun9972/github/TranslateProject/sources/tech/20171110 How to configure login banners in Linux (RedHat, Ubuntu, CentOS, Fedora).md
+    18. /home/lujun9972/github/TranslateProject/sources/tech/20171112 Step by Step guide for creating Master Slave replication in MariaDB.md
+    19. /home/lujun9972/github/TranslateProject/sources/tech/20171113 My Adventure Migrating Back To Windows.md
+    20. /home/lujun9972/github/TranslateProject/sources/tech/20171114 Finding Files with mlocate- Part 2.md
+    21. /home/lujun9972/github/TranslateProject/sources/tech/20171114 Take Linux and Run With It.md
+  ,* 22. /home/lujun9972/github/TranslateProject/sources/tech/20171115 How to Fix the ‘No Space Left on Device- Error on Linux.md
+    23. /home/lujun9972/github/TranslateProject/sources/tech/20171115 Why and How to Set an Open Source Strategy.md
+    ... 省略若干内容 ...
+    77. /home/lujun9972/github/TranslateProject/sources/tech/20171226 How to use-run bash aliases over ssh based session.md
+    78. /home/lujun9972/github/TranslateProject/sources/tech/20171226 Top 10 Microsoft Visio Alternatives for Linux.md
+    79. /home/lujun9972/github/TranslateProject/sources/tech/20171227 Best Programming Languages To Learn In 2018.md
+    80. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Container Basics- Terms You Need to Know.md
+    81. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Dual Boot Ubuntu And Arch Linux.md
+    82. /home/lujun9972/github/TranslateProject/sources/tech/20171228 How to exclude file when using scp command recursively.md
+    83. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Linux wc Command Explained for Beginners (6 Examples).md
+  ,* 84. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Testing Ansible Playbooks With Vagrant.md
+    85. /home/lujun9972/github/TranslateProject/sources/tech/20171229 Excellent Free Roguelike Games.md
+  input the article number you want to translate: 
+#+END_EXAMPLE
+
+其中以 =*= 开头的文章，表示已经被你申请翻译的文章。
+
+若你早就想要要翻译那篇文章了，则也可以将文章路径作为参数传递给 =2_start_translating.sh=,脚本就不会再列出待翻译的列表了.
+#+BEGIN_EXAMPLE
+  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh ../TranslateProject/sources/tech/20171228\ How\ to\ exclude\ file\ when\ using\ scp\ command\ recursively.md 
+  切换到分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg=='
+  [translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg== 4eb1d0899] translating by lujun9972
+   1 file changed, 2 insertions(+), 1 deletion(-)
+  对象计数中: 5, 完成.
+  Delta compression using up to 2 threads.
+  压缩对象中: 100% (5/5), 完成.
+  写入对象中: 100% (5/5), 478 bytes | 478.00 KiB/s, 完成.
+  Total 5 (delta 3), reused 0 (delta 0)
+  remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+  To github.com:lujun9972/TranslateProject.git
+   ,* [new branch]          translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg== -> translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg==
+  分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg==' 设置为跟踪来自 'origin' 的远程分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg=='。
+  Waiting for Emacs...
+  [lujun9972@F31 lctt-scripts]$ 
+#+END_EXAMPLE
+
+
+** 继续修改
+若选题或翻译的过程未完成,可以执行 =3_continue_the_work.sh= 来继续未完成的过程。 脚本会根据LCTT项目当前branch的名称自动识别要编辑哪个文件
+
+** 完成任务
+在选题或翻译完成后，可以运行 =4_finish.sh= 来结束。 该脚本会提交当前更改,并在推送到远程仓库后切回 =master= 分支。
+
+若想在将工作推送到远程仓库后顺便把本地的分支也清理掉，则加上 =-d= 选项
+
+#+BEGIN_SRC shell
+  [lujun9972@F31 lctt-scripts]$ ./4_finish.sh -d
+  位于分支 add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=
+  您的分支与上游分支 'origin/add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=' 一致。
+
+  无文件要提交，干净的工作区
+  分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=' 设置为跟踪来自 'origin' 的远程分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo='。
+  Everything up-to-date
+  切换到分支 'master'
+  您的分支与上游分支 'origin/master' 一致。
+  warning: 将要删除的分支 'add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=' 已经被合并到
+  'refs/remotes/origin/add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo='，但未合并到 HEAD。
+  已删除分支 add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=（曾为 d1de7db3d）。
+#+END_SRC

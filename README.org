@@ -43,7 +43,7 @@
 + AutoReformat :: 完成翻译后，是否使用 ~reformat.sh~ 进行格式化，0表示否，1表示是
                   
 * 使用说明
-
+*所有脚本都可以不带参数直接执行，然后按照指示一步一步下去就行了！*
 ** 前置条件
 
 若想使用 =1_add_new_article_automatical.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好Python3运行环境，jq，html2text等软件,以archlinux为例:

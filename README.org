@@ -206,3 +206,12 @@
   'refs/remotes/origin/add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo='，但未合并到 HEAD。
   已删除分支 add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=（曾为 d1de7db3d）。
 #+END_SRC
+
+* 已知BUG与注意要点
+目前已经某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
+
+另外，使用程序来猜测网页中的信息难免会有猜测不出来或者猜测错误的情况，根据经验，在选题过程中，请留意以下方面的内容：
+
++ 文章最开始的配图是否存在
++ 文章作者是否解析出来了
++ 文章作者的链接是否正确(一般都要修改)

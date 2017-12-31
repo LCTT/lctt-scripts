@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source base.sh
+source $(dirname "${BASH_SOURCE[0]}")/base.sh
 # 搜索可以翻译的文件
 declare -a files
 sources_dir="$(get-lctt-path)"/sources

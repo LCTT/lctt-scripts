@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source base.sh
+source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 # 获取参数
 while getopts :u:t:d:T OPT; do

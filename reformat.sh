@@ -1,6 +1,6 @@
 #!/bin/bash
 # 使用全角中文
-source base.sh
+source $(dirname "${BASH_SOURCE[0]}")/base.sh
 if [[ $# -eq 0 ]];then
     cd "$(get-lctt-path)"
     filepath=$(git-current-branch-to-file-path)

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source base.sh
+source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 cd "$(get-lctt-path)"
 current_branch=$(git-get-current-branch)

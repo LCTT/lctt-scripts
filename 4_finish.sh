@@ -1,5 +1,5 @@
 #!/bin/bash
-source base.sh
+source $(dirname "${BASH_SOURCE[0]}")/base.sh
 while getopts :dm: OPT; do
     case $OPT in
         d|+d)

@@ -194,7 +194,7 @@
 ** 完成任务
 在选题或翻译完成后，可以运行 =4_finish.sh= 来结束。 该脚本会提交当前更改,并在推送到远程仓库后切回 =master= 分支。
 
-若想在将工作推送到远程仓库后顺便把本地的分支也清理掉，则加上 =-d= 选项
+若想在将工作推送到远程仓库后顺便把本地的分支也清理掉，则加上 =-d= 选项,推荐在完成工作后使用该选项将分支清理掉。
 
 #+BEGIN_SRC shell
   [lujun9972@F31 lctt-scripts]$ ./4_finish.sh -d
@@ -211,6 +211,43 @@
   已删除分支 add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=（曾为 d1de7db3d）。
 #+END_SRC
 
+** TIPS
+
+*** 申请翻译的列表太长了，很难看怎么办？
+
+ =2_start_translating.sh= 可以跟 =grep= 连用，比如，你想查出自己已经申请翻译的那些文章，那么可以这样做:
+ 
+ #+BEGIN_SRC shell
+   ./2_start_translating.sh |grep '^*'
+ #+END_SRC
+ 
+ 结果为：
+#+BEGIN_EXAMPLE
+  [lujun9972@T520 lctt-scripts]$ ./2_start_translating.sh |grep '^*'
+  ,*  6. /home/lujun9972/github/TranslateProject/sources/tech/20170804 Add speech to your Fedora system.md
+  ,* 25. /home/lujun9972/github/TranslateProject/sources/tech/20171115 How to Fix the ‘No Space Left on Device- Error on Linux.md
+  ,* 69. /home/lujun9972/github/TranslateProject/sources/tech/20171216 Sysadmin 101- Troubleshooting.md
+  ,* 89. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Testing Ansible Playbooks With Vagrant.md
+  input the article number you want to translate: 
+#+END_EXAMPLE
+
+再比如，你像看看有容器方面的文章可以翻译，那么执行
+#+BEGIN_SRC shell
+  ./2_start_translating.sh |grep -i container
+#+END_SRC
+
+结果为：
+#+BEGIN_EXAMPLE
+  [lujun9972@T520 lctt-scripts]$ ./2_start_translating.sh |grep -i container
+    55. /home/lujun9972/github/TranslateProject/sources/tech/20171205  ANNOUNCING THE GENERAL AVAILABILITY OF CONTAINERD 1.0 THE INDUSTRY-STANDARD RUNTIME USED BY MILLIONS OF USERS.md
+    85. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Container Basics- Terms You Need to Know.md
+  input the article number you want to translate: 
+#+END_EXAMPLE
+
+*** 如果翻译到一半了，想暂停一下，翻译其他文章怎么办?
+1. 使用 =4_finish.sh= 提交当前的进度并切换回 =master= 分支，但是不要用  =-d= 参数清除分支
+2. 按照正常的流程翻译其他文章,在翻译完这篇文章后，可以用 =4_finish.sh =d= 把翻译完后的分支删掉
+3. 在 =master= 分支上运行 =3_continue_the_work.sh= 会列出所有未完成的分支，并询问你切换到哪个分支后继续之前的工作。
 * 已知BUG与注意要点
 目前已知某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
 

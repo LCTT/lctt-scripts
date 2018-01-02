@@ -211,6 +211,12 @@
   已删除分支 add-MjAxNzEyMjkgU2V0IFVidW50dSBEZXJpdmF0aXZlcyBCYWNrIHRvIERlZmF1bHQgd2l0aCBSZXNldHRlci5tZAo=（曾为 d1de7db3d）。
 #+END_SRC
 
+** 暂停任务
+如果选题/翻译到一半了，想暂停一下，操作他文章怎么办呢?
+1. 使用 =5_pause.sh= 提交当前的进度并切换回 =master= 分支
+2. 按照正常的流程翻译其他文章,在翻译完这篇文章后，可以用 =4_finish.sh -d= 把翻译完后的分支删掉
+3. 在 =master= 分支上运行 =3_continue_the_work.sh= 会列出所有未完成的分支，并询问你切换到哪个分支后继续之前的工作。
+
 ** TIPS
 
 *** 申请翻译的列表太长了，很难看怎么办？
@@ -244,10 +250,6 @@
   input the article number you want to translate: 
 #+END_EXAMPLE
 
-*** 如果翻译到一半了，想暂停一下，翻译其他文章怎么办?
-1. 使用 =4_finish.sh= 提交当前的进度并切换回 =master= 分支，但是不要用  =-d= 参数清除分支
-2. 按照正常的流程翻译其他文章,在翻译完这篇文章后，可以用 =4_finish.sh -d= 把翻译完后的分支删掉
-3. 在 =master= 分支上运行 =3_continue_the_work.sh= 会列出所有未完成的分支，并询问你切换到哪个分支后继续之前的工作。
 * 已知BUG与注意要点
 目前已知某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
 

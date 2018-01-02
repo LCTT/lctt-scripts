@@ -40,4 +40,4 @@ if ! file-translating-p "${filename}";then
 fi
 
 # 打开要翻译的文章
-$(get-editor) "${filename}"
+eval "$(get-editor) '${filename}'"

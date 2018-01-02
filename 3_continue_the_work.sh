@@ -20,4 +20,4 @@ if [[ "$current_branch" == "master" ]];then
 fi
 
 filepath=$(git-current-branch-to-file-path)
-$(get-editor) "${filepath}"
+eval "$(get-editor) '${filepath}'"

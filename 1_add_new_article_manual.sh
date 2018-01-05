@@ -40,6 +40,10 @@ fi
 
 [[ -z "${title}" ]] && read -r -p "please input the Title:" title
 [[ -z "${date}" ]] && read -r -p "please input the date(YYYYMMDD):" date
+if [[ ! "${date}" =~ [0-9]{8} ]];then
+    warn "${date} is not a property date format(YYYYMMDD)"
+    exit 2
+fi
 
 # 生成新文章
 cd "$(get-lctt-path)"

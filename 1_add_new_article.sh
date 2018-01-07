@@ -38,15 +38,17 @@ if search-similar-articles "${url}";then
     continue-p "found similar articles"
 fi
 
-response=$(${CFG_PATH}/parse_url_by_newspaper.sh "${url}")
+parse_url_script=$(get-cfg-option ParseUrlScript)
+response=$(${CFG_PATH}/${parse_url_script} "${url}")
 
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
+    [[ "${title}" == "null" || -z "${title}" ]] && read -r -p "please input the Title:" title
 fi
 
 if [[ -z "${date}" ]];then
     date=$(echo ${response} |jq -r .date_published)
-    if [[ "${date}" == "null" ]];then
+    if [[ "${date}" == "null" || -z "${date}" ]];then
         read -r -p "please input the DATE(YYYYMMDD):" date
         [[ -z "${date}" ]] && date=$(date +"%Y%m%d")
     else

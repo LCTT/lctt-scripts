@@ -38,7 +38,7 @@ if search-similar-articles "${url}";then
     continue-p "found similar articles"
 fi
 
-parse_url_script=$(get-cfg-option ParseUrlScript)
+parse_url_script="parse_url_by_${0##*_}"
 response=$(${CFG_PATH}/${parse_url_script} "${url}")
 
 if [[ -z "${title}" ]];then

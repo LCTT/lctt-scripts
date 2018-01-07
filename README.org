@@ -13,7 +13,7 @@
 
 + 1_add_new_article_manual.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
 
-+ 1_add_new_article_automatical.sh  :: 接口跟 =1_add_new_article_manual.sh= 类似但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text(未来可能会改成pandoc)的支持
++ 1_add_new_article_newspaper.sh  :: 接口跟 =1_add_new_article_manual.sh= 类似但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text(未来可能会改成pandoc)的支持
 
 + 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
 
@@ -48,7 +48,7 @@
 *所有脚本都可以不带参数直接执行，然后按照指示一步一步下去就行了！*
 ** 前置条件
 
-若想使用 =1_add_new_article_automatical.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好Python3运行环境，jq，html2text等软件,以archlinux为例:
+若想使用 =1_add_new_article_newspaper.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好Python3运行环境，jq，html2text等软件,以archlinux为例:
 
 1. 准备Python3环境
 
@@ -91,20 +91,20 @@
 
 ** 新增一篇文章（选题）
 
-目前有两个脚本来辅助进行选题, =1_add_new_article_manual.sh= 和 =1_add_new_article_automatical.sh=.
+目前有两个脚本来辅助进行选题, =1_add_new_article_manual.sh= 和 =1_add_new_article_newspaper.sh=.
 
 两者的不同点在于:
 
 =1_add_new_article_manual.sh= 需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT官方选题工具]] 中生成MD内容
 
-=1_add_new_article_automatical.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成MD内容
+=1_add_new_article_newspaper.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成MD内容
 
-一般来说，使用 =1_add_new_article_automatical.sh= 要方便很多。
+一般来说，使用 =1_add_new_article_newspaper.sh= 要方便很多。
 
 两个脚本都会根据标题自动生成选题文件，并用配置好的编辑器打开选题文件供你进行修改，修改完成后按下回车,脚本会用这个新的选题文件帮你新生成一个分支，并提交到你的远程仓库中。
 
 #+BEGIN_SRC shell
-  [lujun9972@F31 lctt-scripts]$ ./1_add_new_article_automatical.sh -u https://www.linux.com/learn/intro-to-linux/2017/12/set-ubuntu-derivatives-back-default-resetter
+  [lujun9972@F31 lctt-scripts]$ ./1_add_new_article_newspaper.sh -u https://www.linux.com/learn/intro-to-linux/2017/12/set-ubuntu-derivatives-back-default-resetter
   search simliar articles...
   author= 
   title= Set Ubuntu Derivatives Back to Default with Resetter

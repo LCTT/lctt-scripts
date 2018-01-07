@@ -38,11 +38,7 @@ if search-similar-articles "${url}";then
     continue-p "found similar articles"
 fi
 
-python_env=$(get-cfg-option PythonEnv)
-if [[ -d "${python_env}" ]];then
-    source "${python_env}/bin/activate"
-fi
-response=$(python parse_url_by_newspaper.py "${url}")
+response=$(${CFG_PATH}/parse_url_by_newspaper.sh "${url}")
 
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
@@ -64,9 +60,12 @@ if [[ ! "${date}" =~ [0-9]{8} ]];then
 fi
 
 author=$(echo ${response} |jq -r .author)
+content=$(echo ${response} |jq -r .content)
+
 echo author= "$author"
 echo title= "${title}"
 echo date_published= "${date}"
+echo content= "${content}"
 # echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
 # echo ${response}|jq -r .content|html2text --reference-links --mark-code
 # exit
@@ -86,16 +85,16 @@ trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
 
 echo "${title}" > "${source_file}"
 echo "======" >> "${source_file}"
-echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+if [[ -n "${content}" ]];then
+    echo ${response}|jq -r .content|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 /^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
 s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/; # ugly Hacked
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
-# $(get-browser) "${url}" "http://lctt.ixiqin.com"
 
-comment="--------------------------------------------------------------------------------\\
+    comment="--------------------------------------------------------------------------------\\
 \\
 via: ${url}\\
 \\
@@ -106,25 +105,31 @@ via: ${url}\\
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
 \\
 [a]:${baseurl}"
-# 找出reference links的起始位置
-reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |tail -n 1 |cut -d ":" -f1)
-if [[ -z ${reference_links_beginning_line} ]];then
-    sed -i '$a '"${comment}" "${source_file}"
-else
-    # 格式化reference links部分
-    sed -i "${reference_links_beginning_line},$ {
+    # 找出reference links的起始位置
+    reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |tail -n 1 |cut -d ":" -f1)
+    if [[ -z ${reference_links_beginning_line} ]];then
+        sed -i '$a '"${comment}" "${source_file}"
+    else
+        # 格式化reference links部分
+        sed -i "${reference_links_beginning_line},$ {
 /^[[:blank:]]*$/ d;
 s/^   \(\[[[:digit:]]*\]\): /\1:/
 }" "${source_file}"
-    sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
+        sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
+    fi
+else
+    $(get-browser) "${url}" "http://lctt.ixiqin.com"
 fi
 
+eval "$(get-editor) '${source_file}'"
+read -p "保存好原稿了吗？按回车键继续" continue
+sed -i "/-------------------------------/,$ s^via: 网址^via: ${url}^" "${source_file}"
+sed -i "/-------------------------------/,$ s^\[a\]:$^[a]:${baseurl}^" "${source_file}"
 
+# 添加申请翻译的标记
 if [[ -n ${tranlate_flag} ]];then
     mark-file-as-tranlating "${source_file}"
 fi
-$(get-editor) "${source_file}"
-read -p "保存好原稿了吗？按回车键继续" continue
 
 # 新建branch 并推送新文章
 filename=$(basename "${source_file}")

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
-source $(dirname "${BASH_SOURCE[0]}")/base.sh
+cd $(dirname "${BASH_SOURCE[0]}")
+source base.sh
 
 url="$*"
 

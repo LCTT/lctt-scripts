@@ -186,3 +186,16 @@ function mark-file-as-tranlating()
     sed -i "1i translating by ${git_user}" "${filename}"
     sed -i "/-------------------------------/,$ s/译者ID/${git_user}/g" "${filename}"
 }
+
+# 根据url和author获取作者链接
+function get-author-link()
+{
+    url="$1"
+    domain=$(get-domain-from-url "${url}")
+    author="$2"
+    # 在子shell中操作，不要影响原shell的工作目录
+    (
+        cd $(get-lctt-path)
+        git grep -il "${domain}"|xargs -I{} grep -il "\[${author}\]" '{}' |tail -n 1 |xargs -I{} grep '\[a\]:' '{}' |cut -d ":" -f2-
+     )
+}

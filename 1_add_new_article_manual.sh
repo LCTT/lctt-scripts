@@ -105,7 +105,7 @@ s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 /^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
 s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
-s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/; # ugly Hacked
+s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
     # 找出reference links的起始位置

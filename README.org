@@ -11,9 +11,9 @@
 
 + 0_sync_master.sh :: 同步最新版本到本地master分支
 
-+ 1_add_new_article_manual.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
++ 1_add_new_article_manual.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期,-a指定文章作者. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
 
-+ 1_add_new_article_newspaper.sh  :: 接口跟 =1_add_new_article_manual.sh= 类似但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text(未来可能会改成pandoc)的支持
++ 1_add_new_article_newspaper.sh  :: 接口跟 =1_add_new_article_manual.sh= 一样（事实上这两个是都一个脚本，只是根据名字的不同会去调用不同的url解析脚本）但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text(未来可能会改成pandoc)的支持
 
 + 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
 
@@ -262,5 +262,5 @@
 + 文章作者的链接是否正确(一般都要修改)
 * TODOS
 + [X] 合并两个选题脚本，使用同一份代码根据名字区分解析脚本
-+ [ ] 根据author查询author link
++ [X] 根据author查询author link
 + [ ] 改用pandoc转换html为markdown

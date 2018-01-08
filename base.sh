@@ -196,6 +196,8 @@ function get-author-link()
     # 在子shell中操作，不要影响原shell的工作目录
     (
         cd $(get-lctt-path)
-        git grep -il "${domain}"|xargs -I{} grep -il "\[${author}\]" '{}' |tail -n 1 |xargs -I{} grep '\[a\]:' '{}' |cut -d ":" -f2-
+        # 选择最多的url作为author link
+        git grep -iEc "via: *${domain}|\[${author}\]"|grep ":2$"|cut -d":" -f1|xargs -I{} grep "\[a\]:" '{}' |sort |uniq -c |sort -n |tail -n 1 |cut -d":" -f2-
+        # git grep -il "${domain}"|xargs -I{} grep -il "\[${author}\]" '{}' |tail -n 1 |xargs -I{} grep '\[a\]:' '{}' |cut -d ":" -f2-
      )
 }

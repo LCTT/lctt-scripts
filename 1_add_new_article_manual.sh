@@ -3,7 +3,7 @@ set -e
 source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 # 获取参数
-while getopts :u:t:d:T OPT; do
+while getopts :u:t:a:d:T OPT; do
     case $OPT in
         u|+u)
             url="$OPTARG"
@@ -14,11 +14,14 @@ while getopts :u:t:d:T OPT; do
         d|+d)
             date="$OPTARG"
             ;;
+        a|+a)
+            author="$OPTARG"
+            ;;
         T|+T)
             tranlate_flag="yes"
             ;;
         *)
-            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date] [+-T]}"
+            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date] [+-a author] [+-T]}"
             exit 2
     esac
 done
@@ -41,11 +44,13 @@ fi
 parse_url_script="parse_url_by_${0##*_}"
 response=$(${CFG_PATH}/${parse_url_script} "${url}")
 
+# 获取title
 if [[ -z "${title}" ]];then
     title=$(echo ${response} |jq -r .title)
     [[ "${title}" == "null" || -z "${title}" ]] && read -r -p "please input the Title:" title
 fi
 
+# 获取date
 if [[ -z "${date}" ]];then
     date=$(echo ${response} |jq -r .date_published)
     if [[ "${date}" == "null" || -z "${date}" ]];then
@@ -61,10 +66,20 @@ if [[ ! "${date}" =~ [0-9]{8} ]];then
     exit 2
 fi
 
-author=$(echo ${response} |jq -r .author)
+# 获取author
+if [[ -z "${author}" ]];then
+    author=$(echo ${response} |jq -r .author)
+    [[ "${author}" == "null" || -z "${author}" ]] && read -r -p "please input the author:" author
+fi
+
+# 获取author link
+author_link=$(get-author-link "${baseurl}" "${author}")
+
+# 获取content
 content=$(echo ${response} |jq -r .content)
 
 echo author= "$author"
+echo author_link= "${author_link}"
 echo title= "${title}"
 echo date_published= "${date}"
 echo content= "${content}"
@@ -97,9 +112,9 @@ via: ${url}\\
 \\
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
 \\
-[a]:${baseurl}"
+[a]:${author_link}"
 
-if [[ -n "${content}" ]];then
+if [[ -n "${content}" || "${content}" == "null" ]];then
     echo "${content}"|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格

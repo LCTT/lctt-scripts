@@ -123,6 +123,14 @@ s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
+    # 算出最少的标题是多少号
+    min_title=$(grep -E "^#+ +[[:alpha:][:digit:]]" -o "${source_file}" |awk '{print $1}'|sort|head -1)
+    echo min_title= "${min_title}"
+    if [[ -n "${min_title}" ]];then
+        sed -i "s/^${min_title}/###/" "${source_file}"
+    fi
+
+
     # 找出reference links的起始位置
     reference_links_beginning_line=$(grep -nE '^   \[1\]: [^[:blank:]]' "${source_file}" |tail -n 1 |cut -d ":" -f1)
     if [[ -z ${reference_links_beginning_line} ]];then

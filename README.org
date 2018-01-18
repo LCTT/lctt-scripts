@@ -263,4 +263,6 @@
 * TODOS
 + [X] 合并两个选题脚本，使用同一份代码根据名字区分解析脚本
 + [X] 根据author查询author link
++ [X] 以三级标题###为初始标题
++ [ ] 尝试自动判断是talk还是tech
 + [ ] 改用pandoc转换html为markdown

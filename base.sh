@@ -201,3 +201,14 @@ function get-author-link()
         # git grep -il "${domain}"|xargs -I{} grep -il "\[${author}\]" '{}' |tail -n 1 |xargs -I{} grep '\[a\]:' '{}' |cut -d ":" -f2-
      )
 }
+
+# 判断文件的类型是tech还是talk
+function guess-article-type()
+{
+    local article="$*"
+    if grep '```' "${article}" >/dev/null;then
+        echo "tech"
+    else
+        echo "talk"
+    fi
+}

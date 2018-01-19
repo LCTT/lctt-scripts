@@ -124,7 +124,7 @@ s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Make
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
     # 算出最少的标题是多少号
-    min_title=$(grep -E "^#+ +[[:alpha:][:digit:]]" -o "${source_file}" |awk '{print $1}'|sort|head -1)
+    min_title=$(sed '/```/,/```/d' "${source_file}" |grep  -E "^#+ +[[:alpha:][:digit:]]" -o |awk '{print $1}'|sort|head -1)
     echo min_title= "${min_title}"
     if [[ -n "${min_title}" ]];then
         sed -i "s/^${min_title}/###/" "${source_file}"

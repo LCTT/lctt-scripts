@@ -156,13 +156,19 @@ fi
 eval "$(get-editor) '${source_file}'"
 read -p "保存好原稿了吗？按回车键继续" continue
 
+article_type=$(guess-article-type "${source_file}")
+echo article_type= "${article_type}"
+article_directory="$(get-lctt-path)/sources/${article_type}"
+if [[ "${article_type}" != "tech" ]];then
+    mv "${source_file}" "${article_directory}"
+fi
 # 新建branch 并推送新文章
 filename=$(basename "${source_file}")
 # new_branch="add-$(title-to-branch "${filename}")"
 new_branch="$(filename-to-branch add "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
-git add "${source_file}"
+git add "${article_directory}/${filename}"
 git commit -m "选题: ${title}"
 git push -u origin "${new_branch}"
 

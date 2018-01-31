@@ -48,8 +48,8 @@ if [[ -z "${commit_message}" ]];then
 fi
 
 git add .
-git commit -m "${commit_message}"
-git push -u origin "${current_branch}" && git checkout master
+git commit -m "${commit_message}" && git push -u origin "${current_branch}"
+git checkout master
 if [[ -n "${delete_branch}" ]];then
     git branch -d "${current_branch}"
 fi

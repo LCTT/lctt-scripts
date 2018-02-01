@@ -169,6 +169,4 @@ new_branch="$(filename-to-branch add "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${article_directory}/${filename}"
-git commit -m "选题: ${title}"
-git push -u origin "${new_branch}"
-
+git commit -m "选题: ${title}" && git push -u origin "${new_branch}"

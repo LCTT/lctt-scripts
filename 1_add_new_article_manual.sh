@@ -115,7 +115,7 @@ via: ${url}\\
 [a]:${author_link}"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
-    echo "${content}"|html2text --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+    echo "${content}"|html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 /^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
@@ -123,8 +123,8 @@ s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
-    # 算出最少的标题是多少号
-    min_title=$(sed '/```/,/```/d' "${source_file}" |grep  -E "^#+ +[[:alpha:][:digit:]]" -o |awk '{print $1}'|sort|head -1)
+    # 算出最一个标题是多少号
+    min_title=$(sed '/```/,/```/d' "${source_file}" |grep  -E "^#+ +[[:alpha:][:digit:]]" -o |awk '{print $1}'|head -1)
     echo min_title= "${min_title}"
     if [[ -n "${min_title}" ]];then
         sed -i '/```/,/```/!'"s/^${min_title}/###/" "${source_file}"
@@ -169,6 +169,4 @@ new_branch="$(filename-to-branch add "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${article_directory}/${filename}"
-git commit -m "选题: ${title}"
-git push -u origin "${new_branch}"
-
+git commit -m "选题: ${title}" && git push -u origin "${new_branch}"

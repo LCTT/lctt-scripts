@@ -83,9 +83,6 @@ echo author_link= "${author_link}"
 echo title= "${title}"
 echo date_published= "${date}"
 echo content= "${content}"
-# echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
-# echo ${response}|jq -r .content|html2text --reference-links --mark-code
-# exit
 
 cd "$(get-lctt-path)"
 # 生成新文章
@@ -115,13 +112,11 @@ via: ${url}\\
 [a]:${author_link}"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
-    echo "${content}"|html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+    echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links --wrap=preserve --strip-comments --no-highlight |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
-/^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
-s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
-}' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
+}' >>  "${source_file}" 
 
     # 算出最一个标题是多少号
     min_title=$(sed '/```/,/```/d' "${source_file}" |grep  -E "^#+ +[[:alpha:][:digit:]]" -o |awk '{print $1}'|head -1)

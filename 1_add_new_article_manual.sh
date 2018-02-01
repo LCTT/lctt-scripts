@@ -112,7 +112,7 @@ via: ${url}\\
 [a]:${author_link}"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
-    echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links --wrap=preserve --strip-comments --no-highlight |sed '{
+    echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links-auto_identifiers-autolink_bare_uris-hard_line_breaks --wrap=preserve --strip-comments --no-highlight |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked

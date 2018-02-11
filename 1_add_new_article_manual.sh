@@ -83,9 +83,6 @@ echo author_link= "${author_link}"
 echo title= "${title}"
 echo date_published= "${date}"
 echo content= "${content}"
-# echo ${response}|jq -r .content|pandoc -f html -t markdown+backtick_code_blocks-fenced_code_attributes --reference-links --reference-location=document --no-highlight
-# echo ${response}|jq -r .content|html2text --reference-links --mark-code
-# exit
 
 cd "$(get-lctt-path)"
 # 生成新文章
@@ -115,7 +112,7 @@ via: ${url}\\
 [a]:${author_link}"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
-    echo "${content}"|html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+    echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links+markdown_attribute --wrap=preserve --strip-comments --no-highlight --indented-code-classes=python|pandoc -f gfm -t html-native_divs-native_spans |html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 /^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
@@ -154,9 +151,12 @@ if [[ -n ${tranlate_flag} ]];then
 fi
 
 eval "$(get-editor) '${source_file}'"
-read -p "保存好原稿了吗？按回车键继续" continue
+read -p "保存好原稿后请输入文章的类型(tech/talk),直接按回车表示由系统自动判断" article_type
 
-article_type=$(guess-article-type "${source_file}")
+if [[ -z "${article_type}" ]];then
+    article_type=$(guess-article-type "${source_file}")
+fi
+
 echo article_type= "${article_type}"
 article_directory="$(get-lctt-path)/sources/${article_type}"
 if [[ "${article_type}" != "tech" ]];then

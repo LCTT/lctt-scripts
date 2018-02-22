@@ -109,10 +109,10 @@ function get-domain-from-url ()
 function url-blocked-p()
 {
     local url="$*"
-    local blocked_domain=$(get-cfg-option BlockedDomains)
+    local Allowed_domain=$(get-cfg-option AllowedDomains)
     local domain=$(get-domain-from-url "$url")
     # echo "$blocked_domain" |grep "$domain" >/dev/null
-    [[ "${blocked_domain}" == *"${domain}"* ]] # 可以用 == 来匹配
+    [[ "${Allowed_domain}" != *"${domain}"* ]] # 可以用 == 来匹配
 }
 
 function warn ()

@@ -104,9 +104,9 @@ comment="-----------------------------------------------------------------------
 via: ${url}\\
 \\
 作者：[$author][a]\\
+选题：[$(get-github-user)](https://github.com/$(get-github-user))\\
 译者：[译者ID](https://github.com/译者ID)\\
 校对：[校对者ID](https://github.com/校对者ID)\\
-选题：[$(get-github-user)](https://github.com/$(get-github-user))\\
 \\
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
 \\

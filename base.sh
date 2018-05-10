@@ -48,9 +48,11 @@ EOF
     fi
 
     url="$*"
-    clean_url=${url%%\?*}
+    clean_url=${url%%\?*}       # 去掉URL中?后面的内容
+    clean_url=${url##http*://}  # 去掉http://或https://
+    echo clean_url= ${clean_url}
     # find $(get-lctt-path) -type f -name "[0-9]*.md" -print0 |xargs -I{} -0 grep -i "via:" "{}" |cut -d ":" -f2- |grep -i "${clean_url}"
-    (cd $(get-lctt-path) && git grep "via: *${clean_url}")
+    (cd $(get-lctt-path) && git grep -E "via: *https?://${clean_url}")
 }
 
 function command-exist-p()
@@ -103,7 +105,7 @@ function git-branch-exist-p()
 function get-domain-from-url ()
 {
     local url="$*"
-    echo "${url}"|sed 's#^\(https*://[^/]*\).*$#\1#'
+    echo "${url}"|sed 's#^https*://\([^/]*\).*$#\1#'
 }
 
 function url-blocked-p()

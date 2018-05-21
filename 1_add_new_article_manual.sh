@@ -3,7 +3,7 @@ set -e
 source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 # 获取参数
-while getopts :u:t:a:d:T OPT; do
+while getopts :u:t:a:d:Tf OPT; do
     case $OPT in
         u|+u)
             url="$OPTARG"
@@ -20,8 +20,11 @@ while getopts :u:t:a:d:T OPT; do
         T|+T)
             tranlate_flag="yes"
             ;;
+        f|+f)
+            force_flag="yes"    # 不检查是否在白名单内，强行选题
+            ;;
         *)
-            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date] [+-a author] [+-T]}"
+            echo "usage: ${0##*/} [+-u url] [+-t title] [+-d date] [+-a author] [+-T] [+-f]}"
             exit 2
     esac
 done
@@ -30,7 +33,7 @@ OPTIND=1
 
 [[ -z "${url}" ]] && read -r -p "please input the URL:" url
 baseurl=$(get-domain-from-url "${url}")
-if url-blocked-p "${baseurl}";then
+if [[ -z "${force_flag}" ]] && url-blocked-p "${baseurl}" ;then
     warn "${baseurl} is blocked!"
     exit 1
 fi
@@ -73,7 +76,7 @@ if [[ -z "${author}" ]];then
 fi
 
 # 获取author link
-author_link=$(get-author-link "${baseurl}" "${author}")
+author_link=$(get-author-link "${url}" "${author}")
 
 # 获取content
 content=$(echo ${response} |jq -r .content)

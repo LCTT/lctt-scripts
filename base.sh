@@ -199,7 +199,7 @@ function get-author-link()
     (
         cd $(get-lctt-path)
         # 选择最多的url作为author link
-        git grep -iEc "via: *${domain}|\[${author}\]"|grep ":2$"|cut -d":" -f1|xargs -I{} grep "\[a\]:" '{}' |sort |uniq -c |sort -n |tail -n 1 |cut -d":" -f2-
+        git grep -iEc "via: *https*://${domain}|\[${author}\]"|grep ":2$"|cut -d":" -f1|xargs -I{} grep "\[a\]:" '{}' |sort |uniq -c |sort -n |tail -n 1 |cut -d":" -f2-
         # git grep -il "${domain}"|xargs -I{} grep -il "\[${author}\]" '{}' |tail -n 1 |xargs -I{} grep '\[a\]:' '{}' |cut -d ":" -f2-
      )
 }

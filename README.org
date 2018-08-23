@@ -2,115 +2,117 @@
 #+AUTHOR: lujun9972
 #+TAGS: lctt-scripts
 #+DATE: [2017-12-03 日 13:44]
-#+LANGUAGE:  zh-CN
-#+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
+#+LANGUAGE: zh-CN
+#+OPTIONS: H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
 
 * 功能描述
 
-为了方便选题和翻译LCTT项目中的文章，所写的一些脚本，主要功能包括：
+为了方便选题和翻译 LCTT 项目中的文章，所写的一些脚本，主要功能包括：
 
-+ 0_sync_master.sh :: 同步最新版本到本地master分支
++ 0_sync_master.sh :: 同步最新版本到本地 master 分支
 
-+ 1_add_new_article_manual.sh :: 添加新文章,可以用 -t 指定标题，-u指定原文URL，-d指定文章日期,-a指定文章作者. 如果选题的同时还想申请翻译，那么还可以加上 -T 选项。 该脚本会产生一个add-XXXXXXX的分支，并将项目切换到该分支
++ 1_add_new_article_manual.sh :: 添加新文章，可以用 =-t= 指定标题， =-u= 指定原文 URL， =-d= 指定文章日期， =-a= 指定文章作者。如果选题的同时还想申请翻译，那么还可以加上 =-T= 选项。该脚本会产生一个 =add-XXXXXXX= 的分支，并将项目切换到该分支
 
-+ 1_add_new_article_newspaper.sh  :: 接口跟 =1_add_new_article_manual.sh= 一样（事实上这两个是都一个脚本，只是根据名字的不同会去调用不同的url解析脚本）但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要python3(并安装有newspaper库),jq,html2text以及pandoc的支持
++ 1_add_new_article_newspaper.sh :: 接口跟 =1_add_new_article_manual.sh= 一样（事实上这两个是都一个脚本，只是根据名字的不同会去调用不同的 URL 解析脚本）但方便很多，它会尝试从页面中解析文章标题，文章日期，作者和主要内容。需要 python3（并安装有 newspaper 库），jq，html2text 以及 pandoc 的支持
 
-+ 2_start_translating.sh :: 开始翻译新文章. 可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做translate-xxxxxx的分支,并将项目切换到该分支
++ 2_start_translating.sh :: 开始翻译新文章，可以在脚本后面跟上要翻译的文章路径，如果没有带参数，则会自动从项目路径中搜索可以被翻译的文章供你选择。该脚本会产生一个叫做 =translate-xxxxxx= 的分支，并将项目切换到该分支
 
-+ 3_continue_the_work.sh :: 继续修改文章，会根据项目当前branch名称自动获取正在翻译的文件，并用编辑器打开
-     
-+ 4_finish.sh :: 完成工作，提交当前分支的所有内容，并push到github上，然后切回master. 如果带了 =-d= 选项则还会把当前branch删除。 还可以使用 =-m= 设置commit message
++ 3_continue_the_work.sh :: 继续修改文章，会根据项目当前分支名称自动获取正在翻译的文件，并用编辑器打开
 
-+ 5_pause.sh :: 暂停当前工作，提交当前分支的所有内容，并push到github上，然后切回master.
++ 4_finish.sh :: 完成工作，提交当前分支的所有内容，并 push 到 GitHub上，然后切回 master。如果带了 =-d= 选项则还会把当前分支删除。还可以使用 =-m= 设置 commit message
+
++ 5_pause.sh :: 暂停当前工作，提交当前分支的所有内容，并 push 到 GitHub 上，然后切回 master
 
 + reformat.sh :: 修改文章格式使之符合格式标准的脚本，还不完善，慎用。
 
-+ urls_checker.sh :: 查找并检查未翻译/已翻译/已发布文章中的URL是否有重复，仓促写成，可能不够完善
++ urls_checker.sh :: 查找并检查未翻译/已翻译/已发布文章中的 URL 是否有重复，仓促写成，可能不够完善
 
-+ feed_monitor.py :: 监控feed，列出新增的article link
++ feed_monitor.py :: 监控 feed，列出新增的 article link
 
-* 配置说明：
-你可以在lctt.cfg中配置:
+* 配置说明
 
-+ ProjectRoot :: 项目根目录路径(绝对路径),如果没有配置则脚本从$HOME目录中搜索名为 =TranslateProject= 的目录
+你可以在 =lctt.cfg= 中配置：
 
-+ GithubUser :: 您的Github用户名，默认为你本机git上配置的user名称
++ ProjectRoot :: 项目根目录路径（绝对路径），如果没有配置则脚本从 =$HOME= 目录中搜索名为 =TranslateProject= 的目录
 
-+ Browser :: 您惯用的浏览器,默认为firefox
++ GithubUser :: 您的 GitHub 用户名，默认为你本机 git 上配置的 user 名称
 
-+ Editor :: 您惯用的编辑器，默认为vi
++ Browser :: 您惯用的浏览器，默认为 Firefox
+
++ Editor :: 您惯用的编辑器，默认为 vim
 
 + BlockedDomains :: 屏蔽的网站域名，表示这些网站的文章不能被翻译。不推荐修改
 
 + Token :: 暂时无用，请忽略
 
-+ PythonEnv :: 使用 ~1_add_new_article_manual.sh~ 时需要用到Python的 =Newspaper= 库来对页面进行分析，这个参数指定了安装有 =Newspaper= 库的python环境的路径
++ PythonEnv :: 使用 =1_add_new_article_manual.sh= 时需要用到 Python 的 =newspaper= 库来对页面进行分析，这个参数指定了安装有 =newspaper= 库的 Python 环境的路径
 
-+ AutoReformat :: 完成翻译后，是否使用 ~reformat.sh~ 进行格式化，0表示否，1表示是
-                  
++ AutoReformat :: 完成翻译后，是否使用 =reformat.sh= 进行格式化，0 表示否，1 表示是
+
 * 使用说明
+
 *所有脚本都可以不带参数直接执行，然后按照指示一步一步下去就行了！*
+
 ** 前置条件
 
-若想使用 =1_add_new_article_newspaper.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好Python3运行环境，jq，html2text等软件,以archlinux为例:
+若想使用 =1_add_new_article_newspaper.sh= 自动从页面中抽取出标题，作者，日期和主要内容，则需要准备好 Python3 运行环境，jq，html2text 等软件，以 Arch Linux 为例:
 
-1. 准备Python3环境
+1. 准备 Python3 环境
 
-   a. 进入 =脚本目录= 
-      #+BEGIN_SRC shell
-        cd lctt-script
-      #+END_SRC
+  a. 进入 =脚本目录=
+    #+BEGIN_SRC shell
+      cd lctt-script
+    #+END_SRC
 
-   b. 生成新的python虚拟运行环境
-      #+BEGIN_SRC shell
-        python -m venv env
-      #+END_SRC
+  b. 生成新的 Python 虚拟运行环境
+    #+BEGIN_SRC shell
+      python -m venv env
+    #+END_SRC
 
-   c. 进入该虚拟运行环境，并安装newspaper
-      #+BEGIN_SRC shell
-        source env/bin/activate
-        pip install -r requirements.txt
-      #+END_SRC
+  c. 进入该虚拟运行环境，并安装 newspaper
+    #+BEGIN_SRC shell
+      source env/bin/activate
+      pip install -r requirements.txt
+    #+END_SRC
 
-   d. 配置 =lctt.cfg=,下面是我的配置
-      #+BEGIN_SRC conf
-        ProjectRoot=/home/lujun9972/github/TranslateProject
-        GithubUser=lujun9972
-        Browser=firefox
-        Editor=emacsclient -c
-        BlockedDomains=https://www.tecmint.com|
-        Token=
-        PythonEnv=env
-        AutoReformat=1
-      #+END_SRC
+  d. 配置 =lctt.cfg= ，下面是我的配置
+    #+BEGIN_SRC conf
+      ProjectRoot=/home/lujun9972/github/TranslateProject
+      GithubUser=lujun9972
+      Browser=firefox
+      Editor=emacsclient -c
+      BlockedDomains=https://www.tecmint.com|
+      Token=
+      PythonEnv=env
+      AutoReformat=1
+    #+END_SRC
 
-   e. 安装jq和html2text
-      #+BEGIN_SRC shell
-        sudo pacman -S jq html2text pandoc --noconfirm
-      #+END_SRC
-      
-   需要注意的是, archlinux中的python默认就是Python3,若你是其他版本的linux可能要做一些修改。
+  e. 安装 jq 和 html2text
+    #+BEGIN_SRC shell
+      sudo pacman -S jq html2text pandoc --noconfirm
+    #+END_SRC
 
-   另外newspaper的详细安装步骤和使用说明，可以参见 [[https://github.com/codelucas/newspaper][它的Github主页]]
+需要注意的是，Arch Linux 中的 Python 默认就是 Python3，若你是其他版本的 Linux 可能要做一些修改。
+
+另外 newspaper 的详细安装步骤和使用说明，可以参见[[https://github.com/codelucas/newspaper][它的 GitHub 主页]]
 
 ** 新增一篇文章（选题）
 
-目前有两个脚本来辅助进行选题, =1_add_new_article_manual.sh= 和 =1_add_new_article_newspaper.sh=.
+目前有两个脚本来辅助进行选题， =1_add_new_article_manual.sh= 和 =1_add_new_article_newspaper.sh= 。
 
-两者的不同点在于:
+两者的不同点在于：
 
-=1_add_new_article_manual.sh= 需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT官方选题工具]] 中生成MD内容
-
-=1_add_new_article_newspaper.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成MD内容
++ =1_add_new_article_manual.sh= 需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT 官方选题工具]]中生成 Markdown 内容
++ =1_add_new_article_newspaper.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成 Markdown 内容
 
 一般来说，使用 =1_add_new_article_newspaper.sh= 要方便很多。
 
-两个脚本都会根据标题自动生成选题文件，并用配置好的编辑器打开选题文件供你进行修改，修改完成后按下回车,脚本会用这个新的选题文件帮你新生成一个分支，并提交到你的远程仓库中。
+两个脚本都会根据标题自动生成选题文件，并用配置好的编辑器打开选题文件供你进行修改，修改完成后按下回车，脚本会用这个新的选题文件帮你新生成一个分支，并提交到你的远程仓库中。
 
 #+BEGIN_SRC shell
   [lujun9972@F31 lctt-scripts]$ ./1_add_new_article_newspaper.sh -u https://www.linux.com/learn/intro-to-linux/2017/12/set-ubuntu-derivatives-back-default-resetter
   search simliar articles...
-  author= 
+  author=
   title= Set Ubuntu Derivatives Back to Default with Resetter
   date_published= 20171229
   Waiting for Emacs...
@@ -131,10 +133,11 @@
 #+END_SRC
 
 ** 申请翻译
-使用 =2_start_translating.sh= 脚本申请翻译。 直接执行该脚本会列出所有没有被申请翻译的文件并编上号，若有想要翻译的文章，输入的编号再按回车就行了。 脚本会自动帮你加上申请翻译的标记，生成新branch并帮你提交到远程仓库
+
+使用 =2_start_translating.sh= 脚本申请翻译。直接执行该脚本会列出所有没有被申请翻译的文件并编上号，若有想要翻译的文章，输入的编号再按回车就行了。脚本会自动帮你加上申请翻译的标记，生成新分支并帮你提交到远程仓库
 
 #+BEGIN_EXAMPLE
-  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh 
+  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh
   ,*  0. /home/lujun9972/github/TranslateProject/sources/tech/20160625 Trying out LXD containers on our Ubuntu.md
      1. /home/lujun9972/github/TranslateProject/sources/tech/20160627 9 Best Free Video Editing Software for Linux In 2017.md
      2. /home/lujun9972/github/TranslateProject/sources/tech/20160922 Annoying Experiences Every Linux Gamer Never Wanted.md
@@ -169,14 +172,15 @@
     83. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Linux wc Command Explained for Beginners (6 Examples).md
   ,* 84. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Testing Ansible Playbooks With Vagrant.md
     85. /home/lujun9972/github/TranslateProject/sources/tech/20171229 Excellent Free Roguelike Games.md
-  input the article number you want to translate: 
+  input the article number you want to translate:
 #+END_EXAMPLE
 
 其中以 =*= 开头的文章，表示已经被你申请翻译的文章。
 
-若你早就知道想要翻译那篇文章，则也可以将文章路径作为参数传递给 =2_start_translating.sh=,脚本就不会再列出待翻译的列表了.
+若你早就知道想要翻译那篇文章，则也可以将文章路径作为参数传递给 =2_start_translating.sh=，脚本就不会再列出待翻译的列表了。
+
 #+BEGIN_EXAMPLE
-  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh ../TranslateProject/sources/tech/20171228\ How\ to\ exclude\ file\ when\ using\ scp\ command\ recursively.md 
+  [lujun9972@F31 lctt-scripts]$ ./2_start_translating.sh ../TranslateProject/sources/tech/20171228\ How\ to\ exclude\ file\ when\ using\ scp\ command\ recursively.md
   切换到分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg=='
   [translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg== 4eb1d0899] translating by lujun9972
    1 file changed, 2 insertions(+), 1 deletion(-)
@@ -190,17 +194,18 @@
    ,* [new branch]          translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg== -> translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg==
   分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg==' 设置为跟踪来自 'origin' 的远程分支 'translate-MjAxNzEyMjggSG93IHRvIGV4Y2x1ZGUgZmlsZSB3aGVuIHVzaW5nIHNjcCBjb21tYW5kIHJlY3Vyc2l2ZWx5Lm1kCg=='。
   Waiting for Emacs...
-  [lujun9972@F31 lctt-scripts]$ 
+  [lujun9972@F31 lctt-scripts]$
 #+END_EXAMPLE
 
-
 ** 继续修改
-若选题或翻译的过程未完成,可以执行 =3_continue_the_work.sh= 来继续未完成的过程。 脚本会根据LCTT项目当前branch的名称自动识别要编辑哪个文件
+
+若选题或翻译的过程未完成，可以执行 =3_continue_the_work.sh= 来继续未完成的过程。脚本会根据 LCTT 项目当前分支名自动识别要编辑哪个文件
 
 ** 完成任务
-在选题或翻译完成后，可以运行 =4_finish.sh= 来结束。 该脚本会提交当前更改,并在推送到远程仓库后切回 =master= 分支。
 
-若想在将工作推送到远程仓库后顺便把本地的分支也清理掉，则加上 =-d= 选项,推荐在完成工作后使用该选项将分支清理掉。
+在选题或翻译完成后，可以运行 =4_finish.sh= 来结束。该脚本会提交当前更改，并在推送到远程仓库后切回 =master= 分支。
+
+若想在将工作推送到远程仓库后顺便把本地的分支也清理掉，则加上 =-d= 选项，推荐在完成工作后使用该选项将分支清理掉。
 
 #+BEGIN_SRC shell
   [lujun9972@F31 lctt-scripts]$ ./4_finish.sh -d
@@ -218,7 +223,9 @@
 #+END_SRC
 
 ** 暂停任务
+
 如果选题/翻译到一半了，想暂停一下，操作他文章怎么办呢?
+
 1. 使用 =5_pause.sh= 提交当前的进度并切换回 =master= 分支
 2. 按照正常的流程翻译其他文章,在翻译完这篇文章后，可以用 =4_finish.sh -d= 把翻译完后的分支删掉
 3. 在 =master= 分支上运行 =3_continue_the_work.sh= 会列出所有未完成的分支，并询问你切换到哪个分支后继续之前的工作。
@@ -227,46 +234,52 @@
 
 *** 申请翻译的列表太长了，很难看怎么办？
 
- =2_start_translating.sh= 可以跟 =grep= 连用，比如，你想查出自己已经申请翻译的那些文章，那么可以这样做:
- 
- #+BEGIN_SRC shell
-   ./2_start_translating.sh |grep '^*'
- #+END_SRC
- 
- 结果为：
+=2_start_translating.sh= 可以跟 =grep= 连用，比如，你想查出自己已经申请翻译的那些文章，那么可以这样做：
+
+#+BEGIN_SRC shell
+  ./2_start_translating.sh |grep '^*'
+#+END_SRC
+
+结果为：
+
 #+BEGIN_EXAMPLE
   [lujun9972@T520 lctt-scripts]$ ./2_start_translating.sh |grep '^*'
   ,*  6. /home/lujun9972/github/TranslateProject/sources/tech/20170804 Add speech to your Fedora system.md
   ,* 25. /home/lujun9972/github/TranslateProject/sources/tech/20171115 How to Fix the ‘No Space Left on Device- Error on Linux.md
   ,* 69. /home/lujun9972/github/TranslateProject/sources/tech/20171216 Sysadmin 101- Troubleshooting.md
   ,* 89. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Testing Ansible Playbooks With Vagrant.md
-  input the article number you want to translate: 
+  input the article number you want to translate:
 #+END_EXAMPLE
 
 再比如，你像看看有容器方面的文章可以翻译，那么执行
+
 #+BEGIN_SRC shell
   ./2_start_translating.sh |grep -i container
 #+END_SRC
 
 结果为：
+
 #+BEGIN_EXAMPLE
   [lujun9972@T520 lctt-scripts]$ ./2_start_translating.sh |grep -i container
     55. /home/lujun9972/github/TranslateProject/sources/tech/20171205  ANNOUNCING THE GENERAL AVAILABILITY OF CONTAINERD 1.0 THE INDUSTRY-STANDARD RUNTIME USED BY MILLIONS OF USERS.md
     85. /home/lujun9972/github/TranslateProject/sources/tech/20171228 Container Basics- Terms You Need to Know.md
-  input the article number you want to translate: 
+  input the article number you want to translate:
 #+END_EXAMPLE
 
-* 已知BUG与注意要点
-目前已知某些情况下，newspaper会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
+* 已知 BUG 与注意要点
+
+目前已知某些情况下，newspaper 会把网页中代码块中的 =*= 给扩展成工作目录中的文件列表，这个是 =newspaper= 的BUG，目前暂无办法修复。
 
 另外，使用程序来猜测网页中的信息难免会有猜测不出来或者猜测错误的情况，根据经验，在选题过程中，请留意以下方面的内容：
 
 + 文章最开始的配图是否存在
 + 文章作者是否解析出来了
-+ 文章作者的链接是否正确(一般都要修改)
++ 文章作者的链接是否正确（一般都要修改）
+
 * TODOS
+
 + [X] 合并两个选题脚本，使用同一份代码根据名字区分解析脚本
-+ [X] 根据author查询author link
-+ [X] 以三级标题###为初始标题
-+ [X] 尝试自动判断是talk还是tech
-+ [ ] 改用pandoc转换html为markdown
++ [X] 根据 =author= 查询 =author link=
++ [X] 以三级标题 =###= 为初始标题
++ [X] 尝试自动判断是 talk 还是 tech
++ [ ] 改用 pandoc 转换 HTML 为 Markdown

@@ -30,10 +30,11 @@ if __name__ == '__main__':
     db_connection = sqlite3.connect(path)
     db = db_connection.cursor()
     db.execute('CREATE TABLE IF NOT EXISTS rss(url TEXT)')
-    if sys.argv:
-        feeds = sys.argv
+    if len(sys.argv) > 1:
+        feeds = sys.argv[1:]
     else:
-        feeds = ()
+        feeds = ("http://feeds.feedburner.com/Ostechnix", "https://opensource.com/feed", "https://www.2daygeek.com/feed/", "https://fedoramagazine.org/feed/", "https://www.networkworld.com/index.rss", "https://feeds.feedburner.com/kerneltalks", "https://www.linux.com/feeds/blogs/community/rss", "https://www.linuxtechi.com/feed/", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml", "https://itsfoss.com/feed/", "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", "https://dave.cheney.net/feed")
+    print(feeds)
     for feed in feeds:
         read_feed(feed, db, db_connection)
     db_connection.close()

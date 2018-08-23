@@ -27,6 +27,8 @@
 
 + urls_checker.sh :: 查找并检查未翻译/已翻译/已发布文章中的URL是否有重复，仓促写成，可能不够完善
 
++ feed_monitor.py :: 监控feed，列出新增的article link
+
 * 配置说明：
 你可以在lctt.cfg中配置:
 

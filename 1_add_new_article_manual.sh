@@ -113,14 +113,16 @@ via: ${url}\\
 \\
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
 \\
-[a]:${author_link}"
+[a]: ${author_link}"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
     echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links+markdown_attribute --wrap=preserve --strip-comments --no-highlight --indented-code-classes=python|pandoc -f gfm -t html-native_divs-native_spans |html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 /^\[code\][[:space:]]*$/,/^\[\/code\][[:space:]]*$/ s/^    //; # 去掉code block前面的空格
-s/^\[\/\?code\][[:space:]]*$/```/; # 将[code]...[/code]替换成```...```
+# 将[code]...[/code]替换成```...```
+s/^\[code\][[:space:]]*$/\n```/; # 将[code]替换成\n```,在代码块的三个“`” 之外和段落之间需要额外加个空行，当段落和它连在一起时，在一些 md 编辑器里面是识别有问题的（MacDown）。
+s/^\[\/code\][[:space:]]*$/```/; # [/code]替换成```
 s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
 }' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 

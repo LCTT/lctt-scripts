@@ -28,6 +28,6 @@ do
     translating_time=$(git log --date=unix --pretty=format:"%cd" -n 1 "${article}" )
     if [[ ${translating_time} -le ${overdue_start} &&  ${translating_time} -gt ${overdue_end} ]];then
         delay_days=$(( ($now - $translating_time) / 24 / 60 / 60 ))
-        echo "${article}"        "------" "${delay_days}天"
+        echo "${article}"       #"------" "${delay_days}天"
     fi
 done

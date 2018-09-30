@@ -31,6 +31,9 @@
 
 * 配置说明
 
++ search_overdue_translating_articles.sh :: 搜索超长时间没有翻译完成的文章. 使用方法为 =search_overdue_translating_articles.sh [timeout]= 其中timeout单位为天,默认为30天
+
+* 配置说明：
 你可以在 =lctt.cfg= 中配置：
 
 + ProjectRoot :: 项目根目录路径（绝对路径），如果没有配置则脚本从 =$HOME= 目录中搜索名为 =TranslateProject= 的目录

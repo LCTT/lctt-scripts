@@ -29,6 +29,8 @@
 
 + feed_monitor.py :: 监控feed，列出新增的article link
 
++ search_overdue_translating_articles.sh :: 搜索超长时间没有翻译完成的文章. 使用方法为 =search_overdue_translating_articles.sh [timeout]= 其中timeout单位为天,默认为30天
+
 * 配置说明：
 你可以在lctt.cfg中配置:
 

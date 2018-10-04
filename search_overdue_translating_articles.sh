@@ -47,7 +47,7 @@ do
     translating_time=$(git log --date=unix --pretty=format:"%cd" -n 1 "${article}" )
     if [[ ${translating_time} -le ${overdue_start} &&  ${translating_time} -gt ${overdue_end} ]];then
         delay_days=$(( ($now - $translating_time) / 24 / 60 / 60 ))
-        echo "${article}"       "------" "${delay_days}天"
+        echo "${article}"       # "------" "${delay_days}天"
         user=$(git log --pretty='%an' -n 1 "${article}")
         email=$(git log --pretty='%ae' -n 1 "${article}")
         commit=$(git log --pretty='%H' -n 1 "${article}")
@@ -77,6 +77,8 @@ EOF
                 git revert --no-edit "${commit}"
                 git push -u origin "${revert_branch}"
                 git checkout master
+                origin_remote_user=$(git-get-remote-user origin)
+                ok.sh create_pull_request "LCTT/TranslateProject" "auto revert ${article}" "${origin_remote_user}:${revert_branch}" "master"
             else
                 warn "${article} 选题时申请翻译已经 ${delay_days},但无法自动revert"
             fi

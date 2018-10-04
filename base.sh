@@ -1,5 +1,7 @@
 #!/bin/echo Warinng: this library should be sourced!
 CFG_PATH=$(cd $(dirname "${BASH_SOURCE[0]}")&&pwd)
+# 允许直接调用第三方库
+export PATH=$PATH:${CFG_PATH}/libs
 function get-cfg-option ()
 {
     option="$@"
@@ -131,12 +133,12 @@ function filename-to-branch ()
 {
     local operation=$1
     shift
-    local title="$*"
-    local code=$(echo "${title}"|base64 -w 0)
+    local filename="$*"
+    local code=$(echo "${filename}"|base64 -w 0)
     echo "${operation}-${code}"
 }
 
-# 解析branch中包含的操作类型 add/translate
+# 解析branch中包含的操作类型 add/translate/revert
 function git-branch-to-operation()
 {
     local branch="$*"
@@ -213,4 +215,33 @@ function guess-article-type()
     else
         echo "talk"
     fi
+}
+
+# 获取git仓库remote中的user
+function git-get-remote-user()
+{
+    local remote="$*"
+    local user_repo=$(git remote -v |grep "${remote}" |grep fetch |awk '{print $2}')
+    if [[ "${user_repo}" =~ ^git@github.com: ]];then
+        user_repo=${user_repo##*:}
+    elif [[ "$user_repo" =~ ^https://github.com/ ]];then
+        user_repo=${user_repo#https://github.com/}
+    fi
+    local user=${user_repo%%/*}
+    echo ${user}
+}
+
+# 获取git仓库remote中的repo
+function git-get-remote-repo()
+{
+    local remote="$*"
+    local user_repo=$(git remote -v |grep "${remote}" |grep fetch |awk '{print $2}')
+    if [[ "${user_repo}" =~ ^git@github.com: ]];then
+        user_repo=${user_repo##*:}
+    elif [[ "$user_repo" =~ ^https://github.com/ ]];then
+        user_repo=${user_repo#https://github.com/}
+    fi
+    local repo=${user_repo#*/}
+    repo=${repo%.git}
+    echo ${repo}
 }

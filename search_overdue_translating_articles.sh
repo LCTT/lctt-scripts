@@ -47,12 +47,13 @@ do
     translating_time=$(git log --date=unix --pretty=format:"%cd" -n 1 "${article}" )
     if [[ ${translating_time} -le ${overdue_start} &&  ${translating_time} -gt ${overdue_end} ]];then
         delay_days=$(( ($now - $translating_time) / 24 / 60 / 60 ))
-        echo "${article}"       #"------" "${delay_days}天"
+        echo "${article}"       "------" "${delay_days}天"
         user=$(git log --pretty='%an' -n 1 "${article}")
         email=$(git log --pretty='%ae' -n 1 "${article}")
-        title="您申请翻译${article}已经有${delay_days}天"
-        # email="lujun9972@sina.com"
+        commit=$(git log --pretty='%H' -n 1 "${article}")
         if [[ ${mail_flag} == "True" ]];then
+            email="lujun9972@sina.com"
+            title="您申请翻译${article}已经有${delay_days}天"
             mail -s "${title}" ${email}<<EOF
 亲爱的${user},您好:
 
@@ -64,6 +65,21 @@ do
 顺祝时祺，
 Linux中国
 EOF
+        fi
+
+        if [[ ${revert_flag} == "True" ]];then
+            commit_times=$(git log --pretty='%H' -n 2 "${article}"|wc -l)
+            # 排除选题时就申请翻译的情况，这种情况无法revert,否则选题就没了
+            if [[ ${commit_times} -gt 1 ]];then
+                revert_branch=$(filename-to-branch "revert" "${article}")
+                git branch "${revert_branch}" master
+                git checkout "${revert_branch}"
+                git revert --no-edit "${commit}"
+                git push -u origin "${revert_branch}"
+                git checkout master
+            else
+                warn "${article} 选题时申请翻译已经 ${delay_days},但无法自动revert"
+            fi
         fi
 
     fi

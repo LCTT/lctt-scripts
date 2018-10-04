@@ -52,7 +52,6 @@ do
         email=$(git log --pretty='%ae' -n 1 "${article}")
         commit=$(git log --pretty='%H' -n 1 "${article}")
         if [[ ${mail_flag} == "True" ]];then
-            email="lujun9972@sina.com"
             title="您申请翻译${article}已经有${delay_days}天"
             mail -s "${title}" ${email}<<EOF
 亲爱的${user},您好:

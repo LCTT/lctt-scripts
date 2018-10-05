@@ -26,7 +26,7 @@ function init_repo()
     # 拉取最新的变动
     git pull https://github.com/LCTT/TranslateProject master
     # 删除本地所有的revert-xxxxxxxxxxxxxxxxx分支
-    git branch |grep -E '^  revert-'|xargs git branch -d
+    git branch |grep -E '^  revert-'|xargs git branch -D
 }
 
 while getopts :rmiR OPT; do

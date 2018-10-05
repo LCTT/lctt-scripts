@@ -29,6 +29,7 @@ function init_repo()
     git branch |grep -E '^  revert-'|xargs git branch -D
     # 删除remote上的revert-xxxxxxxxxxxxxxxx分支
     # 这里使用 `;:` 是为了应付remote上没有对应分支的情况，保证一定返回正确
+    # TODO 也许这里不用删除，在git push时添加 -f 强制覆盖比较好？
     git branch |grep -E '^  revert-'|xargs -I{} git push origin :{};:
 }
 

@@ -6,13 +6,15 @@ cd $(get-lctt-path)
 function help()
 {
     cat <<EOF
-Usage: ${0##*/} [+-rm} [--] 起始超期天数 [结束超期天数]
+Usage: ${0##*/} [+-rmiR} [--] 起始超期天数 [结束超期天数]
 
 列出超期未翻译完成的文章，超期日期>=起始超期天数 同时 超期日期<结束超期天数
 若结束超期天数省略，则列出 超期日期>=起始超期天数 的文章
 
+-i 表示搜索前先初始化仓库
 -r 表示自动revert翻译认领的那个提交
 -m 表示发送邮件通知译者
+-R 执行过程如果有错误，自动重试
 EOF
 }
 
@@ -27,7 +29,7 @@ function init_repo()
     git branch |grep -E '^  revert-'|xargs git branch -d
 }
 
-while getopts :rmi OPT; do
+while getopts :rmiR OPT; do
     case $OPT in
         i|+i)
             init_flag="True"
@@ -37,6 +39,9 @@ while getopts :rmi OPT; do
             ;;
         m|+m)
             mail_flag="True"
+            ;;
+        R|+R)
+            trap ERR "exec $(realpath $0) $*"
             ;;
         *)
             help
@@ -69,7 +74,7 @@ do
         user=$(git log --pretty='%an' -n 1 "${article}")
         email=$(git log --pretty='%ae' -n 1 "${article}")
         commit=$(git log --pretty='%H' -n 1 "${article}")
-        echo "commit is" ${commit}
+        # echo "commit is" ${commit}
         if [[ ${mail_flag} == "True" ]];then
             title="您申请翻译${article}已经有${delay_days}天"
             mail -s "${title}" ${email}<<EOF

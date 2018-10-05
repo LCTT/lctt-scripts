@@ -41,7 +41,7 @@ while getopts :rmiR OPT; do
             mail_flag="True"
             ;;
         R|+R)
-            trap ERR "exec $(realpath $0) $*"
+            trap "exec $(realpath $0) $*" ERR
             ;;
         *)
             help

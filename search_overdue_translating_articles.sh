@@ -27,6 +27,9 @@ function init_repo()
     git pull https://github.com/LCTT/TranslateProject master
     # 删除本地所有的revert-xxxxxxxxxxxxxxxxx分支
     git branch |grep -E '^  revert-'|xargs git branch -D
+    # 删除remote上的revert-xxxxxxxxxxxxxxxx分支
+    # 这里使用 `;:` 是为了应付remote上没有对应分支的情况，保证一定返回正确
+    git branch |grep -E '^  revert-'|xargs -I{} git push origin :{};:
 }
 
 while getopts :rmiR OPT; do

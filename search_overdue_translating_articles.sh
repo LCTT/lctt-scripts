@@ -6,23 +6,42 @@ cd $(get-lctt-path)
 function help()
 {
     cat <<EOF
-Usage: ${0##*/} [+-rm} [--] 起始超期天数 [结束超期天数]
+Usage: ${0##*/} [+-rmiR} [--] 起始超期天数 [结束超期天数]
 
 列出超期未翻译完成的文章，超期日期>=起始超期天数 同时 超期日期<结束超期天数
 若结束超期天数省略，则列出 超期日期>=起始超期天数 的文章
 
+-i 表示搜索前先初始化仓库
 -r 表示自动revert翻译认领的那个提交
 -m 表示发送邮件通知译者
+-R 执行过程如果有错误，自动重试
 EOF
 }
 
-while getopts :rm OPT; do
+# 初始化环境
+function init_repo()
+{
+    # 保证处于master分支
+    git checkout master
+    # 拉取最新的变动
+    git pull https://github.com/LCTT/TranslateProject master
+    # 删除本地所有的revert-xxxxxxxxxxxxxxxxx分支
+    git branch |grep -E '^  revert-'|xargs git branch -d
+}
+
+while getopts :rmiR OPT; do
     case $OPT in
+        i|+i)
+            init_flag="True"
+            ;;
         r|+r)
             revert_flag="True"
             ;;
         m|+m)
             mail_flag="True"
+            ;;
+        R|+R)
+            trap ERR "exec $(realpath $0) $*"
             ;;
         *)
             help
@@ -35,6 +54,10 @@ OPTIND=1
 if [[ $# -eq 0 ]];then
     help
     exit 2
+fi
+
+if [[ "${init_flag}" == "True" ]];then
+    init_repo
 fi
 
 now=$(date +"%s")
@@ -51,6 +74,7 @@ do
         user=$(git log --pretty='%an' -n 1 "${article}")
         email=$(git log --pretty='%ae' -n 1 "${article}")
         commit=$(git log --pretty='%H' -n 1 "${article}")
+        # echo "commit is" ${commit}
         if [[ ${mail_flag} == "True" ]];then
             title="您申请翻译${article}已经有${delay_days}天"
             mail -s "${title}" ${email}<<EOF
@@ -73,7 +97,17 @@ EOF
                 revert_branch=$(filename-to-branch "revert" "${article}")
                 git branch "${revert_branch}" master
                 git checkout "${revert_branch}"
-                git revert --no-edit "${commit}"
+                file_changed_count=$(git diff --name-only ${commit} ${commit}^1 |wc -l)
+                if [[ ${file_changed_count} -eq 1 ]];then
+                    # 若某次commit只更新一个文件，则可以直接revert这个commit
+                    git revert --no-edit "${commit}"
+                else
+                    # 否则只能reset这个文件
+                    git reset ${commit} -- "${article}"
+                    git checkout "${article}"
+                    git commit -a -m "auto revert ${article}"
+                fi
+
                 git push -u origin "${revert_branch}"
                 git checkout master
                 origin_remote_user=$(git-get-remote-user origin)

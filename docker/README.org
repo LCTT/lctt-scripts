@@ -5,6 +5,8 @@
 #+LANGUAGE:  zh-CN
 #+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
 
+* 构建
 docker build -t lctt-scripts .
 
+* 运行
 docker run -it --name lctt-scripts -v ~/.ssh:/home/lctt/.ssh lctt-scripts

@@ -1,0 +1,10 @@
+#+TITLE: README
+#+AUTHOR: lujun9972
+#+TAGS: docker
+#+DATE: [2018-10-05 五 22:55]
+#+LANGUAGE:  zh-CN
+#+OPTIONS:  H:6 num:nil toc:t \n:nil ::t |:t ^:nil -:nil f:t *:t <:nil
+
+docker build -t lctt-scripts .
+
+docker run -it --name lctt-scripts -v ~/.ssh:/home/lctt/.ssh lctt-scripts

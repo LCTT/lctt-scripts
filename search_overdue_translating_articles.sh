@@ -24,6 +24,7 @@ function init_repo()
     git checkout master
     # 拉取最新的变动
     git pull https://github.com/LCTT/TranslateProject master
+    git push -u origin master
     git branch |grep -E '^  revert-'|while read branch
     do
         # 删除本地所有的revert-xxxxxxxxxxxxxxxxx分支

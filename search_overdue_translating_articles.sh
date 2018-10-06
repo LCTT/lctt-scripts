@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 source $(dirname "${BASH_SOURCE[0]}")/base.sh
-cd $(get-lctt-path)
 
 function help()
 {
@@ -63,6 +62,7 @@ if [[ $# -eq 0 ]];then
     exit 2
 fi
 
+cd $(get-lctt-path)
 if [[ "${init_flag}" == "True" ]];then
     init_repo
 fi

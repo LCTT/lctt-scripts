@@ -30,12 +30,18 @@ machine uploads.github.com
     login ${user}
     password ${token}
 EOF
-    sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
 fi
 # 没有项目repo则clone之
 if [[ ! -d ~/TranslateProject/.git ]];then
     git clone git@github.com:${user}/TranslateProject.git
 fi
+
+if [[ ! -d ~/lctt-scripts ]];then
+    git clone https://github.com/LCTT/lctt-scripts
+    sed -i '/ProjectRoot=/cProjectRoot=~/TranslateProject' ./lctt-scripts/lctt.cfg
+    sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
+fi
+
 
 git config --global user.name "${user}"
 git config --global user.email "${from}"

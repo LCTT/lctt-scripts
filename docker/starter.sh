@@ -51,7 +51,8 @@ if [[ ! -d ~/lctt-scripts ]];then
     sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
 fi
 
-
+user=$(grep login ~/.netrc|head -1 |awk '{print $2}')
+from=$(grep 'set from=' ~/.mailrc|awk -F"=" '{print $2}')
 git config --global user.name "${user}"
 git config --global user.email "${from}"
 

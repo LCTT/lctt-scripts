@@ -31,6 +31,15 @@ machine uploads.github.com
     password ${token}
 EOF
 fi
+
+if [[ ! -f ~/.ssh/id_rsa ]];then
+    echo "生成sshkey"
+    ssh-keygen -N "" -f ~/.ssh/id_rsa
+    echo "请将下列公钥内容加入github中:"
+    cat ~/.ssh/id_rsa.pub
+    read -p "按回车继续" continue
+fi
+
 # 没有项目repo则clone之
 if [[ ! -d ~/TranslateProject/.git ]];then
     git clone git@github.com:${user}/TranslateProject.git
@@ -40,13 +49,6 @@ if [[ ! -d ~/lctt-scripts ]];then
     git clone https://github.com/LCTT/lctt-scripts
     sed -i '/ProjectRoot=/cProjectRoot=~/TranslateProject' ./lctt-scripts/lctt.cfg
     sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
-fi
-
-if [[ ! -d ~/.ssh ]];then
-    echo "生成sshkey"
-    ssh-keygen -N "" -f ~/.ssh/id_rsa
-    echo "请将下列公钥内容加入github中:"
-    cat ~/.ssh/id_rsa.pub
 fi
 
 

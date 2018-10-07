@@ -6,7 +6,7 @@ COPY starter.sh .
 RUN mkdir TranslateProject 
 RUN chown -R lctt:lctt /home/lctt
 VOLUME ["/home/lctt/TranslateProject"]
-RUN sed 's/#zh_CN.UTF-8/zh_CN.UTF-8/' /etc/locale.gen && locale-gen
+RUN sed -i 's/#zh_CN.UTF-8/zh_CN.UTF-8/' /etc/locale.gen && locale-gen
 ENV LANG=zh_CN.UTF-8
 USER lctt
 ENTRYPOINT ["/home/lctt/starter.sh"]

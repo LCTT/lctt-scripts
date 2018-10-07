@@ -40,6 +40,8 @@ if [[ ! -f ~/.ssh/id_rsa ]];then
     read -p "按回车继续" continue
 fi
 
+user=$(grep login ~/.netrc|head -1 |awk '{print $2}')
+from=$(grep 'set from=' ~/.mailrc|awk -F"=" '{print $2}')
 # 没有项目repo则clone之
 if [[ ! -d ~/TranslateProject/.git ]];then
     git clone git@github.com:${user}/TranslateProject.git
@@ -51,8 +53,6 @@ if [[ ! -d ~/lctt-scripts ]];then
     sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
 fi
 
-user=$(grep login ~/.netrc|head -1 |awk '{print $2}')
-from=$(grep 'set from=' ~/.mailrc|awk -F"=" '{print $2}')
 git config --global user.name "${user}"
 git config --global user.email "${from}"
 

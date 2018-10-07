@@ -42,6 +42,13 @@ if [[ ! -d ~/lctt-scripts ]];then
     sed -i "/GithubUser=/cGithubUser=${user}" ~/lctt-scripts/lctt.cfg
 fi
 
+if [[ ! -d ~/.ssh ]];then
+    echo "生成sshkey"
+    ssh-keygen -N "" -f ~/.ssh/id_rsa
+    echo "请将下列公钥内容加入github中:"
+    cat ~/.ssh/id_rsa.pub
+fi
+
 
 git config --global user.name "${user}"
 git config --global user.email "${from}"

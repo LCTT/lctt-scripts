@@ -113,13 +113,13 @@ EOF
                     # 否则只能reset这个文件
                     git reset ${commit} -- "${article}"
                     git checkout "${article}"
-                    git commit -a -m "auto revert ${article}"
+                    git commit -a -m "超期回收: ${article}"
                 fi
 
-                git push -u origin "${revert_branch}"
+                git push -f -u origin "${revert_branch}"
                 git checkout master
                 origin_remote_user=$(git-get-remote-user origin)
-                ok.sh create_pull_request "LCTT/TranslateProject" "auto revert ${article}" "${origin_remote_user}:${revert_branch}" "master"
+                ok.sh create_pull_request "LCTT/TranslateProject" "超期回收: ${article}" "${origin_remote_user}:${revert_branch}" "master" body="@${user} 申请翻译文章${delay_days}天，因超时而撤销."
             else
                 warn "${article} 选题时申请翻译已经 ${delay_days},但无法自动revert"
             fi

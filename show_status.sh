@@ -28,7 +28,7 @@ shift $(( OPTIND - 1 ))
 OPTIND=1
 
 declare -A catalog_comment_dict
-catalog_comment_dict=([translated]="已翻译" [published]="已发布" [translating]="翻译中" [sources]="待翻译")
+catalog_comment_dict=([translated]="待校对" [published]="已发布" [translating]="翻译中" [sources]="待翻译")
 
 function count_files_under_dir()
 {

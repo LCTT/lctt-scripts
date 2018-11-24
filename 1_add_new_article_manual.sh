@@ -101,10 +101,10 @@ function cleanup_temp {
 trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
 
 cat > "${source_file}" <<EOF
-[^#]: source: $(get-github-user)
-[^#]: translate: 译者ID
-[^#]: review: 校对者ID
-[^#]: published: 发布者ID
+[^#]: collector: $(get-github-user)
+[^#]: translator: 
+[^#]: reviewer: 
+[^#]: publishor: 
 [^#]: subject: ${title}
 [^#]: via: ${url}
 [^#]: author: [$author](${author_link})
@@ -116,7 +116,17 @@ ${title}
 EOF
 comment="--------------------------------------------------------------------------------\\
 \\
-本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出"
+via: ${url}\\
+\\
+作者：[$author][a]\\
+选题：[$(get-github-user)][b]\\
+译者：[译者ID](https://github.com/译者ID)\\
+校对：[校对者ID](https://github.com/校对者ID)\\
+\\
+本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出\\
+\\
+[a]: ${author_link}\\
+[b]: https://github.com/$(get-github-user)"
 
 if [[ -n "${content}" || "${content}" == "null" ]];then
     echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links+markdown_attribute --wrap=preserve --strip-comments --no-highlight --indented-code-classes=python|pandoc -f gfm -t html-native_divs-native_spans |html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{

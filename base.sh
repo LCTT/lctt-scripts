@@ -30,7 +30,13 @@ function get-lctt-path()
 function file-translating-p ()
 {
     local file="$*"
-    head "$file" |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
+    if head -n 1 "${file}" |grep  '\[^#\]:'>/dev/null 2>&1 ;then
+        # 新模板
+        head -n 12 "$file" |grep -v '\[^#\]:' |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
+    else
+        # 旧模板
+        head -n 3 "$file" |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
+    fi
 }
 
 function file-translating-by-me-p()

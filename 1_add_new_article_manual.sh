@@ -105,10 +105,10 @@ cat > "${source_file}" <<EOF
 [#]: translator: ( )
 [#]: reviewer: ( )
 [#]: publisher: ( )
+[#]: url: ( )
 [#]: subject: (${title})
 [#]: via: (${url})
 [#]: author: ($author ${author_link})
-[#]: url: ( )
 
 ${title}
 ======

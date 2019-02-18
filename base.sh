@@ -30,9 +30,9 @@ function get-lctt-path()
 function file-translating-p ()
 {
     local file="$*"
-    if head -n 1 "${file}" |grep  '\[^#\]:'>/dev/null 2>&1 ;then
+    if head -n 1 "${file}" |grep  '^\[#\]:'>/dev/null 2>&1 ;then
         # 新模板
-        head -n 12 "$file" |grep -v '\[^#\]:' |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
+        head -n 12 "$file" |grep '^\[#\]: translator: ([^[:space:]].*)' >/dev/null 2>&1
     else
         # 旧模板
         head -n 3 "$file" |grep -E -i "translat|fanyi|翻译" >/dev/null 2>&1
@@ -42,7 +42,14 @@ function file-translating-p ()
 function file-translating-by-me-p()
 {
     local file="$*"
-    head "$file" |grep -E -i "translat|fanyi|翻译" |grep $(get-github-user) >/dev/null 2>&1
+    if head -n 1 "${file}" |grep  '^\[#\]:'>/dev/null 2>&1 ;then
+        # 新模板
+
+        head -n 12 "$file" |grep '^\[#\]: translator: ([^[:space:]].*)' |grep $(get-github-user) >/dev/null 2>&1
+    else
+        # 旧模板
+        head -n 3 "$file" |grep -E -i "translat|fanyi|翻译"|grep $(get-github-user)  >/dev/null 2>&1
+    fi
 }
 
 function search-similar-articles ()
@@ -193,7 +200,13 @@ function mark-file-as-tranlating()
 {
     local filename="$*"
     local git_user=$(get-github-user)
-    sed -i "1i translating by ${git_user}" "${filename}"
+    if head -n 1 "${file}" |grep  '^\[#\]:'>/dev/null 2>&1 ;then
+        # 新模板
+        sed -i "2c[#]: translator: (${git_user})" "${filename}"
+    else
+        # 旧模板
+        sed -i "1i translating by ${git_user}" "${filename}"
+    fi
     sed -i "/-------------------------------/,$ s/译者ID/${git_user}/g" "${filename}"
 }
 

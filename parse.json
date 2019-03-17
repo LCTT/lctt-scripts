@@ -1,0 +1,18 @@
+{
+    "opensource.com":{
+        "title":".pane-node-title > h1:nth-child(1)",
+        "author":".username",
+        "date":".byline__date",
+        "content":[".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
+                   ".image-full-size",
+                   ".field-name-body > div:nth-child(1) > div:nth-child(1)"],
+        "exclude":[""]
+    },
+    "url.com":{
+        "title":"",
+        "author":"",
+        "date":"",
+        "content":[""],
+        "exclude":[""]
+    }
+}

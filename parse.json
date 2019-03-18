@@ -13,6 +13,6 @@
         "author":".fn > a:nth-child(1)",
         "date":".published",
         "content":[".image-container",".entry-inner"],
-        "exclude":[""]
+        "exclude":[]
     }
 }

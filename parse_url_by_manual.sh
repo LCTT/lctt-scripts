@@ -4,6 +4,7 @@ source $(dirname "${BASH_SOURCE[0]}")/base.sh
 url="$*"
 domain=$(get-domain-from-url ${url})
 parse_cfg=$(jq ".\"${domain}\"" parse.json)
+html=$(curl ${url})
 # extract title
 title_selector=$(echo ${parse_cfg}|jq -r ".title")
 if [[ -z "${title_selector}" ]];then
@@ -27,7 +28,7 @@ done< <(echo ${parse_cfg}|jq -r ".content[]")
 while read exclude_selector
 do
     content=$(echo ${content}|hxclean|hxremove -i "${exclude_selector}")
-done< <(echo ${parse_cfg}|jq -r ".content[]")
+done< <(echo ${parse_cfg}|jq -r ".exclude[]")
 echo '{}'|jq '{"title":$title,
                 "author":$author,
                 "date_published":$date,

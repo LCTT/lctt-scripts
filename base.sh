@@ -200,7 +200,7 @@ function mark-file-as-tranlating()
 {
     local filename="$*"
     local git_user=$(get-github-user)
-    if head -n 1 "${file}" |grep  '^\[#\]:'>/dev/null 2>&1 ;then
+    if head -n 1 "${filename}" |grep '^\[#\]:'>/dev/null 2>&1 ;then
         # 新模板
         sed -i "2c[#]: translator: (${git_user})" "${filename}"
     else

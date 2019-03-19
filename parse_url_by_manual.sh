@@ -7,10 +7,10 @@ parse_cfg=$(jq ".\"${domain}\"" parse.json)
 
 function html_cleanup()
 {
-    tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no -access 3
+    tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no
     return 0
 }
-html=$(curl ${url}|html_cleanup)
+html=$(curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" ${url}|html_cleanup)
 # extract title
 title_selector=$(echo ${parse_cfg}|jq -r ".title")
 if [[ -z "${title_selector}" ]];then

@@ -8,6 +8,20 @@
                    ".pane-node-body"],
         "exclude":[".embedded-callout-menu"]
     },
+    "www.2daygeek.com":{
+        "title":"h1.post-title",
+        "author":".fn > a:nth-child(1)",
+        "date":"",
+        "content":[".entry-inner"],
+        "exclude":[]
+    },
+    "itsfoss.com":{
+        "title":".entry-title",
+        "author":".entry-author-name",
+        "date":".entry-modified-time",
+        "content":[".entry-content"],
+        "exclude":[".ss-inline-share-wrapper"]
+    },
     "www.ostechnix.com":{
         "title":".post-title",
         "author":".fn > a:nth-child(1)",

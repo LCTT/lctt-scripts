@@ -20,13 +20,27 @@
         "author":".entry-author-name",
         "date":".entry-modified-time",
         "content":[".entry-content"],
-        "exclude":[".ss-inline-share-wrapper"]
+        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
+    },
+    "fedoramagazine.org":{
+        "title":".post-title",
+        "author":".author",
+        "date":".post-meta-date > a:nth-child(1)",
+        "content":[".post-image","div.post-content:nth-child(1)"],
+        "exclude":[".wp-block-separator","div.sharedaddy"]
+    },
+    "kerneltalks.com":{
+        "title":".entry-title",
+        "author":"",
+        "date":".entry-time",
+        "content":[".entry-content"],
+        "exclude":[".share-filled",".wp-block-separator"]
     },
     "www.ostechnix.com":{
         "title":".post-title",
         "author":".fn > a:nth-child(1)",
         "date":".published",
         "content":[".image-container",".entry-inner"],
-        "exclude":[]
+        "exclude":[".after-post-box",".sharedaddy"]
     }
 }

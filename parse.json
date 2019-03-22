@@ -22,6 +22,13 @@
         "content":[".entry-content"],
         "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
     },
+    "www.networkworld.com":{
+        "title":"[itemprop=headline]",
+        "author":".fn > a:nth-child(1) > span:nth-child(1)",
+        "date":".format-date",
+        "content":[".deck",".lede-container","#drr-container"],
+        "exclude":[]
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

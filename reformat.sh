@@ -17,7 +17,7 @@ s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:punct:]]*[[:
 s/\([[:digit:]][[:punct:]]*\)\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)/\1 \2/g;
 s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\([[:punct:]]*[[:digit:]]\)/\1 \2/g;
 s/,/，/g;                       # 任何,都被替换
-s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)\?/\1？/g;                       # 左边是中文的?被替换
+s/\([^[:upper:][:lower:][:blank:][:cntrl:][:punct:][:digit:]]\)?/\1？/g;                       # 左边是中文的?被替换
 s/!$/！/g;                      # !在尾部则可被替换
 s/!\([^[]\)/！\1/g;             # !不跟[则可以被替换，但是由于图片的格式是![,因此不能被替换
 # 由于.用户划分域名(www.baidu.com)和版本号(3.4.1)，因此不能被随意替换

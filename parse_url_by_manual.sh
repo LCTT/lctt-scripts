@@ -4,31 +4,45 @@ source $(dirname "${BASH_SOURCE[0]}")/base.sh
 url="$*"
 domain=$(get-domain-from-url ${url})
 parse_cfg=$(jq ".\"${domain}\"" parse.json)
-html=$(curl ${url})
+
+function html_cleanup()
+{
+    tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -f html -t html
+    return 0
+}
+html="$(curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" ${url}|html_cleanup)"
 # extract title
-title_selector=$(echo ${parse_cfg}|jq -r ".title")
+title_selector=$(echo "${parse_cfg}"|jq -r ".title")
 if [[ -z "${title_selector}" ]];then
     title_selector=".title"
 fi
-title=$(echo ${html}|hxclean|hxselect -c "${title_selector}"|pandoc -f html -t plain)
+if [[ -n "${title_selector}" ]];then
+    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain)
+fi
+
 # extract author
-author_selector=$(echo ${parse_cfg}|jq -r ".author")
-author=$(echo ${html}|hxclean|hxselect -c "${author_selector}"|pandoc -f html -t plain)
+author_selector=$(echo "${parse_cfg}"|jq -r ".author")
+if [[ -n "${author_selector}" ]];then
+    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain)
+fi
+
 # extract date
-date_selector=$(echo ${parse_cfg}|jq -r ".date")
-date=$(echo ${html}|hxclean|hxselect -c "${date_selector}"|pandoc -f html -t plain)
-date=$(date -d "${date}" "+%Y%m%d") # 格式化date
+date_selector=$(echo "${parse_cfg}"|jq -r ".date")
+if [[ -n "${date_selector}" ]];then
+    date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
+    date=$(date -d "${date}" "+%Y%m%d") # 格式化date
+fi
 # extract content
-while read content_selector
-do
-    content_part=$(echo ${html}|hxclean|hxselect "${content_selector}")
-    content="${content}
-${content_part}"
-done< <(echo ${parse_cfg}|jq -r ".content[]")
 while read exclude_selector
 do
-    content=$(echo ${content}|hxclean|hxremove -i "${exclude_selector}")
+    html=$(echo "${html}"|hxremove -i "${exclude_selector}")
 done< <(echo ${parse_cfg}|jq -r ".exclude[]")
+while read content_selector
+do
+    content_part=$(echo "${html}"|hxselect "${content_selector}")
+    content="${content}
+${content_part}"
+done< <(echo "${parse_cfg}"|jq -r ".content[]")
 echo '{}'|jq '{"title":$title,
                 "author":$author,
                 "date_published":$date,

@@ -2,17 +2,61 @@
     "opensource.com":{
         "title":".pane-node-title > h1:nth-child(1)",
         "author":"span.byline__author-name:nth-child(2) > a:nth-child(1)",
+        "author_link":".username::attr(href)",
         "date":".byline__date",
         "content":[".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
                    ".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",
-                   ".field-name-body > div:nth-child(1) > div:nth-child(1)"],
-        "exclude":[".embedded-callout-menu",".rtecenter"]
+                   ".pane-node-body"],
+        "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"]
     },
-    "url.com":{
-        "title":"",
-        "author":"",
+    "www.2daygeek.com":{
+        "title":"h1.post-title",
+        "author":".fn > a:nth-child(1)",
         "date":"",
-        "content":[""],
-        "exclude":[""]
+        "content":[".entry-inner"],
+        "exclude":[]
+    },
+    "itsfoss.com":{
+        "title":".entry-title",
+        "author":".entry-author-name",
+        "date":".entry-modified-time",
+        "content":[".entry-content"],
+        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
+    },
+    "www.networkworld.com":{
+        "title":"[itemprop=headline]",
+        "author":".fn > a:nth-child(1) > span:nth-child(1)",
+        "date":".format-date",
+        "content":[".deck",".lede-container","#drr-container"],
+        "exclude":[]
+    },
+    "fedoramagazine.org":{
+        "title":".post-title",
+        "author":".author",
+        "date":".post-meta-date > a:nth-child(1)",
+        "content":[".post-image","div.post-content:nth-child(1)"],
+        "exclude":[".wp-block-separator","div.sharedaddy"]
+    },
+    "kerneltalks.com":{
+        "title":".entry-title",
+        "author":"",
+        "date":".entry-time",
+        "content":[".entry-content"],
+        "exclude":[".share-filled",".wp-block-separator"]
+    },
+    "www.linux.com":{
+        "title":".pane-node-title > h1:nth-child(1)",
+        "author":".field-content > a:nth-child(1)",
+        "author_link": ".field-content > a:nth-child(1)::attr(href)",
+        "date":".pane-node-created",
+        "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
+        "exclude":[".element-invisible"]
+    },
+    "www.ostechnix.com":{
+        "title":".post-title",
+        "author":".fn > a:nth-child(1)",
+        "date":".published",
+        "content":[".image-container",".entry-inner"],
+        "exclude":[".after-post-box",".sharedaddy"]
     }
 }

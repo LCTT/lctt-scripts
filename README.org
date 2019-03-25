@@ -105,7 +105,7 @@
 
 两者的不同点在于：
 
-+ =1_add_new_article_manual.sh= 需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT 官方选题工具]]中生成 Markdown 内容
++ =1_add_new_article_manual.sh= __需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT 官方选题工具]]中生成 Markdown 内容__ 会根据 =parse.json= 中配置的信息从HTML中抽取文章标题、作者、日期以及主要内容。
 + =1_add_new_article_newspaper.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成 Markdown 内容
 
 一般来说，使用 =1_add_new_article_newspaper.sh= 要方便很多。

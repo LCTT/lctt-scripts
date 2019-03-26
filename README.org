@@ -29,11 +29,10 @@
 
 + feed_monitor.py :: 监控 feed，列出新增的 article link
 
-* 配置说明
-
 + search_overdue_translating_articles.sh :: 搜索超长时间没有翻译完成的文章. 使用方法为 =search_overdue_translating_articles.sh [timeout]= 其中timeout单位为天,默认为30天
 
 * 配置说明：
+** lctt.cfg
 你可以在 =lctt.cfg= 中配置：
 
 + ProjectRoot :: 项目根目录路径（绝对路径），如果没有配置则脚本从 =$HOME= 目录中搜索名为 =TranslateProject= 的目录
@@ -51,6 +50,13 @@
 + PythonEnv :: 使用 =1_add_new_article_manual.sh= 时需要用到 Python 的 =newspaper= 库来对页面进行分析，这个参数指定了安装有 =newspaper= 库的 Python 环境的路径
 
 + AutoReformat :: 完成翻译后，是否使用 =reformat.sh= 进行格式化，0 表示否，1 表示是
+** parse.json
++ title :: 页面标题所在的CSS Selector
++ author :: 页面作者所在的CSS Selector
++ author_link :: 页面作者链接所在的CSS Selector
++ date :: 页面日期所在的CSS Selector
++ content :: 页面主要内容的CSS Selector数组
++ exclude :: 页面要排除在内容之外的CSS Selector数组
 
 * 使用说明
 
@@ -105,10 +111,10 @@
 
 两者的不同点在于：
 
-+ =1_add_new_article_manual.sh= ~~需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT 官方选题工具]]中生成 Markdown 内容~~ 会根据 =parse.json= 中配置的信息从HTML中抽取文章标题、作者、日期以及主要内容。
++ =1_add_new_article_manual.sh= +需要你手工输入文章标题，作者和日期，并且要求你手工将主要内容复制出来粘贴到 [[http://lctt.ixiqin.com/][LCTT 官方选题工具]]中生成 Markdown 内容+ 会根据 =parse.json= 中配置的信息从HTML中抽取文章标题、作者、日期以及主要内容。
 + =1_add_new_article_newspaper.sh= 则会尝试使用 =newspaper= 库来解析页面中的标题，作者，日期和主要内容，并且自动通过 =html2text= 转换成 Markdown 内容
 
-一般来说，使用 =1_add_new_article_newspaper.sh= 要方便很多。
+一般来说，对于 =parse.json= 中有配置信息的网站文章，使用 =1_add_new_article_manual.sh=, 否则使用 =1_add_new_article_newspaper.sh= 。
 
 两个脚本都会根据标题自动生成选题文件，并用配置好的编辑器打开选题文件供你进行修改，修改完成后按下回车，脚本会用这个新的选题文件帮你新生成一个分支，并提交到你的远程仓库中。
 

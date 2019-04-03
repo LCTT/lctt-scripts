@@ -17,20 +17,37 @@ if [[ -z "${title_selector}" ]];then
     title_selector=".title"
 fi
 if [[ -n "${title_selector}" ]];then
-    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain)
+    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain --wrap=none) # 标题中可能包含换行符，修改成空格
 fi
 
 # extract author
 author_selector=$(echo "${parse_cfg}"|jq -r ".author")
 if [[ -n "${author_selector}" ]];then
-    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain)
+    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none)
+fi
+
+# extract authorlink
+authorlink_selector=$(echo "${parse_cfg}"|jq -r ".authorlink")
+if [[ -n "${authorlink_selector}" ]];then
+    authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain --wrap=none)
+    if [[ -n "${authorlink}" ]];then
+        authorlink=$(get-abstract-url "${url}" "${authorlink}")
+    fi
+fi
+
+# extract summary
+summary_selector=$(echo "${parse_cfg}"|jq -r ".summary")
+if [[ -n "${summary_selector}" ]];then
+    summary=$(echo "${html}"|hxselect -c "${summary_selector}"|pandoc -f html -t plain)
 fi
 
 # extract date
 date_selector=$(echo "${parse_cfg}"|jq -r ".date")
 if [[ -n "${date_selector}" ]];then
     date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
-    date=$(date -d "${date}" "+%Y%m%d") # 格式化date
+    if [[ -n "${date}" ]];then
+        date=$(date -d "${date}" "+%Y%m%d") # 格式化date
+    fi
 fi
 # extract content
 while read exclude_selector
@@ -45,9 +62,13 @@ ${content_part}"
 done< <(echo "${parse_cfg}"|jq -r ".content[]")
 echo '{}'|jq '{"title":$title,
                 "author":$author,
+                "author_link":$authorlink,
+                "summary":$summary,
                 "date_published":$date,
                 "content":$content}' \
                     --arg title "${title}" \
                     --arg author "${author}" \
+                    --arg authorlink "${authorlink}" \
+                    --arg summary "${summary}" \
                     --arg date "${date}" \
                     --arg content "${content}"

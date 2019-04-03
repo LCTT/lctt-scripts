@@ -76,7 +76,13 @@ if [[ -z "${author}" ]];then
 fi
 
 # 获取author link
-author_link=$(get-author-link "${url}" "${author}")
+author_link=$(echo ${response} |jq -r .author_link)
+if [[ "${author_link}" == "null" || -z "${author_link}" ]];then
+    author_link=$(get-author-link "${url}" "${author}")
+fi
+
+# 获取summary
+summary=$(echo ${response} |jq -r .summary)
 
 # 获取content
 content=$(echo ${response} |jq -r .content)
@@ -112,7 +118,7 @@ cat > "${source_file}" <<EOF
 
 ${title}
 ======
-
+${summary}
 EOF
 comment="--------------------------------------------------------------------------------\\
 \\

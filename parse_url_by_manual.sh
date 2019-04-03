@@ -30,6 +30,9 @@ fi
 authorlink_selector=$(echo "${parse_cfg}"|jq -r ".authorlink")
 if [[ -n "${authorlink_selector}" ]];then
     authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain --wrap=none)
+    if [[ -n "${authorlink}" ]];then
+        authorlink=$(get-abstract-url "${url}" "${authorlink}")
+    fi
 fi
 
 # extract summary

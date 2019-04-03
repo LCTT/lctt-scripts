@@ -264,3 +264,31 @@ function git-get-remote-repo()
     repo=${repo%.git}
     echo ${repo}
 }
+
+# 将URL从相对路径改成绝对路径
+function get-abstract-url()
+{
+    local baseUrl="$1"
+    if [[ "${baseUrl}" == */ ]];then
+        baseUrl="${baseUrl}index.html" # 补上默认页面,这一步同一格式到页面
+    fi
+    local rootUrl=$(echo "${baseUrl}"|sed 's#^\([a-z]\+://[^/]*\).*$#\1#')
+    local relativeUrl="$2"
+    (
+        shopt -s extglob
+        if [[ ${relativeUrl} == +([a-zA-Z])://* ]];then
+            echo ${relativeUrl}
+        elif  [[ ${relativeUrl} == /* ]];then
+            echo "${rootUrl}${relativeUrl}"
+        elif [[ ${relativeUrl} == ../* ]];then
+            baseUrl=${baseUrl%/?*} # 替代dirname
+            relativeUrl=${relativeUrl#*/}
+            get-abstract-url ${baseUrl} ${relativeUrl}
+        elif [[ ${relativeUrl} == +([a-z0-9A-Z])/* ]];then
+            echo "${baseUrl}/${relativeUrl}"
+        else
+            echo "ERROR URL:${relativeUrl}" >&2
+            exit 1
+        fi
+    )
+}

@@ -49,18 +49,18 @@ response=$(${CFG_PATH}/${parse_url_script} "${url}")
 
 # 获取title
 if [[ -z "${title}" ]];then
-    title=$(echo ${response} |jq -r .title)
+    title=$(echo "${response}" |jq -r .title)
     [[ "${title}" == "null" || -z "${title}" ]] && read -r -p "please input the Title:" title
 fi
 
 # 获取date
 if [[ -z "${date}" ]];then
-    date=$(echo ${response} |jq -r .date_published)
+    date=$(echo "${response}" |jq -r .date_published)
     if [[ "${date}" == "null" || -z "${date}" ]];then
         read -r -p "please input the DATE(YYYYMMDD):" date
         [[ -z "${date}" ]] && date=$(date +"%Y%m%d")
     else
-        date=$(echo ${date}|cut -d "T" -f1)
+        date=$(echo "${date}"|cut -d "T" -f1)
     fi
 fi
 
@@ -71,21 +71,21 @@ fi
 
 # 获取author
 if [[ -z "${author}" ]];then
-    author=$(echo ${response} |jq -r .author)
+    author=$(echo "${response}" |jq -r .author)
     [[ "${author}" == "null" || -z "${author}" ]] && read -r -p "please input the author:" author
 fi
 
 # 获取author link
-author_link=$(echo ${response} |jq -r .author_link)
+author_link=$(echo "${response}" |jq -r .author_link)
 if [[ "${author_link}" == "null" || -z "${author_link}" ]];then
     author_link=$(get-author-link "${url}" "${author}")
 fi
 
 # 获取summary
-summary=$(echo ${response} |jq -r .summary)
+summary=$(echo "${response}" |jq -r .summary)
 
 # 获取content
-content=$(echo ${response} |jq -r .content)
+content=$(echo "${response}" |jq -r .content)
 
 echo author= "$author"
 echo author_link= "${author_link}"
@@ -134,15 +134,14 @@ via: ${url}\\
 [a]: ${author_link}\\
 [b]: https://github.com/$(get-github-user)"
 
-if [[ -n "${content}" || "${content}" == "null" ]];then
-    echo ${response}|jq -r .content|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links+markdown_attribute --wrap=preserve --strip-comments --no-highlight --indented-code-classes=python|pandoc -f gfm -t html-native_divs-native_spans |html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
+if [[ -n "${content}" && "${content}" != "null" ]];then
+    echo "${content}"|pandoc --reference-links --reference-location=document -f html-native_divs-native_spans -t gfm+backtick_code_blocks+fenced_code_blocks-shortcut_reference_links+markdown_attribute --wrap=preserve --strip-comments --no-highlight --indented-code-classes=python|pandoc -f gfm -t html-native_divs-native_spans |html2text  --body-width=0  --no-wrap-links --reference-links --mark-code |sed '{
 s/$//;                          # 去掉
 s/[[:space:]]*$//;                # 去掉每行最后的空格
 # /^\[code\]/,/^\[\/code\]/ s/^    //; # 去掉code block前面的空格
 # 将[code]...[/code]替换成```...```
 s/^\[code\]/\n```\n/; # 将[code]替换成\n```\n,在代码块的三个“`” 之外和段落之间需要额外加个空行，当段落和它连在一起时，在一些 md 编辑器里面是识别有问题的（MacDown）。
 s/^\[\/code\][[:space:]]*$/```/; # [/code]替换成```
-s/comic core.md Dict.md lctt2014.md lctt2016.md LCTT翻译规范.md LICENSE Makefile published README.md sign.md sources translated 选题模板.txt 中文排版指北.md/*/g; # ugly Hacked
 }'|${CFG_PATH}/format_source_block.awk >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
     # 算出最一个标题是多少号

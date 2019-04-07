@@ -7,10 +7,11 @@ parse_cfg=$(jq ".\"${domain}\"" parse.json)
 
 function html_cleanup()
 {
-    tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes
+    tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
     return 0
 }
 html="$(curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" ${url}|html_cleanup)"
+# echo ${html}>/tmp/t.html
 # extract title
 title_selector=$(echo "${parse_cfg}"|jq -r ".title")
 if [[ -z "${title_selector}" ]];then

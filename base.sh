@@ -63,7 +63,7 @@ EOF
     fi
 
     url="$*"
-    clean_url=${url%%\?*}       # 去掉URL中?后面的内容
+    clean_url=${url%%[?#]*}       # 去掉URL中?或#后面的内容
     clean_url=${clean_url##http*://}  # 去掉http://或https://
     if [[ "${clean_url}" == */ ]];then
         clean_url=${clean_url%%/} # 去掉最后的/

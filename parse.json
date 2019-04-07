@@ -26,7 +26,7 @@
     },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
-        "author":".fn > a:nth-child(1) > span:nth-child(1)",
+        "author":".fn",
         "authorlink":"[itemprop=name] > [itemprop=url]::attr(href)",
         "date":"[itemprop=datePublished]::attr(content)",
         "content":[".deck",".lede-container","#drr-container"],
@@ -53,7 +53,8 @@
         "author_link": ".field-content > a:nth-child(1)::attr(href)",
         "date":".pane-node-created",
         "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
-        "exclude":[".element-invisible"]
+        "exclude":[".element-invisible"],
+        "cleanup_command":"tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
     },
     "www.ostechnix.com":{
         "title":".post-title",

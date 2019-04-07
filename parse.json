@@ -27,6 +27,7 @@
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
         "author":".fn > a:nth-child(1) > span:nth-child(1)",
+        "authorlink":"[itemprop=name] > [itemprop=url]::attr(href)",
         "date":"[itemprop=datePublished]::attr(content)",
         "content":[".deck",".lede-container","#drr-container"],
         "exclude":[]

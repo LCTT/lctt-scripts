@@ -20,7 +20,7 @@
         "title":".entry-title",
         "author":".entry-author-name",
         "authorlink":".entry-author-link::attr(href)",
-        "date":".entry-modified-time",
+        "date":"[property='article:published_time']::attr(content)",
         "content":[".entry-content"],
         "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
     },

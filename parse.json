@@ -22,7 +22,8 @@
         "authorlink":".entry-author-link::attr(href)",
         "date":"[property='article:published_time']::attr(content)",
         "content":[".entry-content"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
+        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
+        "cleanup_command":"tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",

@@ -8,8 +8,8 @@ parse_cfg=$(jq ".\"${domain}\"" parse.json)
 function html_cleanup()
 {
     cleanup_command=$(echo "${parse_cfg}"|jq -r ".cleanup_command")
-    if [[ "${cleanup_command}" == "null"]];then
-        tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
+    if [[ "${cleanup_command}" == "null" ]];then
+        tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
     else
         eval "${cleanup_command}"
     fi

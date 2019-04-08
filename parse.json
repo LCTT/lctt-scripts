@@ -7,7 +7,8 @@
         "summary":".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",
                    ".pane-node-body"],
-        "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"]
+        "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"],
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
     "www.2daygeek.com":{
         "title":"h1.post-title",
@@ -23,7 +24,7 @@
         "date":"[property='article:published_time']::attr(content)",
         "content":[".entry-content"],
         "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
-        "cleanup_command":"tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
@@ -56,7 +57,7 @@
         "date":".pane-node-created",
         "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
         "exclude":[".element-invisible"],
-        "cleanup_command":"tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
     },
     "www.ostechnix.com":{
         "title":".post-title",

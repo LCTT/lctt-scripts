@@ -81,7 +81,10 @@ function command-exist-p()
 function continue-p()
 { read -p "$*,CONTINUE? [y/n]" CONT
   case $CONT in
-      [nN]*)
+      [yY]*)
+          break
+          ;;
+      *)
           exit 1
           ;;
   esac

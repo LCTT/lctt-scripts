@@ -7,11 +7,11 @@ parse_cfg=$(jq ".\"${domain}\"" parse.json)
 
 function html_cleanup()
 {
-    cleanup_selector=$(echo "${parse_cfg}"|jq -r ".cleanup_command")
-    if [[ -n "${cleanup_selector}" ]];then
-        eval "${cleanup_selector}"
-    else
+    cleanup_command=$(echo "${parse_cfg}"|jq -r ".cleanup_command")
+    if [[ "${cleanup_command}" == "null"]];then
         tidy --quiet --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
+    else
+        eval "${cleanup_command}"
     fi
     return 0
 }
@@ -19,22 +19,22 @@ html="$(curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/2010
  echo ${html}>/tmp/t.html
 # extract title
 title_selector=$(echo "${parse_cfg}"|jq -r ".title")
-if [[ -z "${title_selector}" ]];then
+if [[ "${title_selector}" == "null" ]];then
     title_selector=".title"
 fi
-if [[ -n "${title_selector}" ]];then
+if [[ "${title_selector}" != "null" ]];then
     title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain --wrap=none) # 标题中可能包含换行符，修改成空格
 fi
 
 # extract author
 author_selector=$(echo "${parse_cfg}"|jq -r ".author")
-if [[ -n "${author_selector}" ]];then
+if [[ "${author_selector}" != "null" ]];then
     author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none)
 fi
 
 # extract authorlink
 authorlink_selector=$(echo "${parse_cfg}"|jq -r ".authorlink")
-if [[ -n "${authorlink_selector}" ]];then
+if [[ "${authorlink_selector}" != "null" ]];then
     authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain --wrap=none)
     if [[ -n "${authorlink}" ]];then
         authorlink=$(get-abstract-url "${url}" "${authorlink}")
@@ -43,13 +43,13 @@ fi
 
 # extract summary
 summary_selector=$(echo "${parse_cfg}"|jq -r ".summary")
-if [[ -n "${summary_selector}" ]];then
+if [[ "${summary_selector}" != "null" ]];then
     summary=$(echo "${html}"|hxselect -c "${summary_selector}"|pandoc -f html -t plain)
 fi
 
 # extract date
 date_selector=$(echo "${parse_cfg}"|jq -r ".date")
-if [[ -n "${date_selector}" ]];then
+if [[ "${date_selector}" != "null" ]];then
     date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
     if [[ -n "${date}" ]];then
         date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割

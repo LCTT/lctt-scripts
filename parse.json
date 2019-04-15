@@ -59,6 +59,15 @@
         "exclude":[".element-invisible"],
         "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
     },
+    "leebriggs.co.uk":{
+        "title":".post-title",
+        "author":".site-footer > p:nth-child(1) > a:nth-child(1)",
+        "authorlink":".site-footer > p:nth-child(1) > a:nth-child(1)::attr(href)",
+        "date":".post-meta > time:nth-child(5)::attr(datetime)",
+        "content":[".post-content"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
+    },
     "www.ostechnix.com":{
         "title":".post-title",
         "author":".fn > a:nth-child(1)",

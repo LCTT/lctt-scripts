@@ -3,7 +3,7 @@ set -e
 source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 # 获取参数
-while getopts :u:t:a:c:d:Tf OPT; do
+while getopts :u:t:a:c:d:e:Tf OPT; do
     case $OPT in
         u|+u)
             url="$OPTARG"
@@ -13,6 +13,9 @@ while getopts :u:t:a:c:d:Tf OPT; do
             ;;
         d|+d)
             date="$OPTARG"
+            ;;
+        e|+e)
+            editor="$OPTARG"
             ;;
         a|+a)
             author="$OPTARG"
@@ -178,7 +181,11 @@ if [[ -n ${tranlate_flag} ]];then
     mark-file-as-tranlating "${source_file}"
 fi
 
-eval "$(get-editor) '${source_file}'"
+if [[ -z "${editor}" ]];then
+    editor="$(get-editor)"
+fi
+
+eval "${editor} '${source_file}'"
 
 if [[ -z "${article_type}" ]];then
     read -p "保存好原稿后请输入文章的类型(tech/talk),直接按回车表示由系统自动判断" article_type

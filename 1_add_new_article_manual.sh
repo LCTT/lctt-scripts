@@ -38,6 +38,7 @@ shift $(( OPTIND - 1 ))
 OPTIND=1
 
 [[ -z "${url}" ]] && read -r -p "please input the URL:" url
+url=${url%%[?#]*}               # 清理?#后面的东西
 baseurl=$(get-domain-from-url "${url}")
 if [[ -z "${force_flag}" ]] && url-blocked-p "${baseurl}" ;then
     warn "${baseurl} is blocked!"

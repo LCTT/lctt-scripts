@@ -29,7 +29,7 @@ fi
 # extract author
 author_selector=$(echo "${parse_cfg}"|jq -r ".author")
 if [[ "${author_selector}" != "null" ]];then
-    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none|sed 's/([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
+    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none|sed 's/ *([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
 fi
 
 # extract authorlink

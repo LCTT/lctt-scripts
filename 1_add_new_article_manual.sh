@@ -209,4 +209,5 @@ git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${article_directory}/${filename}"
 git commit -m "选题: ${date} ${title}
+
 sources/${article_type}/${filename}" && git push -u origin "${new_branch}"

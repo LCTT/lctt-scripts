@@ -11,9 +11,17 @@ function get-lctt-head()
     )
 }
 
-# feeds = ("https://feeds.feedburner.com/kerneltalks",  "https://www.linuxtechi.com/feed/", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", "https://dave.cheney.net/feed")
+function get-lctt-last-commit-log()
+{
+    (
+        cd $(get-lctt-path)
+        git log -1 --format="format:%s"|head -n 1
+    )
+}
 
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feeds/blogs/community/rss https://itsfoss.com/feed/"
+# feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
+
+feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feeds/blogs/community/rss https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -21,7 +29,7 @@ for feed in ${feeds};do
     do
         yes "
 "|./1_add_new_article_manual.sh -u "${url}" -c tech  -e "echo"
-        ok.sh create_pull_request "LCTT/TranslateProject" "选题: ${url}" "$(get-lctt-head)" "master"
+        ok.sh create_pull_request "LCTT/TranslateProject" "$(get-lctt-last-commit-log)" "$(get-lctt-head)" "master"
         ./4_finish.sh -d
     done
 done

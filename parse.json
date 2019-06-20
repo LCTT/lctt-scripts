@@ -28,12 +28,12 @@
     },
     "dave.cheney.net":{
         "title":".entry-title",
-        "date":"a[title*=':']",
+        "date":".entry-date",
         "author":".author > .url",
         "authorlink":".author > .url::attr(href)",
         "content":[".entry-content"],
         "exclude":[],
-        "cleanup_command":"pandoc -t html -f html"
+        "cleanup_command":"hxclean"
     },
     "linuxaria.com":{
         "title":".entry-title",

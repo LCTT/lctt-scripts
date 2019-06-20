@@ -11,11 +11,31 @@ function get-lctt-head()
     )
 }
 
-function get-lctt-last-commit-log()
+function get-lctt-last-commit-title()
 {
     (
         cd $(get-lctt-path)
         git log -1 --format="format:%s"|head -n 1
+    )
+}
+
+function get-lctt-operation-file()
+{
+    (
+        cd $(get-lctt-path)
+        local current_branch=$(git-get-current-branch)
+        git-branch-to-file-path "${current_branch}"
+    )
+}
+
+function is-valid-file()
+{
+    (
+        cd $(get-lctt-path)
+        local operation_file="$*"
+        local file_size=$(cat "${operation_file}"|wc -w)
+        # 文件字数达到500字才认为是有效文章
+        [[ ${file_size} -gt 500 ]] && grep '^\[#\]: author: ' "${operation_file}" |grep "http"
     )
 }
 
@@ -29,11 +49,34 @@ for feed in ${feeds};do
     do
         yes "
 "|./1_add_new_article_manual.sh -u "${url}" -c tech  -e "echo"
-        ok.sh create_pull_request "LCTT/TranslateProject" "$(get-lctt-last-commit-log)" "$(get-lctt-head)" "master"
+        added_file=$(get-lctt-operation-file)
+        echo "${added_file:${file_size}}"
+        if is-valid-file "${added_file}";then
+            echo "${added_file} 文件是有效文件，自动提交"
+            ok.sh create_pull_request "LCTT/TranslateProject" "$(get-lctt-last-commit-title)" "$(get-lctt-head)" "master"
+        else
+            echo "${added_file} 文件不是有效文件，不自动提交"
+        fi
+        sleep 10
         ./4_finish.sh -d
     done
 done
 
+
+./feed_monitor.py "https://www.networkworld.com/index.rss" |while read url
+do
+    yes "
+"|./1_add_new_article_manual.sh -u "${url}" -e "echo"
+    added_file=$(get-lctt-operation-file)
+    echo "${added_file:${file_size}}"
+    if is-valid-file "${added_file}";then
+        echo "${added_file} 文件是有效文件，自动提交"
+        ok.sh create_pull_request "LCTT/TranslateProject" "$(get-lctt-last-commit-title)" "$(get-lctt-head)" "master"
+    else
+        echo "${added_file} 文件不是有效文件，不自动提交"
+    fi
+    ./4_finish.sh -d
+done
 
 # feed="https://www.networkworld.com/index.rss"
 # ./feed_monitor.py "${feed}" |while read url

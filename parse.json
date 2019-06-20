@@ -17,6 +17,32 @@
         "content":[".entry-inner"],
         "exclude":[".sharedaddy","noscript"]
     },
+    "www.linuxtechi.com":{
+        "title":".post-title",
+        "author":".author",
+        "authorlink":".author > .fn > a:nth-child(1)::attr(href)",
+        "date":".published",
+        "content":[".entry-inner"],
+        "exclude":[],
+        "cleanup_command":"sed 's$\\[email&#160;protected\\]$root@linuxtechi$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+    },
+    "dave.cheney.net":{
+        "title":".entry-title",
+        "date":"a[title*=':']",
+        "author":".author > .url",
+        "authorlink":".author > .url::attr(href)",
+        "content":[".entry-content"],
+        "exclude":[],
+        "cleanup_command":"pandoc -t html -f html"
+    },
+    "linuxaria.com":{
+        "title":".entry-title",
+        "author":"",
+        "authorlink":"",
+        "date":".year,.month,.day",
+        "content":[".entry > p"],
+        "exclude":[".wp-flattr-button"]
+    },
     "itsfoss.com":{
         "title":".entry-title",
         "author":".entry-author-name",

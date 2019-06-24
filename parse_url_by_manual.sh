@@ -9,7 +9,7 @@ function html_cleanup()
 {
     cleanup_command=$(echo "${parse_cfg}"|jq -r ".cleanup_command")
     if [[ "${cleanup_command}" == "null" ]];then
-        tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
+        tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no |pandoc -t html -f html
     else
         eval "${cleanup_command}"
     fi
@@ -23,19 +23,19 @@ if [[ "${title_selector}" == "null" ]];then
     title_selector=".title"
 fi
 if [[ "${title_selector}" != "null" ]];then
-    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain --wrap=none) # 标题中可能包含换行符，修改成空格
+    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain  --wrap=none) # 标题中可能包含换行符，修改成空格
 fi
 
 # extract author
 author_selector=$(echo "${parse_cfg}"|jq -r ".author")
 if [[ "${author_selector}" != "null" ]];then
-    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none|sed 's/ *([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
+    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain  --wrap=none|sed 's/ *([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
 fi
 
 # extract authorlink
 authorlink_selector=$(echo "${parse_cfg}"|jq -r ".authorlink")
 if [[ "${authorlink_selector}" != "null" ]];then
-    authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain --wrap=none)
+    authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain  --wrap=none)
     if [[ -n "${authorlink}" ]];then
         authorlink=$(get-abstract-url "${url}" "${authorlink}")
     fi

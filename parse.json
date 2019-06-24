@@ -26,6 +26,13 @@
         "exclude":[],
         "cleanup_command":"sed 's$\\[email&#160;protected\\]$root@linuxtechi$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no"
     },
+    "twobithistory.org":{
+        "title":".post-header > h1:nth-child(1)",
+        "date":".meta > em:nth-child(1)",
+        "content":["article"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
+    },
     "dave.cheney.net":{
         "title":".entry-title",
         "date":".entry-date",

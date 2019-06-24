@@ -78,6 +78,21 @@ do
     ./4_finish.sh -d
 done
 
+./feed_monitor.py "https://twobithistory.org/feed.xml" |while read url
+do
+    yes "
+"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -c talk -a 'Two-Bit History'
+    added_file=$(get-lctt-operation-file)
+    echo "${added_file:${file_size}}"
+    if is-valid-file "${added_file}";then
+        echo "${added_file} 文件是有效文件，自动提交"
+        ok.sh create_pull_request "LCTT/TranslateProject" "$(get-lctt-last-commit-title)" "$(get-lctt-head)" "master"
+    else
+        echo "${added_file} 文件不是有效文件，不自动提交"
+    fi
+    ./4_finish.sh -d
+done
+
 # feeds="https://opensource.com/feed"
 # for feed in ${feeds};do
 #     echo "auto add ${feed}"

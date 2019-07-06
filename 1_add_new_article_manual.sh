@@ -3,7 +3,7 @@ set -e
 source $(dirname "${BASH_SOURCE[0]}")/base.sh
 
 # 获取参数
-while getopts :u:t:a:d:Tf OPT; do
+while getopts :u:t:a:c:d:e:Tf OPT; do
     case $OPT in
         u|+u)
             url="$OPTARG"
@@ -14,8 +14,14 @@ while getopts :u:t:a:d:Tf OPT; do
         d|+d)
             date="$OPTARG"
             ;;
+        e|+e)
+            editor="$OPTARG"
+            ;;
         a|+a)
             author="$OPTARG"
+            ;;
+        c|+c)
+            article_type="$OPTARG"
             ;;
         T|+T)
             tranlate_flag="yes"
@@ -32,6 +38,7 @@ shift $(( OPTIND - 1 ))
 OPTIND=1
 
 [[ -z "${url}" ]] && read -r -p "please input the URL:" url
+url=${url%%[?#]*}               # 清理?#后面的东西
 baseurl=$(get-domain-from-url "${url}")
 if [[ -z "${force_flag}" ]] && url-blocked-p "${baseurl}" ;then
     warn "${baseurl} is blocked!"
@@ -142,6 +149,7 @@ s/[[:space:]]*$//;                # 去掉每行最后的空格
 # 将[code]...[/code]替换成```...```
 s/^\[code\]/\n```\n/; # 将[code]替换成\n```\n,在代码块的三个“`” 之外和段落之间需要额外加个空行，当段落和它连在一起时，在一些 md 编辑器里面是识别有问题的（MacDown）。
 s/^\[\/code\][[:space:]]*$/```/; # [/code]替换成```
+s/\[\/code\][[:space:]]*$/\n```/; # [/code]替换成```
 }'|${CFG_PATH}/format_source_block.awk >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
     # 算出最一个标题是多少号
@@ -174,8 +182,15 @@ if [[ -n ${tranlate_flag} ]];then
     mark-file-as-tranlating "${source_file}"
 fi
 
-eval "$(get-editor) '${source_file}'"
-read -p "保存好原稿后请输入文章的类型(tech/talk),直接按回车表示由系统自动判断" article_type
+if [[ -z "${editor}" ]];then
+    editor="$(get-editor)"
+fi
+
+eval "${editor} '${source_file}'"
+
+if [[ -z "${article_type}" ]];then
+    read -p "保存好原稿后请输入文章的类型(tech/talk),直接按回车表示由系统自动判断" article_type
+fi
 
 if [[ -z "${article_type}" ]];then
     article_type=$(guess-article-type "${source_file}")
@@ -194,4 +209,5 @@ git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${article_directory}/${filename}"
 git commit -m "选题: ${date} ${title}
+
 sources/${article_type}/${filename}" && git push -u origin "${new_branch}"

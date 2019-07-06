@@ -1,5 +1,5 @@
-FROM base/archlinux
-RUN pacman -Syy --noconfirm && pacman -Syu --noconfirm && pacman -S openssh git s-nail jq html2text pandoc python-pip --noconfirm && yes |pacman -Scc
+FROM archlinux/base
+RUN pacman -Syy --noconfirm && pacman -Syu --noconfirm && pacman -S openssh git s-nail jq html2text pandoc python-pip tidy --noconfirm && yes |pacman -Scc
 RUN sed -i 's/#zh_CN.UTF-8/zh_CN.UTF-8/' /etc/locale.gen && locale-gen
 ENV LANG=zh_CN.UTF-8
 RUN useradd -m lctt

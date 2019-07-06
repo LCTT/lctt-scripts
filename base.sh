@@ -63,8 +63,11 @@ EOF
     fi
 
     url="$*"
-    clean_url=${url%%\?*}       # 去掉URL中?后面的内容
-    clean_url=${url##http*://}  # 去掉http://或https://
+    clean_url=${url%%[?#]*}       # 去掉URL中?或#后面的内容
+    clean_url=${clean_url##http*://}  # 去掉http://或https://
+    if [[ "${clean_url}" == */ ]];then
+        clean_url=${clean_url%%/} # 去掉最后的/
+    fi
     echo clean_url= ${clean_url}
     # find $(get-lctt-path) -type f -name "[0-9]*.md" -print0 |xargs -I{} -0 grep -i "via:" "{}" |cut -d ":" -f2- |grep -i "${clean_url}"
     (cd $(get-lctt-path) && git grep -E "via: *https?://${clean_url}")
@@ -78,7 +81,10 @@ function command-exist-p()
 function continue-p()
 { read -p "$*,CONTINUE? [y/n]" CONT
   case $CONT in
-      [nN]*)
+      [yY]*)
+          break
+          ;;
+      *)
           exit 1
           ;;
   esac

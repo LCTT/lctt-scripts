@@ -7,28 +7,65 @@
         "summary":".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",
                    ".pane-node-body"],
-        "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"]
+        "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"],
+        "cleanup_command":"sed 's$<pre>$[code]$g;s$</pre>$[/code]$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
     "www.2daygeek.com":{
         "title":"h1.post-title",
         "author":".fn > a:nth-child(1)",
         "date":"",
         "content":[".entry-inner"],
-        "exclude":[]
+        "exclude":[".sharedaddy","noscript"]
+    },
+    "www.linuxtechi.com":{
+        "title":".post-title",
+        "author":".author",
+        "authorlink":".author > .fn > a:nth-child(1)::attr(href)",
+        "date":".published",
+        "content":[".entry-inner"],
+        "exclude":[],
+        "cleanup_command":"sed 's$\\[email&#160;protected\\]$root@linuxtechi$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+    },
+    "twobithistory.org":{
+        "title":".post-header > h1:nth-child(1)",
+        "date":".meta > em:nth-child(1)",
+        "content":["article"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
+    },
+    "dave.cheney.net":{
+        "title":".entry-title",
+        "date":".entry-date",
+        "author":".author > .url",
+        "authorlink":".author > .url::attr(href)",
+        "content":[".entry-content"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
+    },
+    "linuxaria.com":{
+        "title":".entry-title",
+        "author":"",
+        "authorlink":"",
+        "date":".year,.month,.day",
+        "content":[".entry > p"],
+        "exclude":[".wp-flattr-button"]
     },
     "itsfoss.com":{
         "title":".entry-title",
         "author":".entry-author-name",
         "authorlink":".entry-author-link::attr(href)",
-        "date":".entry-modified-time",
+        "date":"[property='article:published_time']::attr(content)",
         "content":[".entry-content"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"]
+        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
-        "author":".fn > a:nth-child(1) > span:nth-child(1)",
+        "author":".fn",
+        "authorlink":"[itemprop=name] > [itemprop=url]::attr(href)",
         "date":"[itemprop=datePublished]::attr(content)",
-        "content":[".deck",".lede-container","#drr-container"],
+        "summary":".deck",
+        "content":[".lede-container","#drr-container"],
         "exclude":[]
     },
     "fedoramagazine.org":{
@@ -49,10 +86,20 @@
     "www.linux.com":{
         "title":".pane-node-title > h1:nth-child(1)",
         "author":".field-content > a:nth-child(1)",
-        "author_link": ".field-content > a:nth-child(1)::attr(href)",
+        "authorlink": ".field-content > a:nth-child(1)::attr(href)",
         "date":".pane-node-created",
         "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
-        "exclude":[".element-invisible"]
+        "exclude":[".element-invisible"],
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
+    },
+    "leebriggs.co.uk":{
+        "title":".post-title",
+        "author":".site-footer > p:nth-child(1) > a:nth-child(1)",
+        "authorlink":".site-footer > p:nth-child(1) > a:nth-child(1)::attr(href)",
+        "date":".post-meta > time:nth-child(5)::attr(datetime)",
+        "content":[".post-content"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
     },
     "www.ostechnix.com":{
         "title":".post-title",

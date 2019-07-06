@@ -15,7 +15,7 @@ function get-lctt-last-commit-title()
 {
     (
         cd $(get-lctt-path)
-        git log -1 --format="format:自动%s"|head -n 1
+        git log -1 --format="format:%s"|head -n 1
     )
 }
 
@@ -49,35 +49,26 @@ function auto-pull-request()
         echo "${added_file} 文件不是有效文件，不自动提交"
     fi
 }
+
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feeds/blogs/community/rss https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://opensource.com/feed"
+# feeds="https://opensource.com/feed"
+# for feed in ${feeds};do
+#     echo "auto add ${feed}"
+#     ./feed_monitor.py "${feed}" |while read url
+#     do
+#         yes "
+# "|./1_add_new_article_manual.sh -u "${url}"
+#         ./4_finish.sh -d
+#     done
+# done
 
-for feed in ${feeds};do
-    echo "auto add ${feed}"
-    ./feed_monitor.py "${feed}" |while read url
-    do
-        yes "
-"|./1_add_new_article_manual.sh -u "${url}" -c tech  -e "echo"
-        auto-pull-request
-        ./4_finish.sh -d
-    done
-done
-
-
-./feed_monitor.py "https://www.networkworld.com/index.rss" |while read url
+feed="http://feeds.feedburner.com/Ostechnix"
+proxychains ./feed_monitor.py "${feed}" |while read url
 do
     yes "
-"|./1_add_new_article_manual.sh -u "${url}" -e "echo"
+"|./1_add_new_article_manual.sh -u "${url}" -c tech
     auto-pull-request
     ./4_finish.sh -d
 done
 
-./feed_monitor.py "https://twobithistory.org/feed.xml" |while read url
-do
-    yes "
-"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -c talk -a 'Two-Bit History'
-    added_file=$(get-lctt-operation-file)
-    auto-pull-request
-    ./4_finish.sh -d
-done

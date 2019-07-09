@@ -78,15 +78,6 @@ do
     ./4_finish.sh -d
 done
 
-# feed="https://www.networkworld.com/index.rss"
-# ./feed_monitor.py "${feed}" |while read url
-# do
-#     yes "
-# "|./1_add_new_article_manual.sh -u "${url}" -e "echo"
-#     ok.sh create_pull_request "LCTT/TranslateProject" "选题: ${url}" "$(get-lctt-head)" "master"
-#     ./4_finish.sh -d
-# done
-
 # feeds="https://opensource.com/feed"
 # for feed in ${feeds};do
 #     echo "auto add ${feed}"

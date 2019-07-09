@@ -61,6 +61,19 @@
         "content":[".lede-container","#drr-container"],
         "exclude":[]
     },
+    "theartofmachinery.com":{
+        "title":".entry-title",
+        "date":".published",
+        "content":[".entry-content"]
+    },
+    "www.zdnet.com":{
+        "title":".storyHeader > h1:nth-child(1)",
+        "author":"[itemprop=author]",
+        "authorlink": "[itemprop=author]::attr(href)",
+        "date":".meta > time:nth-child(3)::attr(datetime)",
+        "content":[".storyBody"],
+        "exclude":[".shortcodeGalleryWrapper"]
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

@@ -92,7 +92,7 @@ done
 ./feed_monitor.py "https://theartofmachinery.com/feed.xml" |while read url
 do
     yes "
-"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -c talk -a 'Simon Arneaud'
+"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -a 'Simon Arneaud'
     auto-pull-request
     ./4_finish.sh -d
 done

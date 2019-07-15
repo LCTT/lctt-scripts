@@ -15,8 +15,11 @@ function html_cleanup()
     fi
     return 0
 }
-html="$(curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" ${url}|html_cleanup)"
- echo ${html}>/tmp/t.html
+TMPFILE=$(mktemp)
+trap "rm -f ${TMPFILE}" EXIT
+wget --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
+html="$(cat ${TMPFILE}|html_cleanup)"
+# echo ${html}>/tmp/t.html
 # extract title
 title_selector=$(echo "${parse_cfg}"|jq -r ".title")
 if [[ "${title_selector}" == "null" ]];then
@@ -50,6 +53,7 @@ fi
 # extract date
 date_selector=$(echo "${parse_cfg}"|jq -r ".date")
 if [[ "${date_selector}" != "null" ]];then
+    echo "${html}">/tmp/t.html
     date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
     if [[ -n "${date}" ]];then
         date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割

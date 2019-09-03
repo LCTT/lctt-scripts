@@ -21,12 +21,13 @@ do
     if [[ "${line}" == '```' ]];then
         if [[ "${position}" != "引用" ]];then
             position="引用"
+            continue
         else
             position="正文"
         fi
     fi
-
-    if [[ "${line}" == --------------------------------* ]];then
+    
+    if [[ "${line}" == "--------------------------------------------------------------------------------" ]];then
         position="结尾"
         break
     fi

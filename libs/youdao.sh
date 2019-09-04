@@ -90,5 +90,5 @@ do
     eval $field=\""${value}"\"
 done < <(cat youdao.cfg|cut -f1 -d "=")
 template=$(cat youdao.template)
-eval "echo ${template}"
+eval echo \"${template}\"
 exit ${errorCode}

@@ -7,9 +7,6 @@ position="元数据"            # 其他可能值包括 "正文","引用","结�
 while read line
 do
     echo "${line}"
-    if [[ "${line}" != *[a-zA-Z]* ]];then
-        continue                # 至少包含一个英文字母才需要翻译
-    fi
     if [[ "${position}" == "元数据" ]];then
         if [[ "${line}" == \[#\]:* ]];then
             continue
@@ -21,17 +18,18 @@ do
     if [[ "${line}" == '```' ]];then
         if [[ "${position}" != "引用" ]];then
             position="引用"
+            continue
         else
             position="正文"
         fi
     fi
 
-    if [[ "${line}" == --------------------------------* ]];then
+    if [[ "${line}" == "--------------------------------------------------------------------------------" ]];then
         position="结尾"
-        break
+        continue
     fi
 
-    if [[ "${position}" == "正文" ]];then
-        youdao.sh "${line}"
+    if [[ "${position}" == "正文"  && "${line}" == *[a-zA-Z]* ]];then
+        youdao.sh "${line}" # 至少包含一个英文字母才需要翻译
     fi
 done < <(cat "${article}")

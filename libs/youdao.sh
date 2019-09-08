@@ -86,9 +86,9 @@ result=$(do_search "$@")
 . youdao.cfg
 while read field;
 do
-    value=$(echo "${result}"|jq -r ${!field}|sed 's/"/\\\"/g'|sed 's/`/\\\`/g')
+    value=$(echo "${result}"|jq -r ${!field}|sed 's/"/\\\"/g'|sed 's/`/\\\`/g'|sed 's/\$/\\$/g')
     eval $field=\""${value}"\"
 done < <(cat youdao.cfg|cut -f1 -d "=")
 template=$(cat youdao.template)
-eval "echo ${template}"
+eval echo \"${template}\"
 exit ${errorCode}

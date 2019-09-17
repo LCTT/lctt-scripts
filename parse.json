@@ -90,6 +90,14 @@
         "content":[".entry-content"],
         "cleanup_command":"hxclean"
     },
+    "www.jtolio.com":{
+        "title":".container > div:nth-child(2) > h2:nth-child(2)",
+        "author":".navbar-brand",
+        "authorlink":".navbar-brand::attr(href)",
+        "date":".font-smaller > i:nth-child(1)",
+        "content":[".container > div:nth-child(3)"],
+        "cleanup_command":"hxclean"
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

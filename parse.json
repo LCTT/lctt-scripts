@@ -82,6 +82,14 @@
         "content":[".storyBody"],
         "exclude":[".shortcodeGalleryWrapper"]
     },
+    "jvns.ca":{
+        "title":".entry-title",
+        "author":"#wrap > header:nth-child(1) > hgroup:nth-child(1) > h1:nth-child(1) > a:nth-child(1)",
+        "authorlink":"#wrap > header:nth-child(1) > hgroup:nth-child(1) > h1:nth-child(1) > a:nth-child(1)::attr(href)",
+        "date":"p.meta:nth-child(3) > time:nth-child(1)::attr(datetime)",
+        "content":[".entry-content"],
+        "cleanup_command":"hxclean"
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

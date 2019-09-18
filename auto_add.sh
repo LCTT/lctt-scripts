@@ -109,7 +109,7 @@ done
 ./feed_monitor.py "https://nicolasparada.netlify.com/index.xml" |while read url
 do
     yes "
-"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -a 'Nicolás Parada'
+"|./1_add_new_article_manual.sh -u "${url}" -e "echo" -c tech -a 'Nicolás Parada'
     auto-pull-request
     ./4_finish.sh -d
 done

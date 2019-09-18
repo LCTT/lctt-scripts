@@ -106,6 +106,12 @@
         "content":[".td-post-content"],
         "exclude":[".sharedaddy"]
     },
+    "nicolasparada.netlify.com":{
+        "title":".container > article:nth-child(1) > h1:nth-child(1)",
+        "date":".post-dates > time:nth-child(1)",
+        "content":[".container > article:nth-child(1) > div:nth-child(3)"],
+        "cleanup_command":"hxclean"
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

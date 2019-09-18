@@ -98,6 +98,14 @@
         "content":[".container > div:nth-child(3)"],
         "cleanup_command":"hxclean"
     },
+    "opensourceforu.com":{
+        "title":"h1.entry-title",
+        "author":"div.td-post-author-name > a:nth-child(2)",
+        "authorlink":"div.td-post-author-name > a:nth-child(2)::attr(href)",
+        "date":"div.td-post-header > div.td-module-meta-info > span.td-post-date",
+        "content":[".td-post-content"],
+        "exclude":[".sharedaddy"]
+    },
     "fedoramagazine.org":{
         "title":".post-title",
         "author":".author",

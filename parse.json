@@ -2,7 +2,7 @@
     "opensource.com":{
         "title":".pane-node-title > h1:nth-child(1)",
         "author":"span.byline__author-name:nth-child(2) > a:nth-child(1)",
-        "authorlink":".username::attr(href)",
+        "authorlink":"span.byline__author-name:nth-child(2) > a:nth-child(1)::attr(href)",
         "date":".byline__date",
         "summary":".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",

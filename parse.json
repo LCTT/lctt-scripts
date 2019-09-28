@@ -1,8 +1,8 @@
 {
     "opensource.com":{
         "title":".pane-node-title > h1:nth-child(1)",
-        "author":"span.byline__author-name:nth-child(2) > a:nth-child(1)",
-        "authorlink":"span.byline__author-name:nth-child(2) > a:nth-child(1)::attr(href)",
+        "author":"div.pane-os-content-article-byline:nth-child(3) > div:nth-child(1) > span:nth-child(2) > a:nth-child(1)",
+        "authorlink":"div.pane-os-content-article-byline:nth-child(3) > div:nth-child(1) > span:nth-child(2) > a:nth-child(1)::attr(href)",
         "date":".byline__date",
         "summary":".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",

@@ -128,12 +128,11 @@
         "exclude":[".share-filled",".wp-block-separator"]
     },
     "www.linux.com":{
-        "title":".pane-node-title > h1:nth-child(1)",
-        "author":".field-content > a:nth-child(1)",
-        "authorlink": ".field-content > a:nth-child(1)::attr(href)",
-        "date":".pane-node-created",
-        "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
-        "exclude":[".element-invisible"],
+        "title":"h1.entry-title",
+        "author":".td-post-author-name > a:nth-child(2)",
+        "authorlink": ".td-post-author-name > a:nth-child(2)::attr(href)",
+        "date":".td-post-date",
+        "content":[".td-post-featured-image",".td-post-content"],
         "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
     },
     "leebriggs.co.uk":{

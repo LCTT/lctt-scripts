@@ -52,7 +52,8 @@ function auto-pull-request()
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
 # tech类别
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feeds/ https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
+feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
+>>>>>>> f36c6fb555dac89139aa8cead9e7010483865307
 
 for feed in ${feeds};do
     echo "auto add ${feed}"

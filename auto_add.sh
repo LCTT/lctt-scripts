@@ -53,7 +53,6 @@ function auto-pull-request()
 
 # tech类别
 feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
->>>>>>> f36c6fb555dac89139aa8cead9e7010483865307
 
 for feed in ${feeds};do
     echo "auto add ${feed}"

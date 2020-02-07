@@ -52,7 +52,7 @@ function auto-pull-request()
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
 # tech类别
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
+feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -66,7 +66,7 @@ for feed in ${feeds};do
 done
 
 # 自判断类别
-feeds="https://www.networkworld.com/index.rss https://opensourceforu.com/feed"
+feeds="https://www.networkworld.com/index.rss"
 for feed in ${feeds};do
     ./feed_monitor.py "${feed}" |while read url
     do

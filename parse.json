@@ -133,7 +133,7 @@
         "authorlink": ".td-post-author-name > a:nth-child(2)::attr(href)",
         "date":".td-post-date",
         "content":[".td-post-featured-image",".td-post-content"],
-        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no|pandoc -t html -f html"
     },
     "leebriggs.co.uk":{
         "title":".post-title",

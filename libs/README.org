@@ -8,8 +8,9 @@
 
 这里存放用脚本到的第三方库:
 
-| 库    | 用处说明                                                                           |
-|-------+------------------------------------------------------------------------------------|
-| [[https://github.com/whiteinge/ok.sh][ok.sh]] | A Bourne shell GitHub API client library focused on interfacing with shell scripts |
-|-------+------------------------------------------------------------------------------------|
-|       |                                                                                    |
+| 库        | 用处说明                                                                           |
+|-----------+------------------------------------------------------------------------------------|
+| [[https://github.com/whiteinge/ok.sh][ok.sh]]     | A Bourne shell GitHub API client library focused on interfacing with shell scripts |
+|-----------+------------------------------------------------------------------------------------|
+| [[https://github.com/lujun9972/youdao.sh][youdao.sh]] | 简单的调用有道智云文本翻译API进行翻译的脚本.                                       |
+|           |                                                                                    |

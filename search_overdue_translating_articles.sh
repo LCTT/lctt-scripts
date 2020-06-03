@@ -48,7 +48,7 @@ while getopts :rmiR OPT; do
             mail_flag="True"
             ;;
         R|+R)
-            trap "exec $(realpath $0) $*" ERR
+            trap "exec $(realpath $0) $@" ERR
             ;;
         *)
             help
@@ -73,9 +73,9 @@ timeout_start=$(($1 * 24 * 60 * 60))
 timeout_end=$((${2:-9999999} * 24 * 60 * 60))
 overdue_start=$((${now} - ${timeout_start}))
 overdue_end=$((${now} - ${timeout_end}))
-git grep -niE "^[^[].*translat|^\[#\]: translator: \([^[:space:]]+\)|fanyi|翻译"  sources/*.md |awk -F ":" '{if ($2<=3) print $1}'|while read article
+git grep -niE "^[^[].*translat|^\[#\]: translator: \([^[:space:]]+\)|fanyi|翻译"  sources/ |awk -F ":" '{if ($2<=3) print $1}'|while read article
 do
-    translating_time=$(git log --date=unix --pretty=format:"%cd" -n 1 "${article}" )
+    translating_time=$(git log --pretty=format:"%ct" -n 1 "${article}" )
     if [[ ${translating_time} -le ${overdue_start} &&  ${translating_time} -gt ${overdue_end} ]];then
         delay_days=$(( ($now - $translating_time) / 24 / 60 / 60 ))
         echo "${article}"       # "------" "${delay_days}天"

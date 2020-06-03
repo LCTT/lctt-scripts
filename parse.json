@@ -1,8 +1,8 @@
 {
     "opensource.com":{
         "title":".pane-node-title > h1:nth-child(1)",
-        "author":"span.byline__author-name:nth-child(2) > a:nth-child(1)",
-        "authorlink":".username::attr(href)",
+        "author":"div.pane-os-content-article-byline:nth-child(3) > div:nth-child(1) > span:nth-child(2) > a:nth-child(1)",
+        "authorlink":"div.pane-os-content-article-byline:nth-child(3) > div:nth-child(1) > span:nth-child(2) > a:nth-child(1)::attr(href)",
         "date":".byline__date",
         "summary":".field-name-field-article-subhead > div:nth-child(1) > h2:nth-child(1)",
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",
@@ -66,7 +66,7 @@
         "date":"[itemprop=datePublished]::attr(content)",
         "summary":".deck",
         "content":[".lede-container","#drr-container"],
-        "exclude":[]
+        "exclude":[".excerpt-text"]
     },
     "theartofmachinery.com":{
         "title":".entry-title",
@@ -81,6 +81,36 @@
         "date":".meta > time:nth-child(3)::attr(datetime)",
         "content":[".storyBody"],
         "exclude":[".shortcodeGalleryWrapper"]
+    },
+    "jvns.ca":{
+        "title":".entry-title",
+        "author":"#wrap > header:nth-child(1) > hgroup:nth-child(1) > h1:nth-child(1) > a:nth-child(1)",
+        "authorlink":"#wrap > header:nth-child(1) > hgroup:nth-child(1) > h1:nth-child(1) > a:nth-child(1)::attr(href)",
+        "date":"p.meta:nth-child(3) > time:nth-child(1)::attr(datetime)",
+        "content":[".entry-content"],
+        "cleanup_command":"hxclean"
+    },
+    "www.jtolio.com":{
+        "title":".container > div:nth-child(2) > h2:nth-child(2)",
+        "author":".navbar-brand",
+        "authorlink":".navbar-brand::attr(href)",
+        "date":".font-smaller > i:nth-child(1)",
+        "content":[".container > div:nth-child(3)"],
+        "cleanup_command":"hxclean"
+    },
+    "opensourceforu.com":{
+        "title":"h1.entry-title",
+        "author":"div.td-post-author-name > a:nth-child(2)",
+        "authorlink":"div.td-post-author-name > a:nth-child(2)::attr(href)",
+        "date":"div.td-post-header > div.td-module-meta-info > span.td-post-date",
+        "content":[".td-post-content"],
+        "exclude":[".sharedaddy"]
+    },
+    "nicolasparada.netlify.com":{
+        "title":".container > article:nth-child(1) > h1:nth-child(1)",
+        "date":".post-dates > time:nth-child(1)",
+        "content":[".container > article:nth-child(1) > div:nth-child(3)"],
+        "cleanup_command":"hxclean"
     },
     "fedoramagazine.org":{
         "title":".post-title",
@@ -98,12 +128,11 @@
         "exclude":[".share-filled",".wp-block-separator"]
     },
     "www.linux.com":{
-        "title":".pane-node-title > h1:nth-child(1)",
-        "author":".field-content > a:nth-child(1)",
-        "authorlink": ".field-content > a:nth-child(1)::attr(href)",
-        "date":".pane-node-created",
-        "content":["div.pane-entity-field:nth-child(2)",".field-name-body > div:nth-child(1) > div:nth-child(1)"],
-        "exclude":[".element-invisible"],
+        "title":"h1.entry-title",
+        "author":".td-post-author-name > a:nth-child(2)",
+        "authorlink": ".td-post-author-name > a:nth-child(2)::attr(href)",
+        "date":".td-post-date",
+        "content":[".td-post-featured-image",".td-post-content"],
         "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
     },
     "leebriggs.co.uk":{

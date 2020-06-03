@@ -19,7 +19,7 @@ TMPFILE=$(mktemp)
 trap "rm -f ${TMPFILE}" EXIT
 wget --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
 html="$(cat ${TMPFILE}|html_cleanup)"
-# echo ${html}>/tmp/t.html
+echo ${html}>/tmp/t.html
 # extract title
 title_selector=$(echo "${parse_cfg}"|jq -r ".title")
 if [[ "${title_selector}" == "null" ]];then
@@ -56,7 +56,11 @@ if [[ "${date_selector}" != "null" ]];then
     echo "${html}">/tmp/t.html
     date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
     if [[ -n "${date}" ]];then
-        date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割
+        date="${date//,/ }"     # 去掉特殊字符
+        if [[ "$date" == [0-9]T[0-9] ]];then
+            date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割
+        fi
+
         date=$(date -d "${date}" "+%Y%m%d") # 格式化date
     fi
 fi

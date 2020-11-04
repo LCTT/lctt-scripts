@@ -115,6 +115,15 @@
         "exclude":[],
         "cleanup_command":"hxclean"
     },
+    "theartofmachinery.com":{
+        "title":".entry-title",
+        "author":"",
+        "authorlink":"",
+        "date":".published::attr(datetime)",
+        "content":[".entry-content"],
+        "exclude":[],
+        "cleanup_command":"hxclean"
+    },
     "www.ostechnix.com":{
         "title":".post-title",
         "author":".fn > a:nth-child(1)",

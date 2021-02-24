@@ -114,14 +114,14 @@ function cleanup_temp {
 trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
 
 cat > "${source_file}" <<EOF
+[#]: subject: (${title})
+[#]: via: (${url})
+[#]: author: ($author ${author_link})
 [#]: collector: ($(get-github-user))
 [#]: translator: ( )
 [#]: reviewer: ( )
 [#]: publisher: ( )
 [#]: url: ( )
-[#]: subject: (${title})
-[#]: via: (${url})
-[#]: author: ($author ${author_link})
 
 ${title}
 ======
@@ -208,6 +208,6 @@ new_branch="$(filename-to-branch add "${filename}")"
 git branch "${new_branch}" master
 git checkout "${new_branch}"
 git add "${article_directory}/${filename}"
-git commit -m "选题: ${date} ${title}
+git commit -m "选题[${article_type}]: ${date} ${title}
 
 sources/${article_type}/${filename}" && git push -u origin "${new_branch}"

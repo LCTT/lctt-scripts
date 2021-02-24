@@ -114,14 +114,14 @@ function cleanup_temp {
 trap cleanup_temp  SIGHUP SIGINT SIGPIPE SIGTERM
 
 cat > "${source_file}" <<EOF
+[#]: subject: (${title})
+[#]: via: (${url})
+[#]: author: ($author ${author_link})
 [#]: collector: ($(get-github-user))
 [#]: translator: ( )
 [#]: reviewer: ( )
 [#]: publisher: ( )
 [#]: url: ( )
-[#]: subject: (${title})
-[#]: via: (${url})
-[#]: author: ($author ${author_link})
 
 ${title}
 ======

@@ -46,7 +46,7 @@ if [[ -z "${force_flag}" ]] && url-blocked-p "${baseurl}" ;then
 fi
 
 # 搜索类似的文章
-echo "search simliar articles..."
+echo "search similar articles..."
 if search-similar-articles "${url}";then
     continue-p "found similar articles"
 fi

@@ -66,16 +66,16 @@ for feed in ${feeds};do
 done
 
 # 自判断类别
-feeds="https://www.networkworld.com/index.rss"
-for feed in ${feeds};do
-    ./feed_monitor.py "${feed}" |while read url
-    do
-        yes "
-"|./1_add_new_article_manual.sh -u "${url}" -e "echo"
-        auto-pull-request
-        ./4_finish.sh -d
-    done
-done
+# feeds="https://www.networkworld.com/index.rss"
+# for feed in ${feeds};do
+#     ./feed_monitor.py "${feed}" |while read url
+#     do
+#         yes "
+# "|./1_add_new_article_manual.sh -u "${url}" -e "echo"
+#         auto-pull-request
+#         ./4_finish.sh -d
+#     done
+# done
 
 # feed="http://feeds.feedburner.com/Ostechnix"
 # proxychains ./feed_monitor.py "${feed}" |while read url

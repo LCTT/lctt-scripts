@@ -65,6 +65,21 @@ for feed in ${feeds};do
     done
 done
 
+# news类别
+feeds="https://news.itsfoss.com/feed/"
+
+for feed in ${feeds};do
+    echo "auto add ${feed}"
+    ./feed_monitor.py "${feed}" |while read url
+    do
+        yes "
+"|./1_add_new_article_manual.sh -u "${url}" -c news  -e "echo"
+        auto-pull-request
+        ./4_finish.sh -d
+    done
+done
+
+
 # 自判断类别
 # feeds="https://www.networkworld.com/index.rss"
 # for feed in ${feeds};do

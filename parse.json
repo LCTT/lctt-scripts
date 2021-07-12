@@ -169,5 +169,14 @@
         "date":".published",
         "content":[".image-container",".entry-inner"],
         "exclude":[".after-post-box",".sharedaddy"]
+    },
+    "www.debugpoint.com":{
+        "title":"h1.post-title",
+        "author":".author",
+        "authorlink":".author > a::attr(href)",
+        "date":".post-meta > .below:first-child > a.date-link > time.post-date",
+        "summary":".post-content > p > strong:first-child",
+        "content":[".post-content"],
+        "exclude":[".post-content > p > strong:first-child"]
     }
 }

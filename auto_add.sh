@@ -34,8 +34,8 @@ function is-valid-file()
         cd $(get-lctt-path)
         local operation_file="$*"
         local file_size=$(cat "${operation_file}"|wc -w)
-        # 文件字数达到500字才认为是有效文章
-        [[ ${file_size} -gt 500 ]] && grep '^\[#\]: author: ' "${operation_file}" |grep "http"
+        # 文件字数达到300字才认为是有效文章
+        [[ ${file_size} -gt 300 ]] && grep '^\[#\]: author: ' "${operation_file}" |grep "http"
     )
 }
 
@@ -52,7 +52,7 @@ function auto-pull-request()
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
 # tech类别
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
+feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"

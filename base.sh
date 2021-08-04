@@ -208,7 +208,7 @@ function mark-file-as-tranlating()
     local git_user=$(get-github-user)
     if head -n 1 "${filename}" |grep '^\[#\]:'>/dev/null 2>&1 ;then
         # 新模板
-        sed -i "s/\[#\]: translator: ( )/\[#\]: translator: (${git_user})/g" "${filename}"
+        sed -i "s/\[#\]: translator: \" \"/\[#\]: translator: \"${git_user}\"/g" "${filename}"
     else
         # 旧模板
         sed -i "1i translating by ${git_user}" "${filename}"

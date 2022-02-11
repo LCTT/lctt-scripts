@@ -17,7 +17,7 @@ function html_cleanup()
 }
 TMPFILE=$(mktemp)
 trap "rm -f ${TMPFILE}" EXIT
-wget --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
+wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
 html="$(cat ${TMPFILE}|html_cleanup)"
 echo ${html}>/tmp/t.html
 # extract title
@@ -54,7 +54,8 @@ fi
 date_selector=$(echo "${parse_cfg}"|jq -r ".date")
 if [[ "${date_selector}" != "null" ]];then
     echo "${html}">/tmp/t.html
-    date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
+    date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain|sed 's/updated on//i')
+	echo "date=${date}"
     if [[ -n "${date}" ]];then
         date="${date//,/ }"     # 去掉特殊字符
         if [[ "$date" == [0-9]T[0-9] ]];then

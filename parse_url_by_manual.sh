@@ -55,7 +55,6 @@ date_selector=$(echo "${parse_cfg}"|jq -r ".date")
 if [[ "${date_selector}" != "null" ]];then
     echo "${html}">/tmp/t.html
     date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain|sed 's/updated on//i')
-	echo "date=${date}"
     if [[ -n "${date}" ]];then
         date="${date//,/ }"     # 去掉特殊字符
         if [[ "$date" == [0-9]T[0-9] ]];then

@@ -59,6 +59,15 @@
         "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
         "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
     },
+    "news.itsfoss.com":{
+        "title":".entry-title",
+        "author":".entry-author-name",
+        "authorlink":".entry-author-link::attr(href)",
+        "date":"[property='article:published_time']::attr(content)",
+        "content":[".entry-content"],
+        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+    },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
         "author":".fn",
@@ -159,5 +168,23 @@
         "date":".published",
         "content":[".image-container",".entry-inner"],
         "exclude":[".after-post-box",".sharedaddy"]
+    },
+    "jao.io":{
+        "title":".post-title",
+        "author":"#postamble > center:nth-child(1) > a:nth-child(4)",
+        "authorlink":"#postamble > center:nth-child(1) > a:nth-child(4)::attr(href)",
+        "date":".post-date",
+        "content":["#content"],
+        "exclude":[".post-title",".post-date"],
+        "cleanup_command":"hxclean"
+    },
+    "www.debugpoint.com":{
+        "title":"h1.post-title",
+        "author":".author",
+        "authorlink":".author > a::attr(href)",
+        "date":".post-meta > .below:first-child > a.date-link > time.post-date",
+        "summary":".post-content > p > strong:first-child",
+        "content":[".post-content"],
+        "exclude":[".post-content > p > strong:first-child"]
     }
 }

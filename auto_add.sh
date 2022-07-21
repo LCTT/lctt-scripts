@@ -81,7 +81,7 @@ done
 
 
 # 自判断类别
-feeds="https://www.networkworld.com/index.rss https://opensourceforu.com/feed"
+feeds="https://www.networkworld.com/index.rss https://opensourceforu.com/feed https://jao.io/blog/rss.xml"
 for feed in ${feeds};do
     ./feed_monitor.py "${feed}" |while read url
     do

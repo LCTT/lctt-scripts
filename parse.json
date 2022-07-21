@@ -169,6 +169,15 @@
         "content":[".image-container",".entry-inner"],
         "exclude":[".after-post-box",".sharedaddy"]
     },
+    "jao.io":{
+        "title":".post-title",
+        "author":"#postamble > center:nth-child(1) > a:nth-child(4)",
+        "authorlink":"#postamble > center:nth-child(1) > a:nth-child(4)::attr(href)",
+        "date":".post-date",
+        "content":["#content"],
+        "exclude":[".post-title",".post-date"],
+        "cleanup_command":"hxclean"
+    },
     "www.debugpoint.com":{
         "title":"h1.post-title",
         "author":".author",

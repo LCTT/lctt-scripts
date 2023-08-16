@@ -3,6 +3,7 @@ import sys
 import sqlite3
 import feedparser
 
+# feedparser.USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"
 
 def is_article_exist(url, db):
     '''检查URL是否已经在DB中存在'''

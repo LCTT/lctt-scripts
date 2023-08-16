@@ -17,7 +17,8 @@ function html_cleanup()
 }
 TMPFILE=$(mktemp)
 trap "rm -f ${TMPFILE}" EXIT
-wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
+wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (Windows NT 10.4; x64; rv:109.0) Gecko/20100101 Firefox/116.0" --convert-links -O ${TMPFILE} ${url}
+#wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
 html="$(cat ${TMPFILE}|html_cleanup)"
 echo ${html}>/tmp/t.html
 # extract title
@@ -60,7 +61,7 @@ if [[ "${date_selector}" != "null" ]];then
         if [[ "$date" == [0-9]T[0-9] ]];then
             date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割
         fi
-
+	#echo date=$date
         date=$(date -d "${date}" "+%Y%m%d") # 格式化date
     fi
 fi

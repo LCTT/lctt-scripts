@@ -49,13 +49,14 @@ function auto-pull-request()
         echo "${added_file} 文件不是有效文件，不自动提交"
     fi
 }
+
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
 # tech类别
 #feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
 #feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
 #feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml"
+feeds="https://itsfoss.com/rss/ https://www.2daygeek.com/feed/ https://opensource.com/feed https://fedoramagazine.org/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -69,7 +70,7 @@ for feed in ${feeds};do
 done
 
 # news类别
-feeds="https://news.itsfoss.com/feed/"
+feeds="https://news.itsfoss.com/latest/rss/"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -94,6 +95,16 @@ done
 #         ./4_finish.sh -d
 #     done
 # done
+feeds="https://jao.io/blog/rss.xml"
+for feed in ${feeds};do
+    ./feed_monitor.py "${feed}" |while read url
+    do
+        yes "
+"|./1_add_new_article_manual.sh -u "${url}" -e "echo"
+        auto-pull-request
+        ./4_finish.sh -d
+    done
+done
 
 # feed="http://feeds.feedburner.com/Ostechnix"
 # proxychains ./feed_monitor.py "${feed}" |while read url

@@ -117,7 +117,7 @@ cat > "${source_file}" <<EOF
 [#]: subject: "${title}"
 [#]: via: "${url}"
 [#]: author: "$author ${author_link}"
-[#]: collector: "$(get-github-user)"
+[#]: collector: "$(get-github-user)/${SCRIPT_NAME}-${SCRIPT_VERSION}"
 [#]: translator: " "
 [#]: reviewer: " "
 [#]: publisher: " "
@@ -152,7 +152,7 @@ s/^\[\/code\][[:space:]]*$/```/; # [/code]替换成```
 s/\[\/code\][[:space:]]*$/\n```/; # [/code]替换成```
 s/&lt;/</g; # 把 &lt; 替换成 <
 s/&gt;/>/g; # 把 &gt; 替换成 >
-}'|${CFG_PATH}/format_source_block.awk >>  "${source_file}" # 将[code]...[/code] 替换成```...```
+}' >>  "${source_file}" # 将[code]...[/code] 替换成```...```
 
     # 算出最一个标题是多少号
     min_title=$(sed '/```/,/```/d' "${source_file}" |grep  -E "^#+ +[[:alpha:][:digit:]]" -o |awk '{print $1}'|head -1)
@@ -170,7 +170,9 @@ s/&gt;/>/g; # 把 &gt; 替换成 >
         # 格式化reference links部分
         sed -i "${reference_links_beginning_line},$ {
 /^[[:blank:]]*$/ d;
-s/^   \(\[[[:digit:]]*\]\):/\1:/
+s/^   \(\[[[:digit:]]*\]\):/\1:/;
+s/[?&]ref=news\.itsfoss\.com//;
+s/[?&]ref=itsfoss\.com//
 }" "${source_file}"
         sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
     fi

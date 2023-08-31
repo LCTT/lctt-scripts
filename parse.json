@@ -8,13 +8,14 @@
         "content":[".os-article__image > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)",
                    ".pane-node-body"],
         "exclude":[".embedded-callout-menu",".field-name-body > div:nth-child(1) > div:nth-child(1) > .rtecenter",".element-invisible"],
-        "cleanup_command":"sed 's$<pre>$[code]$g;s$</pre>$[/code]$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+        "cleanup_command":"sed 's$<pre>$[code]$g;s$</pre>$[/code]$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no"
     },
     "www.2daygeek.com":{
-        "title":"h1.post-title",
-        "author":".fn > a:nth-child(1)",
-        "date":"",
-        "content":[".entry-inner"],
+        "title":"h1.entry-title",
+        "author":".url",
+        "authorlink":".url::attr(href)",
+        "date":".hm-date",
+        "content":[".entry-content"],
         "exclude":[".sharedaddy","noscript"]
     },
     "www.linuxtechi.com":{
@@ -24,7 +25,7 @@
         "date":".published",
         "content":[".entry-inner"],
         "exclude":[],
-        "cleanup_command":"sed 's$\\[email&#160;protected\\]$root@linuxtechi$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+        "cleanup_command":"sed 's$\\[email&#160;protected\\]$root@linuxtechi$g'|tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no"
     },
     "twobithistory.org":{
         "title":".post-header > h1:nth-child(1)",
@@ -51,22 +52,23 @@
         "exclude":[".wp-flattr-button"]
     },
     "itsfoss.com":{
-        "title":".entry-title",
-        "author":".entry-author-name",
-        "authorlink":".entry-author-link::attr(href)",
-        "date":"[property='article:published_time']::attr(content)",
-        "content":[".entry-content"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
-        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+        "title":".post-hero__title",
+        "author":".post-info__author > a:nth-child(1)",
+        "authorlink":".post-info__author > a:nth-child(1)::attr(href)",
+        "date":".post-info__dr > time:nth-child(1)::attr(datetime)",
+        "content":[".post"],
+        "exclude":[".apester-unit",".ss-inline-share-wrapper",".ss-hidden-pin-image"],
+        "cleanup_command":"hxclean"
     },
     "news.itsfoss.com":{
-        "title":".entry-title",
-        "author":".entry-author-name",
-        "authorlink":".entry-author-link::attr(href)",
-        "date":"[property='article:published_time']::attr(content)",
-        "content":[".entry-content"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
-        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes"
+        "title":".c-topper__headline",
+        "author":".c-topper__byline > a:nth-child(3)",
+        "authorlink":".c-topper__byline > a:nth-child(3)::attr(href)",
+        "date":".c-topper__timestamp::attr(datetime)",
+        "summary":".c-topper__standfirst",
+        "content":[".c-content"],
+        "exclude":[".apester-unit","#more-from-its-foss + ul","#more-from-its-foss",".ss-inline-share-wrapper",".ss-hidden-pin-image",".sharedaddy",".jp-relatedposts-i2","aside"],
+        "cleanup_command":"hxclean"
     },
     "www.networkworld.com":{
         "title":"[itemprop=headline]",
@@ -142,7 +144,7 @@
         "authorlink": ".td-post-author-name > a:nth-child(2)::attr(href)",
         "date":".td-post-date",
         "content":[".td-post-featured-image",".td-post-content"],
-        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html"
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no|pandoc -t html -f html"
     },
     "leebriggs.co.uk":{
         "title":".post-title",
@@ -179,12 +181,13 @@
         "cleanup_command":"hxclean"
     },
     "www.debugpoint.com":{
-        "title":"h1.post-title",
-        "author":".author",
-        "authorlink":".author > a::attr(href)",
-        "date":".post-meta > .below:first-child > a.date-link > time.post-date",
-        "summary":".post-content > p > strong:first-child",
-        "content":[".post-content"],
-        "exclude":[".post-content > p > strong:first-child"]
+        "title":"h1.entry-title",
+        "author":"h3.auth-name > a:nth-child(2) > span:nth-child(1)",
+        "authorlink":"h3.auth-name > a.auth-url::attr(href)",
+        "date":"time.published",
+        "summary":".s-post-content > p:nth-child(5)",
+        "content":[".s-post-content"],
+        "exclude":[".s-post-content > p > strong:first-child", ".s-post-content > p:last-of-type", ".s-post-content > a:last-of-type", "#also-read"],
+        "cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no"
     }
 }

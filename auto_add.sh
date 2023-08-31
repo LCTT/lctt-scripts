@@ -34,8 +34,8 @@ function is-valid-file()
         cd $(get-lctt-path)
         local operation_file="$*"
         local file_size=$(cat "${operation_file}"|wc -w)
-        # 文件字数达到500字才认为是有效文章
-        [[ ${file_size} -gt 500 ]] && grep '^\[#\]: author: ' "${operation_file}" |grep "http"
+        # 文件字数达到300字才认为是有效文章
+        [[ ${file_size} -gt 300 ]] && grep '^\[#\]: author: ' "${operation_file}" |grep "http"
     )
 }
 
@@ -49,10 +49,14 @@ function auto-pull-request()
         echo "${added_file} 文件不是有效文件，不自动提交"
     fi
 }
+
 # feeds = ("https://feeds.feedburner.com/kerneltalks", "https://www.datamation.com/rss.xml", "http://lukasz.langa.pl/feed/recent/rss-en.xml",  "https://feeds.feedburner.com/LinuxUprising", "https://linuxaria.com/feed", )
 
 # tech类别
-feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://www.linux.com/feed/ https://itsfoss.com/feed/ https://www.linuxtechi.com/feed/ https://dave.cheney.net/feed https://jvns.ca/atom.xml https://www.jtolio.com/rss.xml"
+#feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed https://opensource.com/feed https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
+#feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/ https://itsfoss.com/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
+#feeds="https://www.2daygeek.com/feed/ https://fedoramagazine.org/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml  https://www.debugpoint.com/feed"
+feeds="https://itsfoss.com/rss/ https://www.2daygeek.com/feed/ https://opensource.com/feed https://fedoramagazine.org/feed/  https://dave.cheney.net/feed  https://jvns.ca/atom.xml"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -66,7 +70,7 @@ for feed in ${feeds};do
 done
 
 # news类别
-feeds="https://news.itsfoss.com/feed/"
+feeds="https://news.itsfoss.com/latest/rss/"
 
 for feed in ${feeds};do
     echo "auto add ${feed}"
@@ -81,7 +85,17 @@ done
 
 
 # 自判断类别
-feeds="https://www.networkworld.com/index.rss https://opensourceforu.com/feed https://jao.io/blog/rss.xml"
+# feeds="https://www.networkworld.com/index.rss"
+# for feed in ${feeds};do
+#     ./feed_monitor.py "${feed}" |while read url
+#     do
+#         yes "
+# "|./1_add_new_article_manual.sh -u "${url}" -e "echo"
+#         auto-pull-request
+#         ./4_finish.sh -d
+#     done
+# done
+feeds="https://jao.io/blog/rss.xml"
 for feed in ${feeds};do
     ./feed_monitor.py "${feed}" |while read url
     do

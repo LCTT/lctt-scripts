@@ -9,7 +9,7 @@ function html_cleanup()
 {
     cleanup_command=$(echo "${parse_cfg}"|jq -r ".cleanup_command")
     if [[ "${cleanup_command}" == "null" ]];then
-        tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no --keep-tabs yes|pandoc -t html -f html
+        tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no |pandoc -t html -f html
     else
         eval "${cleanup_command}"
     fi
@@ -17,7 +17,8 @@ function html_cleanup()
 }
 TMPFILE=$(mktemp)
 trap "rm -f ${TMPFILE}" EXIT
-wget --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
+wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (Windows NT 10.4; x64; rv:109.0) Gecko/20100101 Firefox/116.0" --convert-links -O ${TMPFILE} ${url}
+#wget --no-check-certificate --header "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0" --convert-links -O ${TMPFILE} ${url}
 html="$(cat ${TMPFILE}|html_cleanup)"
 echo ${html}>/tmp/t.html
 # extract title
@@ -26,19 +27,19 @@ if [[ "${title_selector}" == "null" ]];then
     title_selector=".title"
 fi
 if [[ "${title_selector}" != "null" ]];then
-    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain --wrap=none) # 标题中可能包含换行符，修改成空格
+    title=$(echo "${html}"|hxselect -c "${title_selector}"|pandoc -f html -t plain  --wrap=none) # 标题中可能包含换行符，修改成空格
 fi
 
 # extract author
 author_selector=$(echo "${parse_cfg}"|jq -r ".author")
 if [[ "${author_selector}" != "null" ]];then
-    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain --wrap=none|sed 's/ *([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
+    author=$(echo "${html}"|hxselect -c "${author_selector}"|pandoc -f html -t plain  --wrap=none|sed 's/ *([^()]\+)//g') # author中不能带括号,把括号内的内容删掉
 fi
 
 # extract authorlink
 authorlink_selector=$(echo "${parse_cfg}"|jq -r ".authorlink")
 if [[ "${authorlink_selector}" != "null" ]];then
-    authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain --wrap=none)
+    authorlink=$(echo "${html}"|hxselect -c "${authorlink_selector}"|pandoc -f html -t plain  --wrap=none)
     if [[ -n "${authorlink}" ]];then
         authorlink=$(get-abstract-url "${url}" "${authorlink}")
     fi
@@ -54,13 +55,13 @@ fi
 date_selector=$(echo "${parse_cfg}"|jq -r ".date")
 if [[ "${date_selector}" != "null" ]];then
     echo "${html}">/tmp/t.html
-    date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain)
+    date=$(echo "${html}"|hxselect -c "${date_selector}"|pandoc -f html -t plain|sed 's/updated on//i')
     if [[ -n "${date}" ]];then
         date="${date//,/ }"     # 去掉特殊字符
         if [[ "$date" == [0-9]T[0-9] ]];then
             date=${date%%T*}                    # 格式化年月日T时分秒这种格式，特点是以T分割
         fi
-
+	#echo date=$date
         date=$(date -d "${date}" "+%Y%m%d") # 格式化date
     fi
 fi

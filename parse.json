@@ -57,8 +57,7 @@
         "authorlink":".post-info__author > a:nth-child(1)::attr(href)",
         "date":".post-info__dr > time:nth-child(1)::attr(datetime)",
         "content":[".post"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image"],
-        "_cleanup_command":"tidy -q --force-output yes --drop-empty-elements no --drop-empty-paras no --indent no",
+        "exclude":[".apester-unit",".ss-inline-share-wrapper",".ss-hidden-pin-image"],
         "cleanup_command":"hxclean"
     },
     "news.itsfoss.com":{
@@ -68,7 +67,7 @@
         "date":".c-topper__timestamp::attr(datetime)",
         "summary":".c-topper__standfirst",
         "content":[".c-content"],
-        "exclude":[".ss-inline-share-wrapper",".ss-hidden-pin-image",".sharedaddy",".jp-relatedposts-i2","aside"],
+        "exclude":[".apester-unit","#more-from-its-foss + ul","#more-from-its-foss",".ss-inline-share-wrapper",".ss-hidden-pin-image",".sharedaddy",".jp-relatedposts-i2","aside"],
         "cleanup_command":"hxclean"
     },
     "www.networkworld.com":{

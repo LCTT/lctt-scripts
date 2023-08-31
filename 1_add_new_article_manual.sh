@@ -170,7 +170,9 @@ s/&gt;/>/g; # 把 &gt; 替换成 >
         # 格式化reference links部分
         sed -i "${reference_links_beginning_line},$ {
 /^[[:blank:]]*$/ d;
-s/^   \(\[[[:digit:]]*\]\):/\1:/
+s/^   \(\[[[:digit:]]*\]\):/\1:/;
+s/[?&]ref=news\.itsfoss\.com//;
+s/[?&]ref=itsfoss\.com//
 }" "${source_file}"
         sed -i "${reference_links_beginning_line}i ${comment}" "${source_file}"
     fi

@@ -1,5 +1,8 @@
 #!/bin/echo Warinng: this library should be sourced!
 CFG_PATH=$(cd $(dirname "${BASH_SOURCE[0]}")&&pwd)
+SCRIPT_NAME=$(basename ${CFG_PATH})
+SCRIPT_VERSION=$(stat -c %Y $(ls -t ${CFG_PATH}/*.sh |head -n 1 ))
+
 # 允许直接调用第三方库
 export PATH=$PATH:${CFG_PATH}/libs
 function get-cfg-option ()
